@@ -912,7 +912,11 @@
     </div>
   </div>
   <div class="btn-group no-print">
-    <button class="btn btn-primary" onclick="submitCompLeaveApply()">📤 신청</button>
+    <button class="btn btn-primary" id="comp-submit-btn" onclick="submitCompLeaveApply()">📤 신청</button>
+    <div id="comp-after-submit" style="display:none;gap:0.5rem;flex-wrap:wrap;">
+      <button class="btn btn-accent" onclick="printCompReq()">🖨️ 출력</button>
+      <button class="btn btn-outline" onclick="resetCompForm()">➕ 새 신청</button>
+    </div>
     <button class="btn btn-outline" onclick="switchTab('leave')">← 뒤로</button>
   </div>
 </div>
@@ -1320,10 +1324,10 @@
 
     <div class="card" style="grid-column:1/-1;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
-        <div class="card-title" style="margin:0;border:none;padding:0;">📋 시수 보고서 결재라인</div>
+        <div class="card-title" style="margin:0;border:none;padding:0;">📋 결재라인 (전체 신청서 공통)</div>
         <button onclick="adminAddApprovalRow()" class="btn btn-outline btn-sm">+ 추가</button>
       </div>
-      <div class="hint" style="margin-bottom:0.6rem;">시수 보고서를 인쇄할 때 결재란과 수신처에 들어갑니다. 직원의 부서명과 같은 줄이 적용되고, 없으면 첫 줄이 적용됩니다.</div>
+      <div class="hint" style="margin-bottom:0.6rem;">휴가·시간외·시수·대체휴무·대체시수 — 모든 신청서를 인쇄할 때 결재란과 수신처(OOO 귀하)에 공통으로 들어갑니다. 직원의 부서명과 같은 줄이 적용되고, 없으면 첫 줄이 적용됩니다.</div>
       <div style="overflow-x:auto;">
         <table class="adm-table" style="min-width:640px;">
           <thead><tr>
@@ -1385,6 +1389,22 @@ function getDeptConfig(dept) {
     if (cfg) return { approvers: cfg.approvers || ['담당','팀장','부서장'], addressee: cfg.addressee || '기관장 귀하' };
   }
   return { approvers: ['담당', '팀장', '센터장'], addressee: '○○기관장 귀하' };
+}
+
+// 모든 신청서 공통 결재란/수신처 HTML (부서별 결재설정 반영)
+function approvalBoxHTML(dept, stampH) {
+  var cfg = getDeptConfig(dept);
+  stampH = stampH || '34px';
+  return '<table style="border-collapse:collapse;font-size:11px"><tr>'
+    + '<td rowspan="2" style="border:1px solid black;padding:2px 5px;background:#f0f0f0;font-weight:700;writing-mode:vertical-rl;text-align:center;vertical-align:middle;width:9mm">결재</td>'
+    + cfg.approvers.map(function(a){ return '<td style="border:1px solid black;padding:3px 10px;text-align:center;background:#f5f5f5;font-weight:600;min-width:20mm;">'+a+'</td>'; }).join('')
+    + '</tr><tr>'
+    + cfg.approvers.map(function(){ return '<td style="border:1px solid black;height:'+stampH+';min-width:20mm"></td>'; }).join('')
+    + '</tr></table>';
+}
+function addresseeHTML(dept) {
+  var cfg = getDeptConfig(dept);
+  return '<div style="text-align:center;margin-top:10px;font-size:13pt;font-weight:700;letter-spacing:0.1em;border-top:2px solid black;padding-top:8px;">'+cfg.addressee+'</div>';
 }
 
 function getTimeRange(name) {
@@ -2488,7 +2508,9 @@ function printAltOcc() {
       '</tr>';
     }).join('');
     return '<div class="alt-print-page">'+
-      '<div class="alt-pt-title">대체시수 발생 신청서</div>'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'+
+        '<div class="alt-pt-title">대체시수 발생 신청서</div>'+approvalBoxHTML(dept)+
+      '</div>'+
       (totalPages>1?'<div class="alt-pt-page-info">'+(pi+1)+' / '+totalPages+' 페이지</div>':'')+
       '<table class="alt-pt-info">'+
         '<tr>'+
@@ -2513,9 +2535,8 @@ function printAltOcc() {
       '</table>'+
       (pi===totalPages-1?
         '<div class="alt-pt-sign">'+
-          '<div class="alt-pt-sign-box"><div class="role">직 원</div><div class="name">'+name+'</div></div>'+
-          '<div class="alt-pt-sign-box"><div class="role">선 임</div><div class="name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></div>'+
-        '</div>' : '')+
+          '<div class="alt-pt-sign-box"><div class="role">신청인</div><div class="name">'+name+' (서명 또는 인)</div></div>'+
+        '</div>'+addresseeHTML(dept) : '')+
     '</div>';
   }).join('');
 
@@ -2538,6 +2559,7 @@ function printAltUse() {
   if (!rows.length) { alert('인쇄할 사용 내역이 없습니다.'); return; }
   var name = altUseData.name || document.getElementById('altuse-name').value || '';
   var docNo = altUseData.docNo || document.getElementById('altuse-doc-no').value || '';
+  var dept = (leaveUser && leaveUser.name === name) ? (leaveUser.dept||'') : '';
   var ROWS_PER_PAGE = 8;
   var pages = [];
   for (var p = 0; p < rows.length; p += ROWS_PER_PAGE) {
@@ -2565,7 +2587,9 @@ function printAltUse() {
         '</tr>';
     }).join('');
     return '<div class="alt-print-page">' +
-      '<div class="alt-pt-title">대체시수 사용 신청서</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+        '<div class="alt-pt-title">대체시수 사용 신청서</div>' + approvalBoxHTML(dept) +
+      '</div>' +
       (totalPages > 1 ? '<div class="alt-pt-page-info">' + (pi+1) + ' / ' + totalPages + ' 페이지</div>' : '') +
       '<table class="alt-pt-info">' +
         '<tr>' +
@@ -2593,9 +2617,8 @@ function printAltUse() {
       '</table>' +
       (pi === totalPages - 1 ?
         '<div class="alt-pt-sign">' +
-          '<div class="alt-pt-sign-box"><div class="role">직 원</div><div class="name">' + name + '</div></div>' +
-          '<div class="alt-pt-sign-box"><div class="role">선 임</div><div class="name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></div>' +
-        '</div>' : '') +
+          '<div class="alt-pt-sign-box"><div class="role">신청인</div><div class="name">' + name + ' (서명 또는 인)</div></div>' +
+        '</div>' + addresseeHTML(dept) : '') +
       '</div>';
   }).join('');
 
@@ -2939,6 +2962,7 @@ var leaveHistData = [];
 var leaveCalcResult = null;
 var lastLeaveReqData = null;
 var lastOtReqData = null;
+var lastCompReqData = null;
 var currentLeaveMgrMode = '휴가';
 
 // 근태 alert 헬퍼
@@ -3263,8 +3287,8 @@ function printLeaveReq() {
   var d = lastLeaveReqData;
   var printWin = window.open('','_blank','width=800,height=600');
   if (!printWin) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
-  printWin.document.write('<html><head><title>휴가신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin-bottom:8mm;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:20mm;}.val{min-height:10mm;}</style></head><body>');
-  printWin.document.write('<h2>휴 가 신 청 서</h2>');
+  printWin.document.write('<html><head><title>휴가신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:20mm;}.val{min-height:10mm;}</style></head><body>');
+  printWin.document.write('<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8mm;"><h2>휴 가 신 청 서</h2>'+approvalBoxHTML(d.dept)+'</div>');
   printWin.document.write('<table><tr><td class="lb">성명</td><td>'+d.name+'</td><td class="lb">부서</td><td>'+d.dept+'</td></tr>');
   printWin.document.write('<tr><td class="lb">직위</td><td>'+d.position+'</td><td class="lb">연락처</td><td>'+d.contact+'</td></tr>');
   printWin.document.write('<tr><td class="lb">휴가종류</td><td>'+d.type+'</td><td class="lb">신청일수</td><td>'+d.days+'</td></tr>');
@@ -3273,7 +3297,8 @@ function printLeaveReq() {
   printWin.document.write('<tr><td class="lb">업무대행</td><td colspan="3">'+d.delegate+'</td></tr></table>');
   printWin.document.write('<p style="text-align:center;margin:8mm 0;">위와 같이 휴가를 신청합니다.</p>');
   printWin.document.write('<p style="text-align:center;">'+d.date+'</p>');
-  printWin.document.write('<p style="text-align:center;">신청인: '+d.name+' (인)</p>');
+  printWin.document.write('<p style="text-align:center;">신청인: '+d.name+' (서명 또는 인)</p>');
+  printWin.document.write(addresseeHTML(d.dept));
   printWin.document.write('</body></html>');
   printWin.document.close();
   printWin.focus();
@@ -3549,8 +3574,8 @@ function printOvertimeReq() {
   var d = lastOtReqData;
   var printWin = window.open('','_blank','width=800,height=600');
   if (!printWin) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
-  printWin.document.write('<html><head><title>시간외근무신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin-bottom:8mm;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:25mm;}.val{min-height:12mm;}</style></head><body>');
-  printWin.document.write('<h2>시 간 외 근 무 신 청 서</h2>');
+  printWin.document.write('<html><head><title>시간외근무신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:25mm;}.val{min-height:12mm;}</style></head><body>');
+  printWin.document.write('<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8mm;"><h2>시 간 외 근 무 신 청 서</h2>'+approvalBoxHTML(d.dept)+'</div>');
   printWin.document.write('<table><tr><td class="lb">성명</td><td>'+d.name+'</td><td class="lb">부서</td><td>'+d.dept+'</td></tr>');
   printWin.document.write('<tr><td class="lb">직위</td><td>'+d.position+'</td><td class="lb">신청일</td><td>'+d.date+'</td></tr>');
   printWin.document.write('<tr><td class="lb">근무일</td><td>'+d.workDate+'</td><td class="lb">시간</td><td>'+d.startT+' ~ '+d.endT+'</td></tr>');
@@ -3566,7 +3591,8 @@ function printOvertimeReq() {
   }
   printWin.document.write('<p style="text-align:center;margin:8mm 0;">위와 같이 시간외근무를 신청합니다.</p>');
   printWin.document.write('<p style="text-align:center;">'+d.date+'</p>');
-  printWin.document.write('<p style="text-align:center;">신청인: '+d.name+' (인)</p>');
+  printWin.document.write('<p style="text-align:center;">신청인: '+d.name+' (서명 또는 인)</p>');
+  printWin.document.write(addresseeHTML(d.dept));
   printWin.document.write('</body></html>');
   printWin.document.close();
   printWin.focus();
@@ -3938,10 +3964,15 @@ function submitCompLeaveApply() {
   var alertEl = document.getElementById('alert-area-comp-apply');
   if (!date) { showLeaveAlert('사용 날짜를 선택하세요.','warn','alert-area-comp-apply'); return; }
   showLeaveAlert('신청 중...','info','alert-area-comp-apply');
+  lastCompReqData = {
+    name: leaveUser.name, position: leaveUser.position||'', dept: leaveUser.dept||'',
+    days: days, date: date, reason: reason, submitDate: new Date().toISOString().split('T')[0]
+  };
   gasRunLeave('submitCompLeave', JSON.stringify({name: leaveUser.name, days: Number(days), useDate: date, reason}), function(res) {
     if (res.ok) {
       showLeaveAlert('✅ 대체휴무 신청이 완료되었습니다. 관리자 승인 후 사용 처리됩니다.','success','alert-area-comp-apply');
-      document.getElementById('comp-apply-reason').value = '';
+      document.getElementById('comp-submit-btn').style.display = 'none';
+      document.getElementById('comp-after-submit').style.display = 'flex';
       loadCompApply();
     } else {
       showLeaveAlert('오류: '+(res.msg||''),'warn','alert-area-comp-apply');
@@ -3949,6 +3980,35 @@ function submitCompLeaveApply() {
   }, function(m) {
     showLeaveAlert('오류: '+m,'warn','alert-area-comp-apply');
   });
+}
+
+function resetCompForm() {
+  lastCompReqData = null;
+  document.getElementById('comp-submit-btn').style.display = '';
+  document.getElementById('comp-after-submit').style.display = 'none';
+  document.getElementById('comp-apply-reason').value = '';
+  showLeaveAlert('', 'info', 'alert-area-comp-apply');
+}
+
+function printCompReq() {
+  if (!lastCompReqData) return;
+  var d = lastCompReqData;
+  var printWin = window.open('','_blank','width=800,height=600');
+  if (!printWin) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
+  printWin.document.write('<html><head><title>대체휴무신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:20mm;}.val{min-height:10mm;}</style></head><body>');
+  printWin.document.write('<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8mm;"><h2>대 체 휴 무 신 청 서</h2>'+approvalBoxHTML(d.dept)+'</div>');
+  printWin.document.write('<table><tr><td class="lb">성명</td><td>'+d.name+'</td><td class="lb">부서</td><td>'+d.dept+'</td></tr>');
+  printWin.document.write('<tr><td class="lb">직위</td><td>'+d.position+'</td><td class="lb">사용일수</td><td>'+d.days+'일</td></tr>');
+  printWin.document.write('<tr><td class="lb">사용일</td><td colspan="3">'+d.date+'</td></tr>');
+  printWin.document.write('<tr><td class="lb">사유</td><td colspan="3" class="val">'+(d.reason||'')+'</td></tr></table>');
+  printWin.document.write('<p style="text-align:center;margin:8mm 0;">위와 같이 대체휴무 사용을 신청합니다.</p>');
+  printWin.document.write('<p style="text-align:center;">'+d.submitDate+'</p>');
+  printWin.document.write('<p style="text-align:center;">신청인: '+d.name+' (서명 또는 인)</p>');
+  printWin.document.write(addresseeHTML(d.dept));
+  printWin.document.write('</body></html>');
+  printWin.document.close();
+  printWin.focus();
+  setTimeout(function(){ printWin.print(); }, 500);
 }
 
 // ===== 연도별 연차 관리 =====
