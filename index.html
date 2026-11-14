@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>시수 보고 시스템</title>
+<title>근태관리 시스템</title>
 <link id="favicon" rel="icon" type="image/png" href="">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -716,23 +716,39 @@
 
 <!-- ========== 근태관리: 로그인 ========== -->
 <div class="view" id="view-leave-login" style="display:none">
-  <div class="card" style="max-width:400px;margin:40px auto;">
-    <div class="card-title">🏖 근태관리 로그인</div>
-    <div id="leave-login-alert" style="margin-bottom:0.8rem;"></div>
-    <div class="form-group" style="margin-bottom:0.8rem;">
-      <label>이름</label>
-      <select id="leave-login-name" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-family:inherit;font-size:0.9rem;">
-        <option value="">-- 이름 선택 --</option>
-      </select>
+  <div style="max-width:420px;margin:30px auto;">
+    <!-- GAS URL 설정 (없을 때만 표시) -->
+    <div id="leave-gas-setup" class="card" style="display:none;margin-bottom:1rem;background:#fffbeb;border-color:#f59e0b;">
+      <div class="card-title" style="color:#92400e;">⚙️ 최초 설정</div>
+      <p style="font-size:0.85rem;color:#78350f;margin-bottom:0.8rem;">관리자에게 받은 GAS 주소를 입력하세요.</p>
+      <div class="form-group">
+        <input type="url" id="leave-gas-input" placeholder="https://script.google.com/..." style="width:100%;font-size:0.82rem;">
+      </div>
+      <button class="btn btn-accent" onclick="saveLeaveGasFromInput()" style="width:100%;justify-content:center;margin-top:0.5rem;">저장</button>
     </div>
-    <div class="form-group" style="margin-bottom:1rem;">
-      <label>PIN</label>
-      <input type="password" id="leave-login-pin" placeholder="PIN 입력" maxlength="20" style="width:100%"
-        onkeydown="if(event.key==='Enter') doLeaveLogin()">
-    </div>
-    <button class="btn btn-primary" onclick="doLeaveLogin()" style="width:100%;justify-content:center;">로그인</button>
-    <div style="margin-top:0.8rem;text-align:center;">
-      <button onclick="doLeaveAdminLoginPrompt()" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;">관리자 로그인</button>
+    <!-- 로그인 카드 -->
+    <div class="card">
+      <div style="text-align:center;margin-bottom:1.2rem;">
+        <div style="font-size:2rem;">🏢</div>
+        <div style="font-size:1.1rem;font-weight:700;color:var(--primary);margin-top:0.3rem;">근태관리 시스템</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);">강원특별자치도농아인협회</div>
+      </div>
+      <div id="leave-login-alert" style="margin-bottom:0.8rem;"></div>
+      <div class="form-group" style="margin-bottom:0.8rem;">
+        <label>이름</label>
+        <select id="leave-login-name" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-family:inherit;font-size:0.9rem;">
+          <option value="">-- 이름 선택 --</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:1rem;">
+        <label>PIN</label>
+        <input type="password" id="leave-login-pin" placeholder="PIN 입력" maxlength="20" style="width:100%"
+          onkeydown="if(event.key==='Enter') doLeaveLogin()">
+      </div>
+      <button class="btn btn-primary" onclick="doLeaveLogin()" style="width:100%;justify-content:center;padding:10px;">로그인</button>
+      <div style="margin-top:0.8rem;text-align:center;">
+        <button onclick="doLeaveAdminLoginPrompt()" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;">관리자 로그인</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1386,30 +1402,23 @@ function switchTab(tab) {
   // 근태관리 탭 처리
   if (tab==='leave') {
     if (!leaveUser) { showLeaveLoginView(); return; }
-    var el2=document.getElementById('view-leave');
-    if(el2){ clearAllViews(); el2.classList.add('active'); }
-    loadLeaveDashboard();
-    return;
+    clearAllViews(); document.getElementById('view-leave').classList.add('active');
+    loadLeaveDashboard(); return;
   }
   if (tab==='leave-apply') {
     if (!leaveUser) { showLeaveLoginView(); return; }
-    var el2=document.getElementById('view-leave-apply');
-    if(el2){ clearAllViews(); el2.classList.add('active'); }
+    clearAllViews(); document.getElementById('view-leave-apply').classList.add('active');
     return;
   }
   if (tab==='overtime') {
     if (!leaveUser) { showLeaveLoginView(); return; }
-    var el2=document.getElementById('view-overtime');
-    if(el2){ clearAllViews(); el2.classList.add('active'); }
-    initOtForm();
-    return;
+    clearAllViews(); document.getElementById('view-overtime').classList.add('active');
+    initOtForm(); return;
   }
   if (tab==='leavehist') {
     if (!leaveUser) { showLeaveLoginView(); return; }
-    var el2=document.getElementById('view-leavehist');
-    if(el2){ clearAllViews(); el2.classList.add('active'); }
-    loadLeaveHist();
-    return;
+    clearAllViews(); document.getElementById('view-leavehist').classList.add('active');
+    loadLeaveHist(); return;
   }
 }
 
@@ -1425,9 +1434,8 @@ function switchTabSenior(tab) {
   if (tab==='dashboard') loadDashboard();
   if (tab==='altdashboard') loadAltDashboard();
   if (tab==='leavemgr') {
-    if (!leaveUser) { showLeaveLoginView(); return; }
-    var el3=document.getElementById('view-leavemgr');
-    if(el3){ clearAllViews(); el3.classList.add('active'); }
+    if (!leaveUser && !leaveIsAdmin) { showLeaveLoginView(); return; }
+    clearAllViews(); document.getElementById('view-leavemgr').classList.add('active');
     loadLeaveMgr();
   }
 }
@@ -2858,11 +2866,27 @@ function showLeaveAlert(msg, type, areaId) {
   if (type !== 'warn') setTimeout(function(){ if(el) el.innerHTML=''; }, 4000);
 }
 
+// ===== GAS URL 저장 (로그인 화면에서) =====
+function saveLeaveGasFromInput() {
+  var v = document.getElementById('leave-gas-input').value.trim();
+  if (!v || !/^https:\/\/script\.google\.com\/.+\/exec/.test(v)) {
+    alert('올바른 GAS 주소가 아닙니다.'); return;
+  }
+  setLeaveGas(v);
+  document.getElementById('leave-gas-setup').style.display = 'none';
+  showLeaveLoginView();
+}
+
 // ===== 근태 로그인 뷰 표시 =====
 function showLeaveLoginView() {
   clearAllViews();
   var el = document.getElementById('view-leave-login');
   if (el) el.classList.add('active');
+
+  // GAS URL 없으면 설정 박스 표시
+  var setupBox = document.getElementById('leave-gas-setup');
+  if (setupBox) setupBox.style.display = (!LEAVE_GAS_URL && !GAS_URL) ? '' : 'none';
+
   // 직원 이름 목록 로드
   var sel = document.getElementById('leave-login-name');
   if (sel && sel.options.length <= 1) {
@@ -3464,23 +3488,36 @@ function updateLeaveMgrStatus(row, status, type) {
   }, function(m){ showLeaveAlert('오류: '+m,'warn','alert-area-leavemgr'); });
 }
 
-// 세션 복원
+// 세션 복원 + 첫 화면 결정
 (function(){
-  try {
+  document.addEventListener('DOMContentLoaded', function(){
     var saved = ls.get('leave_session', '');
-    if (saved) {
+    if (!saved) { showLeaveLoginView(); return; }
+    try {
       var sess = JSON.parse(saved);
-      if (sess && sess.name && sess.pin) {
-        // 조용히 재로그인
-        gasRunLeave('login', JSON.stringify({name:sess.name, pin:sess.pin}), function(res){
-          if (res && res.ok) {
-            leaveUser = res;
-            leaveIsAdmin = false;
-          }
-        }, function(){});
-      }
-    }
-  } catch(e) {}
+      if (!sess || !sess.name || !sess.pin) { showLeaveLoginView(); return; }
+      // LEAVE_GAS_URL이 아직 없으면 로그인 화면만 표시
+      if (!LEAVE_GAS_URL && !GAS_URL) { showLeaveLoginView(); return; }
+      // 조용히 재로그인 시도
+      gasRunLeave('login', JSON.stringify({name:sess.name, pin:sess.pin}), function(res){
+        if (res && res.ok) {
+          leaveUser = res;
+          leaveIsAdmin = false;
+          // 대시보드로 바로 이동
+          clearAllViews();
+          document.getElementById('view-leave').classList.add('active');
+          setLeaveUserBadge(res.name + (res.role==='선임' ? ' (선임)' : ''));
+          loadLeaveDashboard();
+        } else {
+          ls.set('leave_session', '');
+          showLeaveLoginView();
+        }
+      }, function(){
+        // GAS 오류 시 로그인 화면
+        showLeaveLoginView();
+      });
+    } catch(e) { showLeaveLoginView(); }
+  });
 })();
 
 // 오늘 날짜 초기화
