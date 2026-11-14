@@ -721,7 +721,7 @@
       <div style="text-align:center;margin-bottom:1.2rem;">
         <div style="font-size:2rem;">🏢</div>
         <div style="font-size:1.1rem;font-weight:700;color:var(--primary);margin-top:0.3rem;">근태관리 시스템</div>
-        <div style="font-size:0.8rem;color:var(--text-muted);">강원특별자치도농아인협회</div>
+        <div id="login-org-name" style="font-size:0.8rem;color:var(--text-muted);"></div>
       </div>
       <div id="leave-login-alert" style="margin-bottom:0.8rem;"></div>
       <div class="form-group" style="margin-bottom:0.8rem;">
@@ -2959,6 +2959,19 @@ function showLeaveLoginView() {
   // GAS URL 없으면 설정 박스 표시
   var setupBox = document.getElementById('leave-gas-setup');
   if (setupBox) setupBox.style.display = (!LEAVE_GAS_URL && !GAS_URL) ? '' : 'none';
+
+  // 기관명 표시
+  if (LEAVE_GAS_URL || GAS_URL) {
+    gasRunLeave('getOrgConfig', null, function(cfg) {
+      if (cfg && cfg.orgName) {
+        var el2 = document.getElementById('login-org-name');
+        if (el2) el2.textContent = cfg.orgName;
+        document.title = cfg.orgName + ' 근태관리';
+        var h1 = document.querySelector('.header h1');
+        if (h1) h1.textContent = cfg.orgName;
+      }
+    }, function(){});
+  }
 
   // 직원 이름 목록 로드
   var sel = document.getElementById('leave-login-name');
