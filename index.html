@@ -373,7 +373,8 @@
         <div class="form-group" style="flex:1;min-width:60px"><label>직위</label><input type="text" id="position" readonly placeholder="자동" style="width:100%"></div>
         <div class="form-group" style="flex:1;min-width:60px"><label>부서</label><input type="text" id="dept" readonly placeholder="자동" style="width:100%"></div>
         <div class="form-group" style="flex:1.5;min-width:100px"><label>연락처</label><input type="text" id="contact" readonly placeholder="자동" style="width:100%"></div>
-        <div class="form-group" style="flex:1.5;min-width:90px"><label>문서번호 <span style="color:#c0392b;font-weight:700">*</span></label><input type="text" id="doc-no" placeholder="예) 2027-01" style="width:100%"></div>
+        <div class="form-group" style="flex:1;min-width:70px"><label>연도 <span style="color:#c0392b;font-weight:700">*</span></label><select id="doc-year" style="width:100%"></select></div>
+        <div class="form-group" style="flex:1.5;min-width:90px"><label>문서번호 <span style="color:#c0392b;font-weight:700">*</span></label><input type="text" id="doc-no" placeholder="예) 2026-01" style="width:100%"></div>
       </div>
     </div>
   </div>
@@ -1500,13 +1501,22 @@ function getTimeRange(name) {
 // ===== 예전 주소 파라미터(mode/senior/name)는 사용하지 않음 — PIN 로그인으로 통일 =====
 const MODE = '', SENIOR_NAME = '', APP_NAME = '', MY_EMAIL = '';
 
+// 연도 선택 칸 채우기 (올해 기준 -1 ~ +1년, 없는 연도는 추가)
+function fillYearSelect(id, year) {
+  var sel=document.getElementById(id); if (!sel) return;
+  var cy=new Date().getFullYear(), y=Number(year)||cy, ys=[cy-1,cy,cy+1];
+  if (ys.indexOf(y)<0) ys.push(y);
+  ys.sort();
+  sel.innerHTML=ys.map(function(v){ return '<option value="'+v+'">'+v+'년</option>'; }).join('');
+  sel.value=String(y);
+}
 // ===== 시수 보고서 데이터 =====
 function makeEmptyRows() {
   var rows = [];
   for (var i = 0; i < 8; i++) rows.push({seq:i+1, month:'', day:'', timeStart:'', timeEnd:'', note:'개인사유', confirmed:false});
   return rows;
 }
-let reportData = { docNo:'', name:'', position:'', dept:'', contact:'', remarks:'', rows: makeEmptyRows() };
+let reportData = { year:new Date().getFullYear(), docNo:'', name:'', position:'', dept:'', contact:'', remarks:'', rows: makeEmptyRows() };
 let confirmData = null;
 
 // ===== 대체시수 데이터 =====
@@ -1548,9 +1558,10 @@ function resetForm() {
   if (!confirm('입력한 내용을 모두 지우고 초기화하시겠습니까?')) return;
   try {
     var n=reportData.name, p=reportData.position, d=reportData.dept, c=reportData.contact;
-    reportData = { docNo:'', name:n, position:p, dept:d, contact:c, remarks:'', rows: makeEmptyRows() };
+    reportData = { year:new Date().getFullYear(), docNo:'', name:n, position:p, dept:d, contact:c, remarks:'', rows: makeEmptyRows() };
     var el;
     ['doc-no','remarks'].forEach(function(id) { el=document.getElementById(id); if(el) el.value=''; });
+    fillYearSelect('doc-year', reportData.year);
     renderWriteTable();
     updateProgress();
     showAlert('초기화되었습니다.', 'info');
@@ -1739,6 +1750,7 @@ function switchAdminTab(tab) {
 function syncFromForm() {
   reportData.name=document.getElementById('name-select').value;
   reportData.docNo=document.getElementById('doc-no').value;
+  var ys=document.getElementById('doc-year'); if (ys && ys.value) reportData.year=Number(ys.value);
   const s=STAFF.find(x=>x.name===reportData.name);
   if (s){ reportData.position=s.position; reportData.dept=s.dept; reportData.contact=s.contact; }
 }
@@ -1747,6 +1759,7 @@ function syncToForm() {
   var sel=document.getElementById('name-select');
   if (sel) sel.value=reportData.name||'';
   document.getElementById('doc-no').value=reportData.docNo||'';
+  fillYearSelect('doc-year', reportData.year);
   document.getElementById('position').value=reportData.position||'';
   document.getElementById('dept').value=reportData.dept||'';
   document.getElementById('contact').value=reportData.contact||'';
@@ -2935,6 +2948,7 @@ function applyMobileClass() {
 }
 applyMobileClass();
 document.addEventListener('DOMContentLoaded', applyMobileClass);
+document.addEventListener('DOMContentLoaded', function(){ fillYearSelect('doc-year', reportData.year); });
 window.addEventListener('resize', applyMobileClass);
 
 // ===== 직원 접속 링크 / 연결 해제 =====
@@ -3466,6 +3480,7 @@ function submitLeaveReq() {
   var reason   = document.getElementById('leave-reason').value;
   var delegate = document.getElementById('leave-delegate').value;
   if (!start||!end) { showLeaveAlert('날짜를 선택해 주세요.','warn','alert-area-leave-apply'); return; }
+  if (parseFloat(days) === 0) { showLeaveAlert('선택한 기간이 토·일요일뿐이라 신청일수가 0일입니다. 평일을 선택해 주세요.','warn','alert-area-leave-apply'); return; }
   showLeaveAlert('신청 중...','info','alert-area-leave-apply');
   lastLeaveReqData = {
     name: leaveUser.name, position: leaveUser.position||'', dept: leaveUser.dept||'',
