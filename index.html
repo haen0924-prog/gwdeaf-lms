@@ -221,11 +221,9 @@
 
 <div class="header">
   <h1>근태관리 시스템</h1>
-  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center">
+  <div style="display:flex;gap:0.5rem;align-items:center;">
     <span id="header-name-badge" style="display:none;font-size:0.78rem;color:#fff;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);border-radius:6px;padding:4px 10px;font-weight:600;"></span>
-    <button onclick="copyLink()" style="font-size:0.75rem;padding:4px 10px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:6px;cursor:pointer">🔗 직원 링크 복사</button>
-    <button onclick="openAdmin()" style="font-size:0.75rem;padding:4px 10px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:6px;cursor:pointer">⚙️ 관리자</button>
-    <button onclick="disconnectGas()" style="font-size:0.75rem;padding:4px 10px;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;cursor:pointer">🔌 연결 해제</button>
+    <button onclick="openSettings()" style="font-size:0.8rem;padding:5px 12px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:6px;cursor:pointer;">⚙️ 설정</button>
   </div>
 </div>
 
@@ -719,16 +717,6 @@
 <!-- ========== 근태관리: 로그인 ========== -->
 <div class="view" id="view-leave-login">
   <div style="max-width:420px;margin:30px auto;">
-    <!-- GAS URL 설정 (없을 때만 표시) -->
-    <div id="leave-gas-setup" class="card" style="display:none;margin-bottom:1rem;background:#fffbeb;border-color:#f59e0b;">
-      <div class="card-title" style="color:#92400e;">⚙️ 최초 설정</div>
-      <p style="font-size:0.85rem;color:#78350f;margin-bottom:0.8rem;">관리자에게 받은 GAS 주소를 입력하세요.</p>
-      <div class="form-group">
-        <input type="url" id="leave-gas-input" placeholder="https://script.google.com/..." style="width:100%;font-size:0.82rem;">
-      </div>
-      <button class="btn btn-accent" onclick="saveLeaveGasFromInput()" style="width:100%;justify-content:center;margin-top:0.5rem;">저장</button>
-    </div>
-    <!-- 로그인 카드 -->
     <div class="card">
       <div style="text-align:center;margin-bottom:1.2rem;">
         <div style="font-size:2rem;">🏢</div>
@@ -749,7 +737,7 @@
       </div>
       <button class="btn btn-primary" onclick="doLeaveLogin()" style="width:100%;justify-content:center;padding:10px;">로그인</button>
       <div style="margin-top:0.8rem;text-align:center;">
-        <button onclick="doLeaveAdminLoginPrompt()" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;">관리자 로그인</button>
+        <button onclick="openSettings()" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;">⚙️ 설정 / 관리자</button>
       </div>
     </div>
   </div>
@@ -1006,6 +994,67 @@
 
 <!-- ========== 대체시수 발생 인쇄 영역 ========== -->
 <div id="alt-print-wrap" style="display:none;"></div>
+
+<!-- ========== 통합 설정 모달 ========== -->
+<div id="settings-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;overflow-y:auto;" onclick="if(event.target===this)closeSettings();">
+  <div style="max-width:480px;margin:40px auto;padding:0 1rem 2rem;">
+    <div class="card" style="border-top:4px solid var(--accent);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--primary);">⚙️ 설정</div>
+        <button onclick="closeSettings()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);">✕</button>
+      </div>
+
+      <!-- GAS URL 설정 -->
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">🔗 GAS 연결 주소</div>
+        <div style="display:flex;gap:0.4rem;">
+          <input id="settings-gas-input" type="url" placeholder="https://script.google.com/.../exec"
+            style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.82rem;font-family:inherit;">
+          <button onclick="applySettingsGas()" class="btn btn-primary" style="white-space:nowrap;padding:7px 14px;">저장</button>
+        </div>
+        <div id="settings-gas-msg" style="font-size:0.78rem;margin-top:0.3rem;color:var(--success);"></div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0.8rem 0;">
+
+      <!-- 직원 링크 복사 -->
+      <div style="margin-bottom:1rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">👥 직원 링크 공유</div>
+        <button onclick="copyLink()" class="btn btn-outline" style="width:100%;justify-content:center;">🔗 직원 접속 링크 복사</button>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;">직원들에게 이 링크를 공유하면 GAS 주소 없이 바로 접속할 수 있습니다.</div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0.8rem 0;">
+
+      <!-- 관리자 로그인 -->
+      <div style="margin-bottom:1rem;">
+        <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">🔐 관리자 로그인</div>
+        <div id="settings-admin-alert" style="margin-bottom:0.5rem;"></div>
+        <div id="settings-admin-login" style="">
+          <div style="display:flex;gap:0.4rem;">
+            <input id="settings-admin-pin" type="password" placeholder="관리자 PIN" maxlength="20"
+              style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;font-family:inherit;"
+              onkeydown="if(event.key==='Enter') doSettingsAdminLogin()">
+            <button onclick="doSettingsAdminLogin()" class="btn btn-primary" style="white-space:nowrap;padding:7px 14px;">확인</button>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;">처음 입력하는 PIN이 관리자 PIN으로 설정됩니다.</div>
+        </div>
+        <div id="settings-admin-logged" style="display:none;">
+          <span style="font-size:0.85rem;color:var(--success);font-weight:600;">✅ 관리자 로그인됨</span>
+          <div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap;">
+            <button onclick="openAdminBody();closeSettings();" class="btn btn-primary" style="flex:1;justify-content:center;">👥 직원·결재 관리</button>
+            <button onclick="openLeaveAdminView();closeSettings();" class="btn btn-accent" style="flex:1;justify-content:center;">📊 근태현황 관리</button>
+          </div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:0.8rem 0;">
+
+      <!-- 연결 해제 -->
+      <button onclick="disconnectGas()" style="width:100%;padding:8px;background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;cursor:pointer;font-size:0.82rem;">🔌 GAS 연결 해제 (초기화)</button>
+    </div>
+  </div>
+</div>
 
 <!-- ========== [10] 관리자 화면 ========== -->
 <div id="admin-wrap" style="display:none;max-width:700px;margin:40px auto;padding:1.5rem;font-family:inherit;">
@@ -2959,17 +3008,126 @@ function doLeaveLogin() {
 }
 
 function doLeaveAdminLoginPrompt() {
-  var pw = prompt('관리자 비밀번호를 입력하세요:');
-  if (!pw) return;
+  // 더 이상 직접 사용 안 함 — openSettings()로 통합
+  openSettings();
+}
+
+// ===== 통합 설정 모달 =====
+function openSettings() {
+  var modal = document.getElementById('settings-modal');
+  if (!modal) return;
+  // GAS URL 현재값 채우기
+  var gasInput = document.getElementById('settings-gas-input');
+  if (gasInput) gasInput.value = LEAVE_GAS_URL || GAS_URL || '';
+  document.getElementById('settings-gas-msg').textContent = '';
+
+  // 관리자 로그인 상태 초기화
+  document.getElementById('settings-admin-alert').innerHTML = '';
+  document.getElementById('settings-admin-pin').value = '';
+  // 로그인 여부에 따라 UI 전환
+  if (window._settingsAdminLoggedIn) {
+    document.getElementById('settings-admin-login').style.display = 'none';
+    document.getElementById('settings-admin-logged').style.display = '';
+  } else {
+    document.getElementById('settings-admin-login').style.display = '';
+    document.getElementById('settings-admin-logged').style.display = 'none';
+  }
+
+  modal.style.display = '';
+}
+
+function closeSettings() {
+  var modal = document.getElementById('settings-modal');
+  if (modal) modal.style.display = 'none';
+  window._settingsAdminLoggedIn = false;
+}
+
+function applySettingsGas() {
+  var val = (document.getElementById('settings-gas-input').value || '').trim();
+  var msg = document.getElementById('settings-gas-msg');
+  if (!val) { msg.style.color='#e74c3c'; msg.textContent='주소를 입력해주세요.'; return; }
+  if (!val.startsWith('https://')) { msg.style.color='#e74c3c'; msg.textContent='https:// 로 시작하는 주소를 입력하세요.'; return; }
+  msg.style.color='#888'; msg.textContent='연결 확인 중...';
+  // LEAVE_GAS_URL 우선 저장 (근태) — 기존 키와 동일하게 'leave_gas'
+  ls.set('leave_gas', val);
+  LEAVE_GAS_URL = val;
+  // 시수도 같이 저장
+  if (!GAS_URL) { ls.set('gas_url', val); GAS_URL = val; }
+  msg.style.color='var(--success)'; msg.textContent='✅ 저장되었습니다. 페이지를 새로고침합니다...';
+  setTimeout(function(){ location.reload(); }, 1000);
+}
+
+function doSettingsAdminLogin() {
+  var pin = (document.getElementById('settings-admin-pin').value || '').trim();
+  var alertEl = document.getElementById('settings-admin-alert');
+  if (!pin) { alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">PIN을 입력하세요.</div>'; return; }
+  alertEl.innerHTML='<div class="alert alert-info" style="margin:0">확인 중...</div>';
+
+  // 먼저 시수 관리자(PIN) 로그인 시도
+  var gasUrl = GAS_URL || LEAVE_GAS_URL;
+  if (!gasUrl) {
+    // GAS 미연결 — 근태 관리자 비밀번호로 시도
+    _tryLeaveAdmin(pin, alertEl);
+    return;
+  }
+  gasRun('adminCheckPin', JSON.stringify({pin:pin}), function(r) {
+    if (r && r.success) {
+      window._settingsAdminLoggedIn = true;
+      adminLoggedIn = true;
+      alertEl.innerHTML='<div class="alert alert-success" style="margin:0">✅ 시수 관리자 로그인 성공'+(r.isFirst?' (PIN 최초 설정)':'')+'</div>';
+      document.getElementById('settings-admin-login').style.display = 'none';
+      document.getElementById('settings-admin-logged').style.display = '';
+    } else {
+      // 근태 관리자 비밀번호로도 시도
+      _tryLeaveAdmin(pin, alertEl);
+    }
+  }, function() {
+    _tryLeaveAdmin(pin, alertEl);
+  });
+}
+
+function _tryLeaveAdmin(pw, alertEl) {
+  if (!LEAVE_GAS_URL && !GAS_URL) {
+    alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">GAS 주소를 먼저 입력하세요.</div>';
+    return;
+  }
   gasRunLeave('adminLogin', JSON.stringify({pw:pw}), function(res) {
-    if (!res.ok) { alert('비밀번호가 틀렸습니다.'); return; }
-    leaveUser = null;
-    leaveIsAdmin = true;
-    clearAllViews();
-    document.getElementById('view-leavemgr').classList.add('active');
-    setLeaveUserBadge('관리자');
-    loadLeaveMgr();
-  }, function(m) { alert('오류: '+m); });
+    if (res && res.ok) {
+      window._settingsAdminLoggedIn = true;
+      leaveIsAdmin = true;
+      alertEl.innerHTML='<div class="alert alert-success" style="margin:0">✅ 근태 관리자 로그인 성공</div>';
+      document.getElementById('settings-admin-login').style.display = 'none';
+      document.getElementById('settings-admin-logged').style.display = '';
+    } else {
+      alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">PIN 또는 비밀번호가 맞지 않습니다.</div>';
+    }
+  }, function(m) {
+    alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">오류: '+m+'</div>';
+  });
+}
+
+function openAdminBody() {
+  // 시수 관리자 패널 열기
+  document.getElementById('app-layout').style.display = 'none';
+  document.querySelectorAll('.view').forEach(function(el){ el.style.display='none'; });
+  document.getElementById('admin-wrap').style.display = 'block';
+  document.getElementById('admin-pin-section').style.display = 'none';
+  document.getElementById('admin-body').style.display = 'block';
+  adminLoadData();
+}
+
+function openLeaveAdminView() {
+  // 근태 관리자 화면 열기
+  leaveIsAdmin = true;
+  clearAllViews();
+  document.getElementById('app-layout').style.display = 'flex';
+  ['tabs-staff','tabs-both'].forEach(function(id){
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById('tabs-senior').style.display = 'flex';
+  document.getElementById('view-leavemgr').classList.add('active');
+  setLeaveUserBadge('관리자');
+  loadLeaveMgr();
 }
 
 function setLeaveUserBadge(name) {
