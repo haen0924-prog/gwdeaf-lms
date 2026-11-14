@@ -220,7 +220,7 @@
 <body>
 
 <div class="header">
-  <h1>시수 보고 시스템</h1>
+  <h1>근태관리 시스템</h1>
   <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center">
     <span id="header-name-badge" style="display:none;font-size:0.78rem;color:#fff;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);border-radius:6px;padding:4px 10px;font-weight:600;"></span>
     <button onclick="copyLink()" style="font-size:0.75rem;padding:4px 10px;background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:6px;cursor:pointer">🔗 직원 링크 복사</button>
@@ -234,6 +234,11 @@
 
 <!-- 직원 사이드바 -->
 <nav class="sidebar" id="tabs-staff" style="display:none">
+  <div class="sidebar-group">🏖 근태관리</div>
+  <button class="tab tab-leave" onclick="switchTab('leave')">🗓️ 휴가 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
+  <hr class="sidebar-divider">
   <div class="sidebar-group">📋 시수</div>
   <button class="tab active" onclick="switchTab('write')">✏️ 시수 입력</button>
   <button class="tab" onclick="switchTab('myrecord')">📑 내 시수 확인</button>
@@ -242,15 +247,16 @@
   <button class="tab tab-alt" onclick="switchTab('altwrite')">📅 대체 시수 발생일</button>
   <button class="tab tab-alt" onclick="switchTab('altuse')">✍️ 대체 시수 입력</button>
   <button class="tab tab-alt" onclick="switchTab('altrecord')">📋 내 대체 시수 확인</button>
-  <hr class="sidebar-divider">
-  <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTab('leave')">🗓️ 휴가 신청</button>
-  <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
-  <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
 </nav>
 
 <!-- 직원+선임 사이드바 -->
 <nav class="sidebar" id="tabs-both" style="display:none">
+  <div class="sidebar-group">🏖 근태관리</div>
+  <button class="tab tab-leave" onclick="switchTab('leave')">🗓️ 휴가 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
+  <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
+  <hr class="sidebar-divider">
   <div class="sidebar-group">📋 시수</div>
   <button class="tab active" onclick="switchTab('write')">✏️ 시수 입력</button>
   <button class="tab" onclick="switchTab('myrecord')">📑 내 시수 확인</button>
@@ -261,24 +267,18 @@
   <button class="tab tab-alt" onclick="switchTab('altuse')">✍️ 대체 시수 입력</button>
   <button class="tab tab-alt" onclick="switchTab('altrecord')">📋 내 대체 시수 확인</button>
   <button class="tab tab-alt" onclick="switchTabSenior('altdashboard')">📊 대체 시수 신청 현황</button>
-  <hr class="sidebar-divider">
-  <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTab('leave')">🗓️ 휴가 신청</button>
-  <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
-  <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
-  <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
 </nav>
 
 <!-- 선임 사이드바 -->
 <nav class="sidebar" id="tabs-senior" style="display:none">
+  <div class="sidebar-group">🏖 근태관리</div>
+  <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
+  <hr class="sidebar-divider">
   <div class="sidebar-group">📋 시수</div>
   <button class="tab active" onclick="switchTabSenior('dashboard')">👤 신청 현황 확인</button>
   <hr class="sidebar-divider">
   <div class="sidebar-group">🔄 대체시수</div>
   <button class="tab tab-alt" onclick="switchTabSenior('altdashboard')">📊 대체 시수 신청 현황</button>
-  <hr class="sidebar-divider">
-  <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
 </nav>
 
 <div class="content-area">
@@ -1913,7 +1913,7 @@ function showAlert2(viewId, msg, type) {
 
 // ===== 뱃지 =====
 function updateBadge(count) {
-  document.title=count>0?'('+count+') 시수 보고 시스템':'시수 보고 시스템';
+  document.title=count>0?'('+count+') 근태관리 시스템':'근태관리 시스템';
   try {
     var canvas=document.createElement('canvas'); canvas.width=32; canvas.height=32;
     var ctx=canvas.getContext('2d');
