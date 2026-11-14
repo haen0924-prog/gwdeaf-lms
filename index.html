@@ -963,29 +963,77 @@
 <!-- ========== 근태관리: 선임/관리자 근태현황 ========== -->
 <div class="view" id="view-leavemgr">
   <div id="alert-area-leavemgr"></div>
-  <div class="card">
-    <div class="card-title">📊 근태 현황 (선임/관리자)</div>
-    <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.8rem;">
-      <button class="btn btn-primary" onclick="filterLeaveMgr('휴가')" id="lm-btn-leave" style="font-size:0.8rem;padding:5px 12px;">🗓️ 휴가</button>
-      <button class="btn btn-outline" onclick="filterLeaveMgr('시간외')" id="lm-btn-ot" style="font-size:0.8rem;padding:5px 12px;">⏰ 시간외</button>
+
+  <!-- 탭 전환 -->
+  <div style="display:flex;gap:0.3rem;margin-bottom:0.8rem;border-bottom:2px solid var(--border);">
+    <button id="lmtab-approval" onclick="switchLeaveMgrTab('approval')"
+      style="padding:7px 16px;border:none;background:var(--primary);color:#fff;border-radius:6px 6px 0 0;font-size:0.85rem;cursor:pointer;font-weight:600;">📋 신청 처리</button>
+    <button id="lmtab-annual" onclick="switchLeaveMgrTab('annual')"
+      style="padding:7px 16px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.85rem;cursor:pointer;">📅 연차 관리</button>
+  </div>
+
+  <!-- 패널1: 신청 처리 -->
+  <div id="lmpanel-approval">
+    <div class="card">
+      <div class="card-title">📊 근태 현황 (선임/관리자)</div>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+        <button class="btn btn-primary" onclick="filterLeaveMgr('휴가')" id="lm-btn-leave" style="font-size:0.8rem;padding:5px 12px;">🗓️ 휴가</button>
+        <button class="btn btn-outline" onclick="filterLeaveMgr('시간외')" id="lm-btn-ot" style="font-size:0.8rem;padding:5px 12px;">⏰ 시간외</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+          <thead><tr id="leavemgr-thead" style="background:var(--primary);color:white;">
+            <th style="padding:7px 8px;text-align:center;">이름</th>
+            <th style="padding:7px 8px;text-align:center;">신청일</th>
+            <th style="padding:7px 8px;text-align:left;">내용</th>
+            <th style="padding:7px 8px;text-align:center;">상태</th>
+            <th style="padding:7px 8px;text-align:center;">처리</th>
+          </tr></thead>
+          <tbody id="leavemgr-body">
+            <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div style="overflow-x:auto;">
-      <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
-        <thead><tr id="leavemgr-thead" style="background:var(--primary);color:white;">
-          <th style="padding:7px 8px;text-align:center;">이름</th>
-          <th style="padding:7px 8px;text-align:center;">신청일</th>
-          <th style="padding:7px 8px;text-align:left;">내용</th>
-          <th style="padding:7px 8px;text-align:center;">상태</th>
-          <th style="padding:7px 8px;text-align:center;">처리</th>
-        </tr></thead>
-        <tbody id="leavemgr-body">
-          <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
-        </tbody>
-      </table>
+    <div class="btn-group no-print">
+      <button class="btn btn-primary" onclick="loadLeaveMgr()">🔄 새로고침</button>
     </div>
   </div>
-  <div class="btn-group no-print">
-    <button class="btn btn-primary" onclick="loadLeaveMgr()">🔄 새로고침</button>
+
+  <!-- 패널2: 연차 관리 -->
+  <div id="lmpanel-annual" style="display:none;">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.8rem;">
+        <div class="card-title" style="margin:0;">📅 연도별 연차 부여 관리</div>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <label style="font-size:0.82rem;color:var(--text-muted);">연도</label>
+          <select id="annual-year-select" onchange="loadAnnualMgr()"
+            style="padding:5px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;">
+          </select>
+          <button onclick="addAnnualYear()" class="btn btn-outline" style="font-size:0.78rem;padding:5px 10px;">+ 연도 추가</button>
+        </div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.7rem;">
+        💡 각 직원의 해당 연도 연차 부여일수를 입력하세요. 저장하면 그 연도 계산에만 적용됩니다.
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+          <thead><tr style="background:var(--primary);color:white;">
+            <th style="padding:7px 10px;text-align:left;">이름</th>
+            <th style="padding:7px 10px;text-align:center;">부여 연차(일)</th>
+            <th style="padding:7px 10px;text-align:left;">비고</th>
+          </tr></thead>
+          <tbody id="annual-mgr-body">
+            <tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="btn-group" style="margin-top:0.8rem;">
+        <button class="btn btn-primary" onclick="saveAnnualMgr()">💾 저장</button>
+        <button class="btn btn-outline" onclick="loadAnnualMgr()">🔄 새로고침</button>
+      </div>
+      <div id="annual-mgr-alert" style="margin-top:0.5rem;"></div>
+    </div>
   </div>
 </div>
 
@@ -3130,7 +3178,7 @@ function loadLeaveDashboard() {
   if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>';
 
   // 연차 잔여
-  gasRunLeave('getMyLeaveBalance', JSON.stringify({name:leaveUser.name}), function(bal) {
+  gasRunLeave('getMyLeaveBalance', JSON.stringify({name:leaveUser.name, year:new Date().getFullYear()}), function(bal) {
     if (!bal || !bal.ok) return;
     var el = function(id){ return document.getElementById(id); };
     if (el('leave-bal-granted')) el('leave-bal-granted').textContent = bal.granted || 0;
@@ -3599,6 +3647,125 @@ function printOvertimeReq() {
 
 // ===== 선임/관리자: 근태 현황 =====
 var leaveMgrData = [];
+
+// ===== 연차 관리 탭 전환 =====
+function switchLeaveMgrTab(tab) {
+  document.getElementById('lmpanel-approval').style.display = tab === 'approval' ? '' : 'none';
+  document.getElementById('lmpanel-annual').style.display   = tab === 'annual'   ? '' : 'none';
+  var btnA = document.getElementById('lmtab-approval');
+  var btnB = document.getElementById('lmtab-annual');
+  if (tab === 'approval') {
+    btnA.style.background = 'var(--primary)'; btnA.style.color = '#fff';
+    btnB.style.background = 'none';           btnB.style.color = 'var(--primary)';
+  } else {
+    btnB.style.background = 'var(--primary)'; btnB.style.color = '#fff';
+    btnA.style.background = 'none';           btnA.style.color = 'var(--primary)';
+    loadAnnualMgr();
+  }
+}
+
+// ===== 연도별 연차 관리 =====
+function _initAnnualYearSelect() {
+  var sel = document.getElementById('annual-year-select');
+  if (!sel) return;
+  if (sel.options.length > 0) return; // 이미 초기화됨
+  var thisYear = new Date().getFullYear();
+  // 현재 연도 기준 ±2년
+  for (var y = thisYear - 1; y <= thisYear + 1; y++) {
+    var o = document.createElement('option');
+    o.value = y; o.textContent = y + '년';
+    if (y === thisYear) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+
+function addAnnualYear() {
+  var y = prompt('추가할 연도를 입력하세요 (예: 2027):');
+  if (!y || isNaN(Number(y))) return;
+  var sel = document.getElementById('annual-year-select');
+  // 이미 있으면 선택만
+  for (var i = 0; i < sel.options.length; i++) {
+    if (Number(sel.options[i].value) === Number(y)) { sel.selectedIndex = i; loadAnnualMgr(); return; }
+  }
+  var o = document.createElement('option');
+  o.value = Number(y); o.textContent = y + '년'; o.selected = true;
+  sel.appendChild(o);
+  // 연도순 정렬
+  var opts = Array.from(sel.options).sort(function(a,b){ return Number(a.value)-Number(b.value); });
+  while (sel.options.length) sel.remove(0);
+  opts.forEach(function(op){ sel.appendChild(op); if(Number(op.value)===Number(y)) sel.value=y; });
+  loadAnnualMgr();
+}
+
+function loadAnnualMgr() {
+  _initAnnualYearSelect();
+  var year = document.getElementById('annual-year-select').value;
+  var tbody = document.getElementById('annual-mgr-body');
+  tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.2rem;color:var(--text-muted)">불러오는 중...</td></tr>';
+
+  // 직원 목록 + 해당 연도 연차 데이터 병렬 로드
+  var staffNames = [], balMap = {};
+  var done = 0;
+  function tryRender() {
+    done++;
+    if (done < 2) return;
+    tbody.innerHTML = '';
+    if (staffNames.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.2rem;color:var(--text-muted)">직원 목록이 없습니다.</td></tr>';
+      return;
+    }
+    staffNames.forEach(function(name) {
+      var bal = balMap[name] || { granted: '', note: '' };
+      var tr = document.createElement('tr');
+      tr.style.borderBottom = '1px solid var(--border)';
+      tr.innerHTML =
+        '<td style="padding:7px 10px;font-weight:600;">'+name+'</td>' +
+        '<td style="padding:7px 10px;text-align:center;">' +
+          '<input type="number" min="0" max="99" step="0.5" value="'+(bal.granted||'')+'" ' +
+          'data-name="'+name+'" class="annual-granted-input" ' +
+          'style="width:70px;padding:5px;border:1.5px solid var(--border);border-radius:5px;text-align:center;font-size:0.9rem;">' +
+        '</td>' +
+        '<td style="padding:7px 10px;">' +
+          '<input type="text" value="'+(bal.note||'')+'" data-name="'+name+'" class="annual-note-input" ' +
+          'placeholder="메모" style="width:100%;padding:5px;border:1.5px solid var(--border);border-radius:5px;font-size:0.82rem;">' +
+        '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  gasRunLeave('getStaffNames', null, function(names) {
+    staffNames = Array.isArray(names) ? names : [];
+    tryRender();
+  }, function(){ tryRender(); });
+
+  gasRunLeave('getLeaveBalance', JSON.stringify({year: Number(year)}), function(list) {
+    if (Array.isArray(list)) list.forEach(function(r){ balMap[r.name] = r; });
+    tryRender();
+  }, function(){ tryRender(); });
+}
+
+function saveAnnualMgr() {
+  var year = document.getElementById('annual-year-select').value;
+  var alertEl = document.getElementById('annual-mgr-alert');
+  var rows = [];
+  document.querySelectorAll('.annual-granted-input').forEach(function(inp) {
+    var name = inp.getAttribute('data-name');
+    var granted = inp.value !== '' ? Number(inp.value) : null;
+    var noteEl = document.querySelector('.annual-note-input[data-name="'+name+'"]');
+    var note = noteEl ? noteEl.value : '';
+    if (name && granted !== null) rows.push({name: name, granted: granted, note: note});
+  });
+  if (rows.length === 0) { alertEl.innerHTML='<div class="alert alert-warn">저장할 데이터가 없습니다.</div>'; return; }
+  alertEl.innerHTML='<div class="alert alert-info">저장 중...</div>';
+  gasRunLeave('saveLeaveBalance', JSON.stringify({rows: rows, year: Number(year)}), function(res) {
+    if (res && res.ok) {
+      alertEl.innerHTML='<div class="alert alert-success">✅ '+year+'년 연차가 저장되었습니다.</div>';
+      setTimeout(function(){ alertEl.innerHTML=''; }, 3000);
+    } else {
+      alertEl.innerHTML='<div class="alert alert-warn">저장 실패: '+(res&&res.msg||'오류')+'</div>';
+    }
+  }, function(m){ alertEl.innerHTML='<div class="alert alert-warn">오류: '+m+'</div>'; });
+}
 
 function loadLeaveMgr() {
   if (!leaveUser && !leaveIsAdmin) { showLeaveLoginView(); return; }
