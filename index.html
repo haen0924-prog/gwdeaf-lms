@@ -215,76 +215,145 @@
   .result-row .r-value { font-weight:600; }
 
   body.mobile .result-row { font-size:26px !important; padding:12px 0 !important; }
+
+  /* ===== 화면 틀 정리: 상단바·왼쪽 메뉴 고정, 넓은 화면 활용 ===== */
+  .header{position:sticky;top:0;z-index:100;height:56px;padding:0 1.5rem;}
+  .hdr-btn{font-size:0.8rem;padding:5px 12px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:6px;cursor:pointer;font-family:inherit;}
+  .hdr-btn:hover{background:rgba(255,255,255,0.28);}
+  .hdr-btn,#header-name-badge{white-space:nowrap;}
+  .header h1{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:0.8rem;}
+  .app-layout{min-height:calc(100vh - 56px);}
+  .sidebar{width:208px;min-width:208px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;align-self:flex-start;}
+  .sidebar-spacer{flex:1;min-height:1rem;}
+  .content-area{min-width:0;}
+  .view.view-wide{max-width:1480px;}
+  .nav-badge{display:inline-block;min-width:18px;padding:1px 6px;margin-left:6px;border-radius:10px;background:#e8a830;color:#3d2000;font-size:0.7rem;font-weight:700;text-align:center;vertical-align:middle;}
+  .page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;}
+  .page-head h2{font-size:1.25rem;color:var(--primary);font-weight:700;}
+  .page-head .sub{font-size:0.82rem;color:var(--text-muted);margin-top:3px;}
+  .page-tools{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;}
+  .page-tools select,.page-tools input{padding:6px 10px;font-size:0.86rem;}
+  .btn-sm{padding:6px 12px;font-size:0.84rem;}
+  .seg{display:inline-flex;border:1.5px solid var(--primary);border-radius:6px;overflow:hidden;}
+  .seg button{border:none;background:#fff;color:var(--primary);padding:6px 14px;font-size:0.84rem;cursor:pointer;font-family:inherit;}
+  .seg button+button{border-left:1px solid var(--primary);}
+  .seg button.on{background:var(--primary);color:#fff;font-weight:700;}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.8rem;margin-bottom:1rem;}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:0.9rem 1rem;box-shadow:var(--shadow);}
+  .kpi .k-label{font-size:0.78rem;color:var(--text-muted);}
+  .kpi .k-num{font-size:1.6rem;font-weight:700;color:var(--primary);line-height:1.25;margin-top:2px;}
+  .kpi .k-num small{font-size:0.82rem;font-weight:500;color:var(--text-muted);margin-left:2px;}
+  .kpi .k-sub{font-size:0.76rem;color:var(--text-muted);margin-top:2px;}
+  .kpi.kpi-alert{border-color:#f5d98a;background:#fffaf0;cursor:pointer;}
+  .kpi.kpi-alert .k-num{color:#8a5e00;}
+
+  .adm-table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  .adm-table th{background:var(--primary);color:#fff;padding:8px 10px;font-weight:500;font-size:0.8rem;text-align:center;white-space:nowrap;}
+  .adm-table thead tr.grp-row th{background:var(--primary-light);font-size:0.76rem;padding:5px 10px;letter-spacing:0.04em;}
+  .adm-table td{padding:9px 10px;border-bottom:1px solid #ebe7de;text-align:center;vertical-align:middle;}
+  .adm-table .l{text-align:left;}
+  .adm-table .sep{border-left:1px solid #e0dbd0;}
+  .adm-table thead .sep{border-left:1px solid rgba(255,255,255,0.3);}
+  .adm-table tbody tr:nth-child(even) td{background:#faf9f6;}
+  .adm-table tbody tr.clickable{cursor:pointer;}
+  .adm-table tbody tr.clickable:hover td{background:#eef4fb;}
+  .adm-table tbody tr.selected td{background:#dfeaf8;}
+  .adm-table td input,.adm-table td select{font-size:0.85rem;padding:6px 8px;width:100%;min-width:64px;}
+  .adm-table .empty{padding:2rem;color:var(--text-muted);text-align:center;}
+  .mini-bar{height:5px;background:#e8e4dc;border-radius:3px;overflow:hidden;margin-top:4px;min-width:60px;}
+  .mini-bar>i{display:block;height:100%;background:var(--primary-light);}
+  .muted{color:var(--text-muted);}
+  .num-strong{font-weight:700;color:var(--primary);}
+  .warn-text{color:#8a5e00;font-weight:700;}
+  .danger-text{color:var(--danger);font-weight:700;}
+  .row-btn{white-space:nowrap;font-size:0.78rem;padding:4px 10px;border:none;border-radius:4px;cursor:pointer;font-family:inherit;font-weight:600;}
+  .row-btn.ok{background:#d1fae5;color:#065f46;} .row-btn.no{background:#fee2e2;color:#991b1b;} .row-btn.plain{background:#eee;color:#444;}
+
+  .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:0.8rem;}
+  .detail-box{border:1px solid var(--border);border-radius:8px;padding:0.8rem 0.9rem;background:#fff;}
+  .detail-box h4{font-size:0.86rem;color:var(--primary);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;}
+  .detail-box h4 span{font-weight:500;color:var(--text-muted);font-size:0.78rem;text-align:right;}
+  .detail-list{max-height:250px;overflow-y:auto;font-size:0.82rem;}
+  .detail-item{display:flex;justify-content:space-between;align-items:center;gap:0.6rem;padding:6px 0;border-bottom:1px dashed #ebe7de;}
+  .detail-item:last-child{border-bottom:none;}
+  .detail-item .d-main{min-width:0;}
+  .detail-item .d-sub{color:var(--text-muted);font-size:0.76rem;margin-top:1px;}
+  .detail-item .d-right{white-space:nowrap;text-align:right;}
+  .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1rem;align-items:start;}
+  .settings-grid .card{margin-bottom:0;}
+  .field-row{display:grid;grid-template-columns:130px 1fr;gap:0.6rem;align-items:center;margin-bottom:0.6rem;font-size:0.88rem;}
+  .hint{font-size:0.78rem;color:var(--text-muted);line-height:1.5;}
+
+  body.mobile .header{position:static !important;height:auto !important;}
+  body.mobile .header{flex-wrap:wrap !important;gap:10px !important;}
+  body.mobile .header h1{font-size:28px !important;flex:1 1 100% !important;margin-right:0 !important;}
+  body.mobile .hdr-btn,body.mobile #header-name-badge{font-size:18px !important;padding:6px 12px !important;}
+  body.mobile .sidebar{position:static !important;height:auto !important;}
+  body.mobile .sidebar-spacer{display:none !important;}
+  body.mobile .view.view-wide{max-width:none !important;}
+  @media print { #boot-msg,#settings-modal{display:none !important;} }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>근태관리 시스템</h1>
+  <h1 id="header-title">근태관리 시스템</h1>
   <div style="display:flex;gap:0.5rem;align-items:center;">
     <span id="header-name-badge" style="display:none;font-size:0.78rem;color:#fff;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);border-radius:6px;padding:4px 10px;font-weight:600;"></span>
-    <button onclick="openSettings()" style="font-size:0.8rem;padding:5px 12px;background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:6px;cursor:pointer;">⚙️ 설정</button>
+    <button id="header-settings-btn" class="hdr-btn" onclick="openSettings()">⚙️ 연결 설정</button>
+    <button id="header-logout-btn" class="hdr-btn" onclick="doLogout()" style="display:none">로그아웃</button>
   </div>
 </div>
+<div id="boot-msg" class="no-print" style="text-align:center;padding:3rem;color:var(--text-muted);font-size:0.9rem;">불러오는 중...</div>
 
 <!-- 사이드바 + 콘텐츠 레이아웃 -->
 <div class="app-layout" id="app-layout" style="display:none">
 
-<!-- 직원 사이드바 -->
+<!-- 직원 메뉴 (선임은 맨 아래 '선임 확인' 묶음이 추가로 보임) -->
 <nav class="sidebar" id="tabs-staff" style="display:none">
   <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTab('leave')">📊 근태 대시보드</button>
+  <button class="tab tab-leave" onclick="switchTab('leave')">📊 내 근태 현황</button>
   <button class="tab tab-leave" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
   <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('comp-apply')">🔄 대체휴무 신청</button>
   <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
   <hr class="sidebar-divider">
   <div class="sidebar-group">📋 시수</div>
-  <button class="tab active" onclick="switchTab('write')">✏️ 시수 입력</button>
+  <button class="tab" onclick="switchTab('write')">✏️ 시수 입력</button>
   <button class="tab" onclick="switchTab('myrecord')">📑 내 시수 확인</button>
   <hr class="sidebar-divider">
   <div class="sidebar-group">🔄 대체시수</div>
   <button class="tab tab-alt" onclick="switchTab('altwrite')">📅 대체 시수 발생일</button>
   <button class="tab tab-alt" onclick="switchTab('altuse')">✍️ 대체 시수 입력</button>
   <button class="tab tab-alt" onclick="switchTab('altrecord')">📋 내 대체 시수 확인</button>
+  <div id="nav-senior-group" style="display:none">
+    <hr class="sidebar-divider">
+    <div class="sidebar-group">✅ 선임 확인</div>
+    <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
+    <button class="tab" onclick="switchTabSenior('dashboard')">👤 시수 신청 현황 확인</button>
+    <button class="tab tab-alt" onclick="switchTabSenior('altdashboard')">📊 대체 시수 신청 현황</button>
+  </div>
 </nav>
 
-<!-- 직원+선임 사이드바 -->
-<nav class="sidebar" id="tabs-both" style="display:none">
-  <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTab('leave')">📊 근태 대시보드</button>
-  <button class="tab tab-leave" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
-  <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
-  <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
-  <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
+<!-- 관리자 메뉴 -->
+<nav class="sidebar" id="tabs-admin" style="display:none">
+  <div class="sidebar-group">🛠 관리자</div>
+  <button class="tab" data-adm="dashboard" onclick="switchAdminTab('dashboard')">📊 대시보드</button>
+  <button class="tab" data-adm="approval" onclick="switchAdminTab('approval')">📋 신청 처리<span class="nav-badge" id="adm-pending-badge" style="display:none">0</span></button>
+  <button class="tab" data-adm="annual" onclick="switchAdminTab('annual')">📅 연차 관리</button>
+  <button class="tab" data-adm="comp" onclick="switchAdminTab('comp')">🔄 대체휴무</button>
+  <div class="sidebar-spacer"></div>
   <hr class="sidebar-divider">
-  <div class="sidebar-group">📋 시수</div>
-  <button class="tab active" onclick="switchTab('write')">✏️ 시수 입력</button>
-  <button class="tab" onclick="switchTab('myrecord')">📑 내 시수 확인</button>
-  <button class="tab" onclick="switchTabSenior('dashboard')">👤 신청 현황 확인</button>
-  <hr class="sidebar-divider">
-  <div class="sidebar-group">🔄 대체시수</div>
-  <button class="tab tab-alt" onclick="switchTab('altwrite')">📅 대체 시수 발생일</button>
-  <button class="tab tab-alt" onclick="switchTab('altuse')">✍️ 대체 시수 입력</button>
-  <button class="tab tab-alt" onclick="switchTab('altrecord')">📋 내 대체 시수 확인</button>
-  <button class="tab tab-alt" onclick="switchTabSenior('altdashboard')">📊 대체 시수 신청 현황</button>
-</nav>
-
-<!-- 선임 사이드바 -->
-<nav class="sidebar" id="tabs-senior" style="display:none">
-  <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
-  <hr class="sidebar-divider">
-  <div class="sidebar-group">📋 시수</div>
-  <button class="tab active" onclick="switchTabSenior('dashboard')">👤 신청 현황 확인</button>
-  <hr class="sidebar-divider">
-  <div class="sidebar-group">🔄 대체시수</div>
-  <button class="tab tab-alt" onclick="switchTabSenior('altdashboard')">📊 대체 시수 신청 현황</button>
+  <div class="sidebar-group">⚙️ 설정</div>
+  <button class="tab" data-adm="staff" onclick="switchAdminTab('staff')">👥 직원 관리</button>
+  <button class="tab" data-adm="settings" onclick="switchAdminTab('settings')">🏢 기관 설정</button>
 </nav>
 
 <div class="content-area">
 
 <!-- ========== [1] 시수 작성 ========== -->
-<div class="view active" id="view-write">
+<div class="view" id="view-write">
   <div id="alert-area"></div>
   <div class="top-btn-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.5rem;margin-bottom:0.8rem;">
     <button class="btn btn-primary" onclick="saveToSheet()" style="justify-content:center;padding:12px 6px;">💾 저장</button>
@@ -598,7 +667,7 @@
 
 <!-- ========== [6] 선임: 시수 대시보드 ========== -->
 <div class="view" id="view-dashboard">
-  <div class="alert alert-info">📋 선임 담당자 전용 화면입니다.</div>
+  <div class="alert alert-info">📋 담당 직원의 시수 신청을 확인하는 선임 전용 화면입니다.</div>
   <div class="card">
     <div class="card-title">전체 신청 현황</div>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem;">
@@ -714,7 +783,7 @@
   </div>
 </div>
 
-<!-- ========== 근태관리: 로그인 ========== -->
+<!-- ========== 로그인 (직원 PIN / 관리자 비밀번호) ========== -->
 <div class="view" id="view-leave-login">
   <div style="max-width:420px;margin:30px auto;">
     <div class="card">
@@ -723,21 +792,42 @@
         <div style="font-size:1.1rem;font-weight:700;color:var(--primary);margin-top:0.3rem;">근태관리 시스템</div>
         <div id="login-org-name" style="font-size:0.8rem;color:var(--text-muted);"></div>
       </div>
+      <div id="login-need-gas" class="alert alert-warn" style="display:none;flex-direction:column;align-items:flex-start;">
+        <div>아직 기관 연결이 되어 있지 않습니다.</div>
+        <button class="btn btn-primary btn-sm" onclick="openSettings()">⚙️ 연결 설정 열기</button>
+      </div>
       <div id="leave-login-alert" style="margin-bottom:0.8rem;"></div>
-      <div class="form-group" style="margin-bottom:0.8rem;">
-        <label>이름</label>
-        <select id="leave-login-name" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:5px;font-family:inherit;font-size:0.9rem;">
-          <option value="">-- 이름 선택 --</option>
-        </select>
+
+      <!-- 직원 로그인 -->
+      <div id="login-pane-staff">
+        <div class="form-group" style="margin-bottom:0.8rem;">
+          <label>이름</label>
+          <select id="leave-login-name" style="width:100%;">
+            <option value="">-- 이름 선택 --</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label>PIN</label>
+          <input type="password" id="leave-login-pin" placeholder="PIN 입력" maxlength="20" style="width:100%"
+            onkeydown="if(event.key==='Enter') doLeaveLogin()">
+        </div>
+        <button class="btn btn-primary" onclick="doLeaveLogin()" style="width:100%;justify-content:center;padding:10px;">로그인</button>
+        <div style="margin-top:0.8rem;text-align:center;">
+          <button onclick="showLoginPane('admin')" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;font-family:inherit;">🔐 관리자 로그인</button>
+        </div>
       </div>
-      <div class="form-group" style="margin-bottom:1rem;">
-        <label>PIN</label>
-        <input type="password" id="leave-login-pin" placeholder="PIN 입력" maxlength="20" style="width:100%"
-          onkeydown="if(event.key==='Enter') doLeaveLogin()">
-      </div>
-      <button class="btn btn-primary" onclick="doLeaveLogin()" style="width:100%;justify-content:center;padding:10px;">로그인</button>
-      <div style="margin-top:0.8rem;text-align:center;">
-        <button onclick="openAdminDirectLogin()" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;">🔐 관리자 로그인</button>
+
+      <!-- 관리자 로그인 -->
+      <div id="login-pane-admin" style="display:none;">
+        <div class="form-group" style="margin-bottom:1rem;">
+          <label>관리자 비밀번호</label>
+          <input type="password" id="admin-login-pw" placeholder="관리자 비밀번호" maxlength="40" style="width:100%"
+            onkeydown="if(event.key==='Enter') doAdminLogin()">
+        </div>
+        <button class="btn btn-primary" onclick="doAdminLogin()" style="width:100%;justify-content:center;padding:10px;">관리자 모드로 들어가기</button>
+        <div style="margin-top:0.8rem;text-align:center;">
+          <button onclick="showLoginPane('staff')" style="font-size:0.78rem;background:none;border:none;color:var(--text-muted);cursor:pointer;text-decoration:underline;font-family:inherit;">← 직원 로그인으로</button>
+        </div>
       </div>
     </div>
   </div>
@@ -793,7 +883,7 @@
     <button class="btn btn-primary" onclick="loadLeaveDashboard()">🔄 새로고침</button>
     <button class="btn btn-accent" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
     <button class="btn btn-outline" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
-    <button class="btn btn-outline" id="comp-apply-btn" onclick="switchTab('comp-apply')" style="display:none;">🔄 대체휴무 신청</button>
+    <button class="btn btn-outline" id="comp-apply-btn" onclick="switchTab('comp-apply')">🔄 대체휴무 신청</button>
   </div>
 </div>
 
@@ -983,6 +1073,7 @@
       <button class="btn btn-outline" onclick="filterLeaveHist('all')" id="lh-btn-all" style="font-size:0.8rem;padding:5px 12px;">전체</button>
       <button class="btn btn-outline" onclick="filterLeaveHist('휴가')" id="lh-btn-휴가" style="font-size:0.8rem;padding:5px 12px;">휴가</button>
       <button class="btn btn-outline" onclick="filterLeaveHist('시간외')" id="lh-btn-시간외" style="font-size:0.8rem;padding:5px 12px;">시간외</button>
+      <button class="btn btn-outline" onclick="filterLeaveHist('대체휴무')" id="lh-btn-대체휴무" style="font-size:0.8rem;padding:5px 12px;">대체휴무</button>
     </div>
     <div style="overflow-x:auto;">
       <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
@@ -1004,346 +1095,273 @@
   </div>
 </div>
 
-<!-- ========== 근태관리: 선임/관리자 근태현황 ========== -->
-<div class="view" id="view-leavemgr">
+<!-- ========== 신청 처리 (선임: 담당 직원 / 관리자: 전체) ========== -->
+<div class="view view-wide" id="view-leavemgr">
+  <div class="page-head">
+    <div>
+      <h2>📋 신청 처리</h2>
+      <div class="sub" id="leavemgr-sub"></div>
+    </div>
+    <div class="page-tools no-print">
+      <div class="seg">
+        <button id="lm-btn-leave" onclick="filterLeaveMgr('휴가')">🗓️ 휴가</button>
+        <button id="lm-btn-ot" onclick="filterLeaveMgr('시간외')">⏰ 시간외</button>
+        <button id="lm-btn-comp" onclick="filterLeaveMgr('대체휴무')">🔄 대체휴무</button>
+      </div>
+      <div class="seg">
+        <button id="lm-scope-pending" onclick="setLeaveMgrScope(true)">대기만</button>
+        <button id="lm-scope-all" onclick="setLeaveMgrScope(false)">전체</button>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="loadLeaveMgr()">🔄 새로고침</button>
+    </div>
+  </div>
   <div id="alert-area-leavemgr"></div>
-
-  <!-- 탭 전환 -->
-  <div style="display:flex;gap:0.3rem;margin-bottom:0.8rem;border-bottom:2px solid var(--border);flex-wrap:wrap;">
-    <button id="lmtab-approval" onclick="switchLeaveMgrTab('approval')"
-      style="padding:7px 14px;border:none;background:var(--primary);color:#fff;border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;font-weight:600;">📋 신청 처리</button>
-    <button id="lmtab-annual" onclick="switchLeaveMgrTab('annual')"
-      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">📅 연차 관리</button>
-    <button id="lmtab-dashboard" onclick="switchLeaveMgrTab('dashboard')"
-      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">📊 대시보드</button>
-    <button id="lmtab-staff" onclick="switchLeaveMgrTab('staff')"
-      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">👥 직원 관리</button>
-    <button id="lmtab-comp" onclick="switchLeaveMgrTab('comp')"
-      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">🔄 대체휴무</button>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table class="adm-table">
+        <thead><tr>
+          <th style="width:110px;">신청일</th>
+          <th style="width:110px;">이름</th>
+          <th class="l">내용</th>
+          <th style="width:90px;">상태</th>
+          <th style="width:170px;">처리</th>
+        </tr></thead>
+        <tbody id="leavemgr-body">
+          <tr><td colspan="5" class="empty">불러오는 중...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+</div>
 
-  <!-- 패널1: 신청 처리 -->
-  <div id="lmpanel-approval">
-    <div class="card">
-      <div class="card-title">📊 근태 현황 (선임/관리자)</div>
-      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.8rem;">
-        <button class="btn btn-primary" onclick="filterLeaveMgr('휴가')" id="lm-btn-leave" style="font-size:0.8rem;padding:5px 12px;">🗓️ 휴가</button>
-        <button class="btn btn-outline" onclick="filterLeaveMgr('시간외')" id="lm-btn-ot" style="font-size:0.8rem;padding:5px 12px;">⏰ 시간외</button>
+<!-- ========== 관리자: 대시보드 ========== -->
+<div class="view view-wide" id="view-adm-dashboard">
+  <div class="page-head">
+    <div>
+      <h2>📊 전체 직원 대시보드</h2>
+      <div class="sub">직원 이름을 누르면 휴가·시수·시간외·대체시수·대체휴무 사용 내역이 아래에 펼쳐집니다.</div>
+    </div>
+    <div class="page-tools no-print">
+      <input type="text" id="dash-search" placeholder="이름·부서 검색" oninput="renderAdminDashboard()" style="width:150px;">
+      <select id="dash-year-select" onchange="loadAdminDashboard()"></select>
+      <button class="btn btn-outline btn-sm" onclick="loadAdminDashboard()">🔄 새로고침</button>
+    </div>
+  </div>
+  <div id="alert-area-adm-dashboard"></div>
+  <div class="kpi-grid" id="dash-kpis"></div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div id="dashboard-body" style="overflow-x:auto;">
+      <div class="adm-table"><div class="empty">불러오는 중...</div></div>
+    </div>
+  </div>
+  <div id="dash-detail"></div>
+</div>
+
+<!-- ========== 관리자: 연차 관리 ========== -->
+<div class="view" id="view-adm-annual">
+  <div class="page-head">
+    <div>
+      <h2>📅 연차 관리</h2>
+      <div class="sub">연도별 부여 연차입니다. 비워 두면 [직원 관리]의 기본 연차가 적용됩니다. 지난 연도 기록은 그대로 보존됩니다.</div>
+    </div>
+    <div class="page-tools no-print">
+      <select id="annual-year-select" onchange="loadAnnualMgr()"></select>
+      <button onclick="addAnnualYear()" class="btn btn-outline btn-sm">+ 연도 추가</button>
+    </div>
+  </div>
+  <div id="annual-mgr-alert"></div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table class="adm-table">
+        <thead><tr>
+          <th class="l" style="width:150px;">이름</th>
+          <th style="width:150px;">부여 연차(일)</th>
+          <th class="l">비고</th>
+        </tr></thead>
+        <tbody id="annual-mgr-body">
+          <tr><td colspan="3" class="empty">불러오는 중...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="btn-group no-print">
+    <button class="btn btn-primary" onclick="saveAnnualMgr()">💾 저장</button>
+    <button class="btn btn-outline" onclick="loadAnnualMgr()">🔄 다시 불러오기</button>
+  </div>
+</div>
+
+<!-- ========== 관리자: 대체휴무 ========== -->
+<div class="view view-wide" id="view-adm-comp">
+  <div class="page-head">
+    <div>
+      <h2>🔄 대체휴무</h2>
+      <div class="sub">부여하면 해당 직원의 [내 근태 현황]에 바로 나타납니다. 직원이 낸 사용 신청은 [신청 처리]에서 승인합니다.</div>
+    </div>
+    <div class="page-tools no-print">
+      <button class="btn btn-outline btn-sm" onclick="loadCompMgr()">🔄 새로고침</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🎁 대체휴무 부여</div>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:flex-end;">
+      <div class="form-group" style="flex:1;min-width:140px;">
+        <label>직원</label>
+        <select id="comp-grant-name"><option value="">직원 선택</option></select>
       </div>
+      <div class="form-group" style="width:100px;">
+        <label>일수</label>
+        <input id="comp-grant-days" type="number" min="0.5" step="0.5" value="1">
+      </div>
+      <div class="form-group" style="flex:3;min-width:200px;">
+        <label>사유</label>
+        <input id="comp-grant-reason" type="text" placeholder="예) 토요일 행사 참여" onkeydown="if(event.key==='Enter') doGrantCompLeave()">
+      </div>
+      <button onclick="doGrantCompLeave()" class="btn btn-primary" style="white-space:nowrap;">부여</button>
+    </div>
+    <div id="comp-grant-alert" style="margin-top:0.6rem;"></div>
+  </div>
+  <div class="settings-grid" style="grid-template-columns:minmax(300px,1fr) minmax(380px,2fr);">
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="card-title" style="margin:1rem 1.2rem 0.6rem;">직원별 잔여</div>
       <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
-          <thead><tr id="leavemgr-thead" style="background:var(--primary);color:white;">
-            <th style="padding:7px 8px;text-align:center;">이름</th>
-            <th style="padding:7px 8px;text-align:center;">신청일</th>
-            <th style="padding:7px 8px;text-align:left;">내용</th>
-            <th style="padding:7px 8px;text-align:center;">상태</th>
-            <th style="padding:7px 8px;text-align:center;">처리</th>
-          </tr></thead>
-          <tbody id="leavemgr-body">
-            <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
-          </tbody>
+        <table class="adm-table">
+          <thead><tr><th class="l">이름</th><th>부여</th><th>사용</th><th>잔여</th></tr></thead>
+          <tbody id="comp-balance-body"><tr><td colspan="4" class="empty">불러오는 중...</td></tr></tbody>
         </table>
       </div>
     </div>
-    <div class="btn-group no-print">
-      <button class="btn btn-primary" onclick="loadLeaveMgr()">🔄 새로고침</button>
-    </div>
-  </div>
-
-  <!-- 패널2: 연차 관리 -->
-  <div id="lmpanel-annual" style="display:none;">
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.8rem;">
-        <div class="card-title" style="margin:0;">📅 연도별 연차 부여 관리</div>
-        <div style="display:flex;align-items:center;gap:0.5rem;">
-          <label style="font-size:0.82rem;color:var(--text-muted);">연도</label>
-          <select id="annual-year-select" onchange="loadAnnualMgr()"
-            style="padding:5px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;">
-          </select>
-          <button onclick="addAnnualYear()" class="btn btn-outline" style="font-size:0.78rem;padding:5px 10px;">+ 연도 추가</button>
-        </div>
-      </div>
-      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.7rem;">
-        💡 각 직원의 해당 연도 연차 부여일수를 입력하세요. 저장하면 그 연도 계산에만 적용됩니다.
-      </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="card-title" style="margin:1rem 1.2rem 0.6rem;">부여 내역</div>
       <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
-          <thead><tr style="background:var(--primary);color:white;">
-            <th style="padding:7px 10px;text-align:left;">이름</th>
-            <th style="padding:7px 10px;text-align:center;">부여 연차(일)</th>
-            <th style="padding:7px 10px;text-align:left;">비고</th>
-          </tr></thead>
-          <tbody id="annual-mgr-body">
-            <tr><td colspan="3" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="btn-group" style="margin-top:0.8rem;">
-        <button class="btn btn-primary" onclick="saveAnnualMgr()">💾 저장</button>
-        <button class="btn btn-outline" onclick="loadAnnualMgr()">🔄 새로고침</button>
-      </div>
-      <div id="annual-mgr-alert" style="margin-top:0.5rem;"></div>
-    </div>
-  </div>
-
-  <!-- 패널3: 전체 대시보드 -->
-  <div id="lmpanel-dashboard" style="display:none;">
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.8rem;">
-        <div class="card-title" style="margin:0;">📊 전체 직원 대시보드</div>
-        <div style="display:flex;align-items:center;gap:0.5rem;">
-          <label style="font-size:0.82rem;color:var(--text-muted);">연도</label>
-          <select id="dash-year-select" onchange="loadAdminDashboard()"
-            style="padding:5px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;"></select>
-          <button onclick="loadAdminDashboard()" class="btn btn-outline" style="font-size:0.78rem;padding:5px 10px;">🔄</button>
-        </div>
-      </div>
-      <div id="dashboard-body" style="overflow-x:auto;">
-        <p style="text-align:center;color:var(--text-muted);padding:1.5rem;">불러오는 중...</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 패널4: 직원 관리 -->
-  <div id="lmpanel-staff" style="display:none;">
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
-        <div class="card-title" style="margin:0;">👥 직원 관리</div>
-        <button onclick="addStaffRow()" class="btn btn-primary" style="font-size:0.78rem;padding:5px 12px;">+ 직원 추가</button>
-      </div>
-      <div style="font-size:0.76rem;color:var(--text-muted);margin-bottom:0.6rem;">💡 이름·PIN은 필수. 역할: 일반/선임/관리자. 주간기준시간: 단축근무자만 입력(빈칸=40시간)</div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;min-width:700px;">
-          <thead><tr style="background:var(--primary);color:white;">
-            <th style="padding:6px 8px;">이름</th>
-            <th style="padding:6px 8px;">PIN</th>
-            <th style="padding:6px 8px;">시급</th>
-            <th style="padding:6px 8px;">부서</th>
-            <th style="padding:6px 8px;">직위</th>
-            <th style="padding:6px 8px;">연락처</th>
-            <th style="padding:6px 8px;">역할</th>
-            <th style="padding:6px 8px;">담당선임</th>
-            <th style="padding:6px 8px;">연차일수</th>
-            <th style="padding:6px 8px;">주간시간</th>
-            <th style="padding:6px 8px;">삭제</th>
-          </tr></thead>
-          <tbody id="staff-mgr-body">
-            <tr><td colspan="11" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="btn-group" style="margin-top:0.8rem;">
-        <button class="btn btn-primary" onclick="saveStaffMgr()">💾 저장</button>
-        <button class="btn btn-outline" onclick="loadStaffMgr()">🔄 새로고침</button>
-      </div>
-      <div id="staff-mgr-alert" style="margin-top:0.5rem;"></div>
-    </div>
-  </div>
-
-  <!-- 패널5: 대체휴무 관리 -->
-  <div id="lmpanel-comp" style="display:none;">
-    <div class="card" style="margin-bottom:0.8rem;">
-      <div class="card-title">🎁 대체휴무 부여</div>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;">
-        <div style="flex:1;min-width:120px;">
-          <label style="font-size:0.78rem;color:var(--text-muted);display:block;margin-bottom:3px;">직원</label>
-          <select id="comp-grant-name" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;">
-            <option value="">직원 선택</option>
-          </select>
-        </div>
-        <div style="width:80px;">
-          <label style="font-size:0.78rem;color:var(--text-muted);display:block;margin-bottom:3px;">일수</label>
-          <input id="comp-grant-days" type="number" min="0.5" step="0.5" value="1"
-            style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;">
-        </div>
-        <div style="flex:2;min-width:150px;">
-          <label style="font-size:0.78rem;color:var(--text-muted);display:block;margin-bottom:3px;">사유</label>
-          <input id="comp-grant-reason" type="text" placeholder="예) 토요일 행사 참여"
-            style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;box-sizing:border-box;">
-        </div>
-        <button onclick="doGrantCompLeave()" class="btn btn-primary" style="white-space:nowrap;padding:8px 16px;">부여</button>
-      </div>
-      <div id="comp-grant-alert" style="margin-top:0.5rem;"></div>
-    </div>
-
-    <div class="card" style="margin-bottom:0.8rem;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
-        <div class="card-title" style="margin:0;">📋 대체휴무 사용 신청 처리</div>
-        <button onclick="loadCompMgr()" class="btn btn-outline" style="font-size:0.78rem;padding:5px 10px;">🔄</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
-          <thead><tr style="background:var(--primary);color:white;">
-            <th style="padding:6px 8px;">신청일</th><th style="padding:6px 8px;">이름</th>
-            <th style="padding:6px 8px;">일수</th><th style="padding:6px 8px;">사용날짜</th>
-            <th style="padding:6px 8px;">사유</th><th style="padding:6px 8px;">상태</th>
-            <th style="padding:6px 8px;">처리</th>
-          </tr></thead>
-          <tbody id="comp-req-body">
-            <tr><td colspan="7" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
-        <div class="card-title" style="margin:0;">📜 대체휴무 부여 내역</div>
-      </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
-          <thead><tr style="background:var(--primary);color:white;">
-            <th style="padding:6px 8px;">부여일</th><th style="padding:6px 8px;">이름</th>
-            <th style="padding:6px 8px;">일수</th><th style="padding:6px 8px;">사유</th><th style="padding:6px 8px;">상태</th>
-          </tr></thead>
-          <tbody id="comp-grant-body">
-            <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
-          </tbody>
+        <table class="adm-table">
+          <thead><tr><th style="width:105px;">부여일</th><th style="width:90px;">이름</th><th style="width:60px;">일수</th><th class="l">사유</th><th style="width:70px;">상태</th><th style="width:70px;"></th></tr></thead>
+          <tbody id="comp-grant-body"><tr><td colspan="6" class="empty">불러오는 중...</td></tr></tbody>
         </table>
       </div>
     </div>
   </div>
+</div>
 
+<!-- ========== 관리자: 직원 관리 ========== -->
+<div class="view view-wide" id="view-adm-staff">
+  <div class="page-head">
+    <div>
+      <h2>👥 직원 관리</h2>
+      <div class="sub">여기서 저장하면 [직원목록] 시트에 그대로 반영됩니다. 이름과 PIN은 필수입니다.</div>
+    </div>
+    <div class="page-tools no-print">
+      <button onclick="addStaffRow()" class="btn btn-outline btn-sm">+ 직원 추가</button>
+      <button class="btn btn-outline btn-sm" onclick="loadStaffMgr()">🔄 다시 불러오기</button>
+      <button class="btn btn-primary btn-sm" onclick="saveStaffMgr()">💾 저장</button>
+    </div>
+  </div>
+  <div id="staff-mgr-alert"></div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table class="adm-table" style="min-width:1080px;">
+        <thead><tr>
+          <th style="width:100px;">이름</th>
+          <th style="width:80px;">PIN</th>
+          <th style="width:100px;">부서</th>
+          <th style="width:90px;">직위</th>
+          <th style="width:130px;">연락처</th>
+          <th style="width:80px;">역할</th>
+          <th style="width:100px;">담당 선임</th>
+          <th style="width:90px;">시급(원)</th>
+          <th style="width:80px;">기본 연차</th>
+          <th style="width:90px;">주간 근무시간</th>
+          <th>비고</th>
+          <th style="width:72px;"></th>
+        </tr></thead>
+        <tbody id="staff-mgr-body">
+          <tr><td colspan="12" class="empty">불러오는 중...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="hint">
+    · <b>역할</b> — 선임: 담당 직원의 휴가·시간외·시수·대체시수를 확인합니다. (직원 쪽 '담당 선임'에 선임 이름을 지정)<br>
+    · <b>기본 연차</b> — 매년 기본으로 주는 연차. 특정 연도만 다르게 주려면 [연차 관리]에서 입력합니다.<br>
+    · <b>주간 근무시간</b> — 단축근무자만 입력(예: 30). 비워 두면 기본 40시간으로 시간외 수당을 계산합니다.
+  </div>
+</div>
+
+<!-- ========== 관리자: 기관 설정 ========== -->
+<div class="view view-wide" id="view-adm-settings">
+  <div class="page-head">
+    <div>
+      <h2>🏢 기관 설정</h2>
+      <div class="sub">코드를 고치지 않고 여기에서 바꿉니다. ([설정]·[결재설정] 시트에 저장됩니다)</div>
+    </div>
+  </div>
+  <div id="admin-alert"></div>
+  <div class="settings-grid">
+    <div class="card">
+      <div class="card-title">기본 정보</div>
+      <div class="field-row"><label>기관명</label><input type="text" id="cfg-org-name" placeholder="예) ○○시지회"></div>
+      <div class="field-row"><label>연차 기본일수</label><input type="number" id="cfg-annual" min="0" step="1"></div>
+      <div class="field-row"><label>1일 기준 근무시간</label><input type="number" id="cfg-work-hours" min="1" max="12" step="0.5"></div>
+      <div class="field-row"><label>시수 입력 시간대</label><input type="text" id="cfg-sisu-range" placeholder="9-18"></div>
+      <div class="hint" style="margin-bottom:0.8rem;">시수 입력 시간대는 '시작-끝' 형식입니다. 예) 9-18 → 9시~18시 사이에서 선택</div>
+      <button class="btn btn-primary" onclick="saveAdminSettings()">💾 기본 정보 저장</button>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0;">
+      <div class="hint">🔐 <b>관리자 비밀번호</b>는 구글 시트의 <b>[설정] 시트 → 관리자비밀번호</b> 칸에서 바꿉니다. (처음 값: admin1234)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">직원 접속 링크</div>
+      <div class="hint" style="margin-bottom:0.8rem;">이 링크를 직원들에게 보내면 연결 주소를 따로 입력하지 않고 바로 로그인 화면이 열립니다.</div>
+      <button onclick="copyLink()" class="btn btn-outline" style="width:100%;justify-content:center;">🔗 직원 접속 링크 복사</button>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0;">
+      <div class="card-title">연결 주소</div>
+      <div class="hint" id="cfg-gas-url" style="word-break:break-all;margin-bottom:0.8rem;"></div>
+      <button onclick="openSettings()" class="btn btn-outline btn-sm">⚙️ 연결 주소 변경</button>
+    </div>
+
+    <div class="card" style="grid-column:1/-1;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+        <div class="card-title" style="margin:0;border:none;padding:0;">📋 시수 보고서 결재라인</div>
+        <button onclick="adminAddApprovalRow()" class="btn btn-outline btn-sm">+ 추가</button>
+      </div>
+      <div class="hint" style="margin-bottom:0.6rem;">시수 보고서를 인쇄할 때 결재란과 수신처에 들어갑니다. 직원의 부서명과 같은 줄이 적용되고, 없으면 첫 줄이 적용됩니다.</div>
+      <div style="overflow-x:auto;">
+        <table class="adm-table" style="min-width:640px;">
+          <thead><tr>
+            <th>부서명</th><th>수신처</th><th>결재자1</th><th>결재자2</th><th>결재자3</th><th style="width:60px;"></th>
+          </tr></thead>
+          <tbody id="admin-approval-body"></tbody>
+        </table>
+      </div>
+      <button onclick="adminSaveApproval()" class="btn btn-primary" style="margin-top:0.8rem;">💾 결재라인 저장</button>
+    </div>
+  </div>
 </div>
 
 </div><!-- /content-area -->
+
 </div><!-- /app-layout -->
 
 <!-- ========== 대체시수 발생 인쇄 영역 ========== -->
 <div id="alt-print-wrap" style="display:none;"></div>
 
-<!-- ========== 통합 설정 모달 ========== -->
+<!-- ========== 연결 설정 (GAS 주소만) ========== -->
 <div id="settings-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;overflow-y:auto;" onclick="if(event.target===this)closeSettings();">
   <div style="max-width:480px;margin:40px auto;padding:0 1rem 2rem;">
     <div class="card" style="border-top:4px solid var(--accent);">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-        <div style="font-size:1.1rem;font-weight:700;color:var(--primary);">⚙️ 설정</div>
+        <div style="font-size:1.1rem;font-weight:700;color:var(--primary);">⚙️ 연결 설정</div>
         <button onclick="closeSettings()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);">✕</button>
       </div>
-
-      <!-- GAS URL 설정 -->
-      <div style="margin-bottom:1.2rem;">
-        <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">🔗 GAS 연결 주소</div>
-        <div style="display:flex;gap:0.4rem;">
-          <input id="settings-gas-input" type="url" placeholder="https://script.google.com/.../exec"
-            style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.82rem;font-family:inherit;">
-          <button onclick="applySettingsGas()" class="btn btn-primary" style="white-space:nowrap;padding:7px 14px;">저장</button>
-        </div>
-        <div id="settings-gas-msg" style="font-size:0.78rem;margin-top:0.3rem;color:var(--success);"></div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">🔗 GAS 연결 주소</div>
+      <div style="display:flex;gap:0.4rem;">
+        <input id="settings-gas-input" type="url" placeholder="https://script.google.com/.../exec" style="flex:1;font-size:0.82rem;min-width:0;">
+        <button onclick="applySettingsGas()" class="btn btn-primary btn-sm" style="white-space:nowrap;">저장</button>
       </div>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:0.8rem 0;">
-
-      <!-- 직원 링크 복사 -->
-      <div style="margin-bottom:1rem;">
-        <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">👥 직원 링크 공유</div>
-        <button onclick="copyLink()" class="btn btn-outline" style="width:100%;justify-content:center;">🔗 직원 접속 링크 복사</button>
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;">직원들에게 이 링크를 공유하면 GAS 주소 없이 바로 접속할 수 있습니다.</div>
-      </div>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:0.8rem 0;">
-
-      <!-- 관리자 로그인 -->
-      <div style="margin-bottom:1rem;">
-        <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-bottom:0.5rem;">🔐 관리자 로그인</div>
-        <div id="settings-admin-alert" style="margin-bottom:0.5rem;"></div>
-        <div id="settings-admin-login" style="">
-          <div style="display:flex;gap:0.4rem;">
-            <input id="settings-admin-pin" type="password" placeholder="관리자 비밀번호" maxlength="20"
-              style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;font-family:inherit;"
-              onkeydown="if(event.key==='Enter') doSettingsAdminLogin()">
-            <button onclick="doSettingsAdminLogin()" class="btn btn-primary" style="white-space:nowrap;padding:7px 14px;">확인</button>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;">Code_new.gs의 ADMIN_PASSWORD 값을 입력하세요.</div>
-        </div>
-        <div id="settings-admin-logged" style="display:none;">
-          <span style="font-size:0.85rem;color:var(--success);font-weight:600;">✅ 관리자 로그인됨</span>
-          <div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap;">
-            <button onclick="openLeaveAdminView();closeSettings();" class="btn btn-primary" style="flex:1;justify-content:center;">📊 근태현황 관리 →</button>
-          </div>
-        </div>
-      </div>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:0.8rem 0;">
-
-      <!-- 연결 해제 -->
-      <button onclick="disconnectGas()" style="width:100%;padding:8px;background:none;border:1px solid #e74c3c;color:#e74c3c;border-radius:6px;cursor:pointer;font-size:0.82rem;">🔌 GAS 연결 해제 (초기화)</button>
+      <div id="settings-gas-msg" style="font-size:0.78rem;margin-top:0.4rem;color:var(--success);min-height:1.1em;"></div>
+      <div class="hint" style="margin-top:0.4rem;">기관에서 배포한 Google Apps Script 주소입니다. 한 번만 입력하면 이 기기에 저장됩니다.</div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0;">
+      <button onclick="disconnectGas()" style="width:100%;padding:8px;background:none;border:1px solid var(--danger);color:var(--danger);border-radius:6px;cursor:pointer;font-size:0.82rem;font-family:inherit;">🔌 연결 해제 (이 기기의 저장 정보 지우기)</button>
     </div>
-  </div>
-</div>
-
-<!-- ========== [10] 관리자 화면 ========== -->
-<div id="admin-wrap" style="display:none;max-width:700px;margin:40px auto;padding:1.5rem;font-family:inherit;">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;">
-    <h2 style="font-size:1.2rem;font-weight:700;color:#2c3e50;margin:0;">⚙️ 관리자 설정</h2>
-    <button onclick="closeAdmin()" style="padding:0.4rem 1rem;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:0.85rem;">✕ 닫기</button>
-  </div>
-  <div id="admin-alert" style="margin-bottom:0.8rem;"></div>
-
-  <!-- PIN 입력 -->
-  <div id="admin-pin-section" class="card" style="margin-bottom:1rem;">
-    <div style="font-weight:600;margin-bottom:0.8rem;">🔐 관리자 PIN</div>
-    <div style="display:flex;gap:0.6rem;align-items:center;">
-      <input id="admin-pin-input" type="password" placeholder="PIN 입력" maxlength="20"
-        style="flex:1;padding:0.55rem 0.8rem;border:1.5px solid #ccc;border-radius:8px;font-size:0.95rem;"
-        onkeydown="if(event.key==='Enter') adminLogin()">
-      <button onclick="adminLogin()" class="btn btn-primary" style="white-space:nowrap;">확인</button>
-    </div>
-    <div style="font-size:0.78rem;color:#999;margin-top:0.5rem;">처음 입력하는 PIN이 관리자 PIN으로 설정됩니다.</div>
-  </div>
-
-  <!-- 관리 본문 (PIN 확인 후 표시) -->
-  <div id="admin-body" style="display:none;">
-
-    <!-- 직원 관리 -->
-    <div class="card" style="margin-bottom:1rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
-        <div style="font-weight:600;">👥 직원 목록</div>
-        <button onclick="adminAddStaffRow()" class="btn btn-alt" style="padding:0.3rem 0.8rem;font-size:0.82rem;">+ 추가</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;" id="admin-staff-table">
-          <thead>
-            <tr style="background:#f0f4ff;">
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">이름</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">직위</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">부서</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">연락처</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">담당선임</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">권한</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;text-align:center;">삭제</th>
-            </tr>
-          </thead>
-          <tbody id="admin-staff-body"></tbody>
-        </table>
-      </div>
-      <button onclick="adminSaveStaff()" class="btn btn-primary" style="margin-top:0.8rem;width:100%;">💾 직원 목록 저장</button>
-    </div>
-
-    <!-- 결재라인 관리 -->
-    <div class="card" style="margin-bottom:1rem;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
-        <div style="font-weight:600;">📋 결재라인 설정</div>
-        <button onclick="adminAddApprovalRow()" class="btn btn-alt" style="padding:0.3rem 0.8rem;font-size:0.82rem;">+ 추가</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;" id="admin-approval-table">
-          <thead>
-            <tr style="background:#f0f4ff;">
-              <th style="padding:6px 8px;border:1px solid #ddd;">부서명</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;">수신처</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;">결재자1</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;">결재자2</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;">결재자3</th>
-              <th style="padding:6px 8px;border:1px solid #ddd;">삭제</th>
-            </tr>
-          </thead>
-          <tbody id="admin-approval-body"></tbody>
-        </table>
-      </div>
-      <button onclick="adminSaveApproval()" class="btn btn-primary" style="margin-top:0.8rem;width:100%;">💾 결재라인 저장</button>
-    </div>
-
   </div>
 </div>
 
@@ -1378,20 +1396,8 @@ function getTimeRange(name) {
   return { min:9, max:18 };
 }
 
-// ===== URL 파라미터에서 앱 모드 읽기 =====
-(function(){
-  var _p = new URLSearchParams(window.location.search);
-  if (_p.get('mode'))   window.APP_MODE       = _p.get('mode');
-  if (_p.get('senior')) window.APP_SENIOR      = _p.get('senior');
-  if (_p.get('name'))   window.APP_NAME        = _p.get('name');
-  if (_p.get('email'))  window.APP_USER_EMAIL  = _p.get('email');
-})();
-
-// ===== 모드 판별 =====
-const MODE        = window.APP_MODE      || '';
-const SENIOR_NAME = window.APP_SENIOR    || '';
-const APP_NAME    = window.APP_NAME      || '';
-const MY_EMAIL    = window.APP_USER_EMAIL || '';
+// ===== 예전 주소 파라미터(mode/senior/name)는 사용하지 않음 — PIN 로그인으로 통일 =====
+const MODE = '', SENIOR_NAME = '', APP_NAME = '', MY_EMAIL = '';
 
 // ===== 시수 보고서 데이터 =====
 function makeEmptyRows() {
@@ -1467,141 +1473,55 @@ function resetAltUseForm() {
   showAltUseAlert('초기화되었습니다.', 'info');
 }
 
-// ===== 앱 시작 =====
-function init() {
+// ===== 시수 화면용 데이터 로드 (로그인 후 1회) =====
+// 직원 정보는 통합 [직원목록] 시트 하나에서 읽습니다.
+var _sisuLoaded = false, _sisuLoading = false;
+function init(cb) {
+  if (_sisuLoading) return;
+  _sisuLoading = true;
   var staffLoaded=false, approvalLoaded=false;
-  function tryStart() { if (staffLoaded && approvalLoaded) startWithSavedName(); }
+  function done() {
+    if (!(staffLoaded && approvalLoaded)) return;
+    _sisuLoading = false; _sisuLoaded = true;
+    if (leaveUser) applyStaffName(leaveUser.name);
+    if (cb) cb();
+  }
   gasRun('loadAltStaffList', undefined,
-    function(r) { if (r.success && r.list.length) STAFF=r.list; if (!STAFF.length) STAFF=getDefaultStaff(); staffLoaded=true; tryStart(); },
-    function(m) { STAFF=getDefaultStaff(); staffLoaded=true; tryStart(); }
+    function(r) { if (r && r.success && Array.isArray(r.list)) STAFF=r.list; staffLoaded=true; done(); },
+    function()  { staffLoaded=true; done(); }
   );
   gasRun('loadApprovalConfig', undefined,
-    function(r) { if (Array.isArray(r)&&r.length) APPROVAL_CONFIG=r; approvalLoaded=true; tryStart(); },
-    function(m) { approvalLoaded=true; tryStart(); }
+    function(r) { if (Array.isArray(r)&&r.length) APPROVAL_CONFIG=r; approvalLoaded=true; done(); },
+    function()  { approvalLoaded=true; done(); }
   );
 }
 
-function startWithSavedName() {
-  var modeParm=window.APP_MODE||'', seniorParm=window.APP_SENIOR||'';
-  if (modeParm==='both'||modeParm==='senior') { if (seniorParm){ enterApp(seniorParm); return; } }
-  // localStorage 저장된 이름으로 선임 여부 판단
-  var savedName = ls.get('sisuje_myname', '');
-  if (savedName) {
-    var s = STAFF.find(function(x){ return x.name===savedName; });
-    if (s && (s.mode==='both'||s.mode==='senior')) { enterApp(savedName); return; }
-    if (s) { enterStaffMode(); return; }
-  }
-  enterStaffMode();
-}
-
+// 왼쪽 메뉴: 직원용 / 관리자용 중 하나만 표시 (id가 없으면 모두 숨김)
 function showSidebar(id) {
-  ['tabs-staff','tabs-both','tabs-senior'].forEach(function(sid){
+  ['tabs-staff','tabs-admin'].forEach(function(sid){
     document.getElementById(sid).style.display = (sid===id) ? 'flex' : 'none';
   });
   document.getElementById('app-layout').style.display = 'flex';
+  var boot = document.getElementById('boot-msg'); if (boot) boot.style.display = 'none';
 }
 
-function enterStaffMode() {
-  showSidebar('tabs-staff');
-  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
-  document.getElementById('view-write').classList.add('active');
-  document.querySelectorAll('#tabs-staff .tab')[0].classList.add('active');
-
-  // localStorage에 저장된 이름 확인
-  var savedName = ls.get('sisuje_myname', '');
-  if (savedName && STAFF.find(function(s){ return s.name===savedName; })) {
-    applyStaffName(savedName);
-  } else {
-    showNameSelectView();
-  }
-}
-
-// 이름 선택 화면 표시
-function showNameSelectView() {
-  document.getElementById('app-layout').style.display='none';
-  document.querySelectorAll('.view').forEach(function(el){ el.style.display='none'; });
-  var wrap = document.getElementById('name-select-wrap');
-  if (!wrap) {
-    wrap = document.createElement('div');
-    wrap.id = 'name-select-wrap';
-    wrap.style.cssText = 'max-width:400px;margin:60px auto;padding:2rem;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.12);font-family:inherit;';
-    document.body.appendChild(wrap);
-  }
-  var staffNames = STAFF.filter(function(s){ return !s.mode || s.mode==='staff' || s.mode==='both'; });
-  wrap.innerHTML =
-    '<h2 style="font-size:1.2rem;margin-bottom:0.3rem;color:#2c3e50">👤 본인 이름을 선택하세요</h2>'+
-    '<p style="font-size:0.82rem;color:#888;margin-bottom:1.2rem">한 번 선택하면 이 기기에 저장됩니다.</p>'+
-    '<div style="display:flex;flex-direction:column;gap:0.5rem;max-height:60vh;overflow-y:auto;">'+
-    staffNames.map(function(s){
-      return '<button onclick="confirmNameSelect(\''+s.name+'\')" style="padding:0.7rem 1rem;background:#f8f9fa;border:1.5px solid #dee2e6;border-radius:8px;font-size:0.95rem;cursor:pointer;text-align:left;color:#2c3e50;">'+
-        s.name+' <span style="font-size:0.78rem;color:#888;">'+s.position+'</span></button>';
-    }).join('')+
-    '</div>';
-  wrap.style.display = 'block';
-}
-
-function confirmNameSelect(name) {
-  if (!confirm('본인이 맞습니까?\n\n[ '+name+' ]\n\n확인을 누르면 이 기기에 저장됩니다.')) return;
-  ls.set('sisuje_myname', name);
-  var wrap = document.getElementById('name-select-wrap');
-  if (wrap) wrap.style.display = 'none';
-  // init()이 권한에 맞는 사이드바 1개만 표시
-  document.querySelectorAll('.view').forEach(function(el){ el.style.display=''; el.classList.remove('active'); });
-  init();
-}
-
+// 상단바: 로그인한 사람 표시 + 로그아웃/연결설정 버튼 전환
 function setHeaderName(name) {
   var el = document.getElementById('header-name-badge');
-  if (!el) return;
-  if (name) { el.textContent = '👤 ' + name; el.style.display = ''; }
-  else { el.textContent = ''; el.style.display = 'none'; }
+  if (el) {
+    if (name) { el.textContent = '👤 ' + name; el.style.display = ''; }
+    else { el.textContent = ''; el.style.display = 'none'; }
+  }
+  var lo = document.getElementById('header-logout-btn');   if (lo) lo.style.display = name ? '' : 'none';
+  var st = document.getElementById('header-settings-btn'); if (st) st.style.display = name ? 'none' : '';
 }
 
+// 로그인한 직원 정보를 시수·대체시수 입력 화면에 채움
 function applyStaffName(name) {
   document.getElementById('name-select').value = name;
   document.getElementById('alt-name').value = name;
   onNameSelect();
   autoLoadLatest(name);
-  setHeaderName(name);
-  var badge = document.getElementById('login-badge');
-  if (badge) badge.textContent = '';
-}
-
-function enterApp(name) {
-  var s=STAFF.find(function(x){ return x.name===name; });
-  if (!s){ enterStaffMode(); return; }
-  var effectiveMode=(window.APP_MODE&&window.APP_MODE!=='') ? window.APP_MODE : (s.mode||'staff');
-  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
-
-  if (effectiveMode==='senior') {
-    showSidebar('tabs-senior');
-    document.getElementById('view-dashboard').classList.add('active');
-    document.querySelectorAll('#tabs-senior .tab')[0].classList.add('active');
-    window.APP_SENIOR=name;
-    setHeaderName(name);
-    loadDashboard();
-    startAutoRefresh();
-  } else if (effectiveMode==='both') {
-    showSidebar('tabs-both');
-    document.getElementById('view-write').classList.add('active');
-    document.querySelectorAll('#tabs-both .tab')[0].classList.add('active');
-    window.APP_SENIOR=name;
-    setHeaderName(name);
-    document.getElementById('name-select').value=name;
-    document.getElementById('alt-name').value=name;
-    onNameSelect();
-    autoLoadLatest(name);
-    startAutoRefresh();
-  }
-}
-
-function getDefaultStaff() {
-  return [
-    {name:'센터장',position:'센터장',dept:'센터',contact:'010-0000-0000',senior:'',mode:'both',timeRange:'9-18',email:'director@example.com'},
-    {name:'부장',position:'부장',dept:'센터',contact:'010-0000-0001',senior:'센터장',mode:'both',timeRange:'9-18',email:'manager@example.com'},
-    {name:'직원1',position:'과장',dept:'센터',contact:'010-0000-0002',senior:'부장',mode:'staff',timeRange:'9-18',email:'staff1@example.com'},
-    {name:'직원2',position:'대리',dept:'센터',contact:'010-0000-0003',senior:'부장',mode:'staff',timeRange:'9-18',email:'staff2@example.com'},
-  ];
 }
 
 function autoLoadLatest(name) {
@@ -1611,7 +1531,9 @@ function autoLoadLatest(name) {
 
 function onNameSelect() {
   const name=document.getElementById('name-select').value;
-  const s=STAFF.find(x=>x.name===name);
+  // 통합 직원목록에서 찾고, 아직 못 불러왔으면 로그인 정보로 채움
+  const s=STAFF.find(x=>x.name===name) || (leaveUser && leaveUser.name===name
+    ? {name:name, position:leaveUser.position||'', dept:leaveUser.dept||'', contact:leaveUser.contact||''} : null);
   if (s) {
     document.getElementById('position').value=s.position;
     document.getElementById('dept').value=s.dept;
@@ -1632,42 +1554,44 @@ function onNameSelect() {
 }
 
 function getActiveTabs() {
-  if (MODE==='both') return document.querySelectorAll('#tabs-both .tab');
-  if (MODE==='senior') return document.querySelectorAll('#tabs-senior .tab');
-  // 현재 보이는 탭 찾기
-  if (document.getElementById('tabs-both').style.display==='flex') return document.querySelectorAll('#tabs-both .tab');
-  if (document.getElementById('tabs-senior').style.display==='flex') return document.querySelectorAll('#tabs-senior .tab');
+  var adm = document.getElementById('tabs-admin');
+  if (adm && adm.style.display==='flex') return adm.querySelectorAll('.tab');
   return document.querySelectorAll('#tabs-staff .tab');
 }
 
-function getAllViewIds() {
-  return ['write','print','dashboard','confirm','myrecord','altwrite','altuse','altrecord','altdashboard','altconfirm',
-          'leave-login','leave','leave-apply','overtime','leavehist','leavemgr'];
-}
-
 function clearAllViews() {
-  getAllViewIds().forEach(function(id){
-    var el=document.getElementById('view-'+id);
-    if (el) el.classList.remove('active');
-  });
-  getActiveTabs().forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.view').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.sidebar .tab').forEach(function(t){ t.classList.remove('active'); });
 }
 
-function switchTab(tab) {
+// 왼쪽 메뉴에서 해당 화면의 버튼을 강조
+function setActiveTab(tab) {
+  var alias = { print:'write', confirm:'dashboard', altconfirm:'altdashboard' };
+  var key = alias[tab] || tab;
+  getActiveTabs().forEach(function(t){
+    var fn = t.getAttribute('onclick') || '';
+    t.classList.toggle('active', fn.indexOf("'"+key+"'") >= 0);
+  });
+}
+
+function showView(tab) {
   clearAllViews();
-  syncFromForm();
-  var el=document.getElementById('view-'+tab);
+  var el = document.getElementById('view-'+tab);
   if (el) el.classList.add('active');
-  // 탭 버튼 활성화 — 현재 보이는 탭 세트에서 클릭된 탭 버튼 찾기
-  var tabs=getActiveTabs();
-  for (var i=0;i<tabs.length;i++) {
-    var fn=tabs[i].getAttribute('onclick')||'';
-    if (fn.indexOf("'"+tab+"'")>=0 || fn.indexOf('"'+tab+'"')>=0) { tabs[i].classList.add('active'); break; }
-  }
-  // 시수 탭 접근 시 직원 목록 미로드 상태면 init
-  if (['write','print','myrecord','altwrite','altuse','altrecord'].indexOf(tab) >= 0) {
-    if (!STAFF || !STAFF.length) { if (GAS_URL) init(); }
-  }
+  setActiveTab(tab);
+  window.scrollTo(0, 0);
+}
+
+function esc(s) {
+  return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+}
+
+// ===== 직원 메뉴 =====
+function switchTab(tab) {
+  if (!leaveUser) { showLeaveLoginView(); return; }
+  syncFromForm();
+  showView(tab);
+  if (['write','print','myrecord','altwrite','altuse','altrecord'].indexOf(tab) >= 0 && !_sisuLoaded) init();
   if (tab==='print') renderPreview();
   if (tab==='myrecord') loadMyLatestRecord();
   if (tab==='altwrite') {
@@ -1677,57 +1601,37 @@ function switchTab(tab) {
   }
   if (tab==='altrecord') loadMyAltLatestRecord();
   if (tab==='altuse') initAltUseTab();
-  // 근태관리 탭 처리
-  if (tab==='leave') {
-    if (!leaveUser) { showLeaveLoginView(); return; }
-    clearAllViews(); document.getElementById('view-leave').classList.add('active');
-    loadLeaveDashboard(); return;
-  }
-  if (tab==='leave-apply') {
-    if (!leaveUser) { showLeaveLoginView(); return; }
-    clearAllViews(); document.getElementById('view-leave-apply').classList.add('active');
-    return;
-  }
-  if (tab==='overtime') {
-    if (!leaveUser) { showLeaveLoginView(); return; }
-    clearAllViews(); document.getElementById('view-overtime').classList.add('active');
-    initOtForm(); return;
-  }
-  if (tab==='leavehist') {
-    if (!leaveUser) { showLeaveLoginView(); return; }
-    clearAllViews(); document.getElementById('view-leavehist').classList.add('active');
-    loadLeaveHist(); return;
-  }
-  if (tab==='comp-apply') {
-    if (!leaveUser) { showLeaveLoginView(); return; }
-    clearAllViews(); document.getElementById('view-comp-apply').classList.add('active');
-    // 대체휴무 잔여 현황 표시
-    var balEl = document.getElementById('comp-apply-balance');
-    gasRunLeave('getMyCompLeave', JSON.stringify({name: leaveUser.name}), function(res) {
-      if (balEl && res) {
-        balEl.innerHTML = '부여 <strong>'+res.granted+'일</strong> · 사용 <strong>'+res.used+'일</strong> · 잔여 <strong style="color:#10b981;">'+res.remaining+'일</strong>';
-      }
-    }, function(){});
-    return;
-  }
+  if (tab==='leave') loadLeaveDashboard();
+  if (tab==='overtime') initOtForm();
+  if (tab==='leavehist') loadLeaveHist();
+  if (tab==='comp-apply') loadCompApply();
 }
 
+// ===== 선임 확인 메뉴 (직원 모드에서 역할이 '선임'인 사람에게만 보임) =====
 function switchTabSenior(tab) {
-  clearAllViews();
-  var el=document.getElementById('view-'+tab);
-  if (el) el.classList.add('active');
-  var tabs=getActiveTabs();
-  for (var i=0;i<tabs.length;i++) {
-    var fn=tabs[i].getAttribute('onclick')||'';
-    if (fn.indexOf("'"+tab+"'")>=0||fn.indexOf('"'+tab+'"')>=0){ tabs[i].classList.add('active'); break; }
-  }
+  if (!leaveUser) { showLeaveLoginView(); return; }
+  showView(tab);
   if (tab==='dashboard') loadDashboard();
   if (tab==='altdashboard') loadAltDashboard();
-  if (tab==='leavemgr') {
-    if (!leaveUser && !leaveIsAdmin) { showLeaveLoginView(); return; }
-    clearAllViews(); document.getElementById('view-leavemgr').classList.add('active');
-    loadLeaveMgr();
-  }
+  if (tab==='leavemgr') loadLeaveMgr();
+}
+
+// ===== 관리자 메뉴 =====
+function switchAdminTab(tab) {
+  if (!leaveIsAdmin) { showLeaveLoginView(); return; }
+  clearAllViews();
+  var el = document.getElementById(tab==='approval' ? 'view-leavemgr' : 'view-adm-'+tab);
+  if (el) el.classList.add('active');
+  document.querySelectorAll('#tabs-admin .tab').forEach(function(t){
+    t.classList.toggle('active', t.getAttribute('data-adm')===tab);
+  });
+  window.scrollTo(0, 0);
+  if (tab==='dashboard') loadAdminDashboard();
+  if (tab==='approval')  loadLeaveMgr();
+  if (tab==='annual')    loadAnnualMgr();
+  if (tab==='comp')      loadCompMgr();
+  if (tab==='staff')     loadStaffMgr();
+  if (tab==='settings')  loadAdminSettings();
 }
 
 function syncFromForm() {
@@ -2045,31 +1949,42 @@ const ls = {
   del: function(k)      { try { localStorage.removeItem(k); } catch(e) {} }
 };
 
-// ===== GAS 호출 =====
-let GAS_URL = ls.get('sisuje_gas', '');
+// ===== GAS 호출 (시수·근태 모두 같은 주소 하나를 사용) =====
+let GAS_URL = ls.get('leave_gas', '') || ls.get('sisuje_gas', '');
 
 function setGas(u) {
-  if (u !== GAS_URL) {
-    ls.del('sisuje_staff');
-    ls.del('sisuje_approval');
-  }
-  GAS_URL = u;
-  ls.set('sisuje_gas', u);
+  GAS_URL = u || '';
+  LEAVE_GAS_URL = GAS_URL;
+  if (GAS_URL) { ls.set('leave_gas', GAS_URL); ls.set('sisuje_gas', GAS_URL); }
+  else { ls.del('leave_gas'); ls.del('sisuje_gas'); }
+  ls.del('gas_url'); ls.del('sisuje_staff'); ls.del('sisuje_approval');
 }
 
+// 브라우저 → /api/proxy (Vercel) → GAS
 function gasRun(fnName, arg, onSuccess, onFail) {
-  if (!GAS_URL) { onFail('GAS 주소가 설정되지 않았습니다. 기관 연결을 먼저 해주세요.'); return; }
+  onFail = onFail || function(){};
+  if (!GAS_URL) { onFail('연결 주소가 없습니다. ⚙️ 연결 설정에서 GAS 주소를 입력해 주세요.'); return; }
   fetch('/api/proxy', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ gasUrl: GAS_URL, fn: fnName, arg: arg !== undefined ? arg : null }),
   })
-  .then(function(r){ return r.text(); })
-  .then(function(t){
-    try { onSuccess(JSON.parse(t)); }
-    catch(e){ onFail('응답 파싱 오류: '+t.substring(0,100)); }
+  .then(function(r){ return r.text().then(function(t){ return { status:r.status, text:t }; }); })
+  .then(function(o){
+    var data;
+    try { data = JSON.parse(o.text); }
+    catch(e) {
+      if (o.status === 404) { onFail('연결 프로그램(api/proxy.js)을 찾을 수 없습니다. GitHub의 api 폴더 안에 proxy.js가 있는지 확인해 주세요.'); return; }
+      if (/<html|<!doctype/i.test(o.text)) { onFail('GAS가 로그인 화면을 돌려주었습니다. GAS 배포에서 액세스 권한을 "모든 사용자"로 설정했는지 확인해 주세요.'); return; }
+      onFail('응답을 읽을 수 없습니다: ' + o.text.substring(0, 80)); return;
+    }
+    var m = data && (data.msg || data.message) || '';
+    if (data && (data.ok === false || data.success === false) && /알 수 없는 함수/.test(m)) {
+      onFail('GAS 코드가 예전 버전입니다. 최신 Code.gs를 붙여넣고 "새 버전"으로 다시 배포해 주세요. (' + fnName + ')'); return;
+    }
+    onSuccess(data);
   })
-  .catch(function(err){ onFail(err.message||'오류'); });
+  .catch(function(err){ onFail(err && err.message || '오류'); });
 }
 
 // ===== 시수 저장/불러오기 =====
@@ -2221,6 +2136,7 @@ var _autoRefreshTimer=null;
 var _lastPendingCount=-1;
 var AUTO_REFRESH_INTERVAL=5*60*1000;
 function startAutoRefresh() {
+  if (_autoRefreshTimer) clearInterval(_autoRefreshTimer);
   silentRefreshBadge();
   _autoRefreshTimer=setInterval(function(){ silentRefreshBadge(); }, AUTO_REFRESH_INTERVAL);
 }
@@ -2301,7 +2217,7 @@ function showConfirmView() {
   clearAllViews();
   renderConfirmTab();
   document.getElementById('view-confirm').classList.add('active');
-  var tabs=getActiveTabs(); if (tabs[0]) tabs[0].classList.add('active');
+  setActiveTab('confirm');
 }
 function renderConfirmTab() {
   if (!confirmData) return;
@@ -2383,7 +2299,7 @@ function showAltConfirmView() {
   clearAllViews();
   renderAltConfirmTab();
   document.getElementById('view-altconfirm').classList.add('active');
-  var tabs=getActiveTabs(); if (tabs[0]) tabs[0].classList.add('active');
+  setActiveTab('altconfirm');
 }
 function renderAltConfirmTab() {
   if (!altConfirmData) return;
@@ -2900,47 +2816,10 @@ applyMobileClass();
 document.addEventListener('DOMContentLoaded', applyMobileClass);
 window.addEventListener('resize', applyMobileClass);
 
-// ===== 기관 연결 화면 =====
-function connectView() {
-  // 메인 콘텐츠 숨기기
-  document.querySelectorAll('.view, .header, .tabs').forEach(function(el){ el.style.display='none'; });
-  var wrap = document.getElementById('connect-wrap');
-  if (!wrap) {
-    wrap = document.createElement('div');
-    wrap.id = 'connect-wrap';
-    wrap.style.cssText = 'max-width:480px;margin:60px auto;padding:2rem;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.12);font-family:inherit;';
-    wrap.innerHTML =
-      '<h2 style="font-size:1.3rem;margin-bottom:0.3rem;color:#2c3e50">🔗 기관 연결</h2>' +
-      '<p style="font-size:0.88rem;color:#666;margin-bottom:1.4rem">관리자에게 받은 GAS 배포 주소를 입력하세요.</p>' +
-      '<input id="gas-input" type="text" placeholder="https://script.google.com/.../exec"' +
-      '  style="width:100%;box-sizing:border-box;padding:0.65rem 0.8rem;border:1.5px solid #ccc;border-radius:8px;font-size:0.9rem;margin-bottom:1rem">' +
-      '<button onclick="applyGasConnect()" style="width:100%;padding:0.7rem;background:#2c7be5;color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600">연결하기</button>' +
-      '<div id="gas-connect-msg" style="margin-top:0.8rem;font-size:0.85rem;color:#e74c3c"></div>';
-    document.body.appendChild(wrap);
-  }
-  wrap.style.display = 'block';
-  setTimeout(function(){ var inp=document.getElementById('gas-input'); if(inp) inp.focus(); }, 100);
-}
-
-function applyGasConnect() {
-  var inp = document.getElementById('gas-input');
-  var u = inp ? inp.value.trim() : '';
-  var msg = document.getElementById('gas-connect-msg');
-  if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(u)) {
-    if (msg) msg.textContent = '올바른 GAS 배포 주소 형식이 아닙니다.';
-    return;
-  }
-  setGas(u);
-  var wrap = document.getElementById('connect-wrap');
-  if (wrap) wrap.style.display = 'none';
-  document.querySelectorAll('.view, .header, .tabs').forEach(function(el){ el.style.display=''; });
-  init();
-}
-
+// ===== 직원 접속 링크 / 연결 해제 =====
 function shareLink() {
-  if (!GAS_URL) { alert('먼저 기관 연결을 해주세요.'); return; }
-  var url = location.origin + location.pathname + '?gas=' + encodeURIComponent(GAS_URL);
-  return url;
+  if (!GAS_URL) { alert('먼저 연결 설정을 해주세요.'); return; }
+  return location.origin + location.pathname + '?gas=' + encodeURIComponent(GAS_URL);
 }
 
 function copyLink() {
@@ -2958,123 +2837,71 @@ function copyLink() {
 }
 
 function disconnectGas() {
-  if (!confirm('기관 연결을 해제하시겠습니까?')) return;
+  if (!confirm('이 기기에 저장된 연결 주소와 로그인 정보를 지우시겠습니까?')) return;
   setGas('');
+  ls.del('leave_session'); ls.del('sisuje_myname');
+  try { sessionStorage.removeItem('adm_pw'); } catch(e) {}
   location.reload();
 }
 
-// ===== 관리자 화면 =====
-var adminLoggedIn = false;
-var adminStaffList = [];
+// ===== 관리자: 기관 설정 화면 =====
 var adminApprovalList = [];
 
-function openAdmin() {
-  document.getElementById('app-layout').style.display='none';
-  document.querySelectorAll('.view').forEach(function(el){ el.style.display='none'; });
-  document.getElementById('admin-wrap').style.display='block';
-  adminLoggedIn = false;
-  document.getElementById('admin-body').style.display='none';
-  document.getElementById('admin-pin-section').style.display='block';
-  document.getElementById('admin-pin-input').value='';
-  document.getElementById('admin-alert').innerHTML='';
-}
-function closeAdmin() {
-  document.getElementById('admin-wrap').style.display='none';
-  document.querySelectorAll('.view').forEach(function(el){
-    el.style.display='';
-    el.classList.remove('active');
-  });
-  init();
-}
 function adminShowAlert(msg, type) {
-  document.getElementById('admin-alert').innerHTML=
-    '<div class="alert alert-'+(type||'info')+'" style="margin-bottom:0.5rem">'+msg+'</div>';
-  setTimeout(function(){ document.getElementById('admin-alert').innerHTML=''; }, 4000);
+  var el = document.getElementById('admin-alert');
+  if (!el) return;
+  el.innerHTML = '<div class="alert alert-'+(type||'info')+'">'+msg+'</div>';
+  if (type !== 'warn') setTimeout(function(){ el.innerHTML=''; }, 4000);
 }
-function adminLogin() {
-  var pin = document.getElementById('admin-pin-input').value.trim();
-  if (!pin) { adminShowAlert('PIN을 입력하세요.','warn'); return; }
-  adminShowAlert('확인 중...','info');
-  gasRun('adminCheckPin', JSON.stringify({pin:pin}), function(r){
-    if (r.success) {
-      adminLoggedIn = true;
-      document.getElementById('admin-pin-section').style.display='none';
-      document.getElementById('admin-body').style.display='block';
-      if (r.isFirst) adminShowAlert('✅ 관리자 PIN이 설정되었습니다.','success');
-      else adminShowAlert('✅ 관리자 로그인 성공','success');
-      adminLoadData();
-    } else { adminShowAlert(r.message||'PIN 오류','warn'); }
-  }, function(m){ adminShowAlert('오류: '+m,'warn'); });
-}
-function adminLoadData() {
-  // 직원 목록 로드
-  gasRun('loadAltStaffList', undefined, function(r){
-    if (r.success) { adminStaffList = r.list||[]; adminRenderStaff(); }
-  }, function(){});
-  // 결재설정 로드
-  gasRun('loadApprovalConfig', undefined, function(r){
-    var list = Array.isArray(r) ? r : (r.list||[]);
-    adminApprovalList = list;
+
+function loadAdminSettings() {
+  var u = document.getElementById('cfg-gas-url'); if (u) u.textContent = GAS_URL;
+  gasRun('getAdminConfig', null, function(c) {
+    if (!c || !c.ok) return;
+    document.getElementById('cfg-org-name').value   = c.orgName || '';
+    document.getElementById('cfg-annual').value     = c.annualLeave || '';
+    document.getElementById('cfg-work-hours').value = c.workHours || '';
+    document.getElementById('cfg-sisu-range').value = c.sisuRange || '9-18';
+  }, function(m){ adminShowAlert('설정 불러오기 오류: '+m, 'warn'); });
+  gasRun('loadApprovalConfig', undefined, function(r) {
+    adminApprovalList = Array.isArray(r) ? r : (r && r.list || []);
     adminRenderApproval();
   }, function(){});
 }
-function adminRenderStaff() {
-  var tbody = document.getElementById('admin-staff-body');
-  tbody.innerHTML = '';
-  adminStaffList.forEach(function(s, i){
-    tbody.innerHTML += adminStaffRow(s, i);
-  });
+
+function saveAdminSettings() {
+  var range = document.getElementById('cfg-sisu-range').value.trim();
+  if (range && !/^\d{1,2}-\d{1,2}$/.test(range)) { adminShowAlert('시수 입력 시간대는 9-18 처럼 입력해 주세요.', 'warn'); return; }
+  var orgName = document.getElementById('cfg-org-name').value.trim();
+  if (!orgName) { adminShowAlert('기관명을 입력해 주세요.', 'warn'); return; }
+  adminShowAlert('저장 중...', 'info');
+  gasRun('saveAdminConfig', JSON.stringify({
+    orgName: orgName,
+    annualLeave: document.getElementById('cfg-annual').value,
+    workHours: document.getElementById('cfg-work-hours').value,
+    sisuRange: range
+  }), function(r) {
+    if (r && r.ok) { adminShowAlert('✅ 저장되었습니다.', 'success'); applyOrgName(orgName); }
+    else adminShowAlert('저장 실패: '+(r && r.msg || ''), 'warn');
+  }, function(m){ adminShowAlert('오류: '+m, 'warn'); });
 }
-function adminStaffRow(s, i) {
-  var seniorOptions = adminStaffList.map(function(x){
-    return '<option value="'+x.name+'"'+(s.senior===x.name?' selected':'')+'>'+x.name+'</option>';
-  }).join('');
-  return '<tr>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(s.name||'')+'" onchange="adminStaffList['+i+'].name=this.value" style="width:70px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(s.position||'')+'" onchange="adminStaffList['+i+'].position=this.value" style="width:60px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(s.dept||'')+'" onchange="adminStaffList['+i+'].dept=this.value" style="width:60px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(s.contact||'')+'" onchange="adminStaffList['+i+'].contact=this.value" style="width:90px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(s.senior||'')+'" onchange="adminStaffList['+i+'].senior=this.value" style="width:60px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px;text-align:center"><select onchange="adminStaffList['+i+'].mode=this.value" style="padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem">'
-      +'<option value="staff"'+(s.mode==='staff'?' selected':'')+'>직원</option>'
-      +'<option value="senior"'+(s.mode==='senior'?' selected':'')+'>선임</option>'
-      +'<option value="both"'+(s.mode==='both'?' selected':'')+'>둘다</option>'
-    +'</select></td>'
-    +'<td style="border:1px solid #ddd;padding:4px;text-align:center"><button onclick="adminRemoveStaff('+i+')" style="padding:2px 8px;background:#e74c3c;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:0.8rem">삭제</button></td>'
-    +'</tr>';
-}
-function adminAddStaffRow() {
-  adminStaffList.push({name:'',position:'',dept:'',contact:'',senior:'',mode:'staff',timeRange:'9-18',email:''});
-  adminRenderStaff();
-}
-function adminRemoveStaff(i) {
-  adminStaffList.splice(i,1);
-  adminRenderStaff();
-}
-function adminSaveStaff() {
-  adminShowAlert('저장 중...','info');
-  gasRun('adminSaveStaff', JSON.stringify({list:adminStaffList}), function(r){
-    if (r.success) { adminShowAlert('✅ 직원 목록 저장 완료','success'); }
-    else adminShowAlert('실패: '+(r.message||''),'warn');
-  }, function(m){ adminShowAlert('오류: '+m,'warn'); });
-}
+
 function adminRenderApproval() {
   var tbody = document.getElementById('admin-approval-body');
-  tbody.innerHTML = '';
-  adminApprovalList.forEach(function(a, i){
-    tbody.innerHTML += adminApprovalRow(a, i);
-  });
-}
-function adminApprovalRow(a, i) {
-  var ap = a.approvers||[];
-  return '<tr>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(a.dept||'')+'" onchange="adminApprovalList['+i+'].dept=this.value" style="width:70px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(a.addressee||'')+'" onchange="adminApprovalList['+i+'].addressee=this.value" style="width:100px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(ap[0]||'')+'" onchange="adminApprovalList['+i+'].approvers[0]=this.value" style="width:60px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(ap[1]||'')+'" onchange="adminApprovalList['+i+'].approvers[1]=this.value" style="width:60px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px"><input value="'+(ap[2]||'')+'" onchange="adminApprovalList['+i+'].approvers[2]=this.value" style="width:60px;padding:3px;border:1px solid #ccc;border-radius:4px;font-size:0.8rem"></td>'
-    +'<td style="border:1px solid #ddd;padding:4px;text-align:center"><button onclick="adminRemoveApproval('+i+')" style="padding:2px 8px;background:#e74c3c;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:0.8rem">삭제</button></td>'
-    +'</tr>';
+  if (!tbody) return;
+  if (!adminApprovalList.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">결재라인이 없습니다. [+ 추가]를 눌러 입력하세요.</td></tr>'; return; }
+  tbody.innerHTML = adminApprovalList.map(function(a, i) {
+    var ap = a.approvers || (a.approvers = []);
+    var cell = function(val, code) { return '<td><input value="'+esc(val||'')+'" onchange="'+code+'=this.value"></td>'; };
+    return '<tr>'
+      + cell(a.dept, 'adminApprovalList['+i+'].dept')
+      + cell(a.addressee, 'adminApprovalList['+i+'].addressee')
+      + cell(ap[0], 'adminApprovalList['+i+'].approvers[0]')
+      + cell(ap[1], 'adminApprovalList['+i+'].approvers[1]')
+      + cell(ap[2], 'adminApprovalList['+i+'].approvers[2]')
+      + '<td><button class="row-btn no" onclick="adminRemoveApproval('+i+')">삭제</button></td>'
+      + '</tr>';
+  }).join('');
 }
 function adminAddApprovalRow() {
   adminApprovalList.push({dept:'',addressee:'',approvers:['','','']});
@@ -3087,8 +2914,8 @@ function adminRemoveApproval(i) {
 function adminSaveApproval() {
   adminShowAlert('저장 중...','info');
   gasRun('adminSaveApproval', JSON.stringify({list:adminApprovalList}), function(r){
-    if (r.success) { adminShowAlert('✅ 결재라인 저장 완료','success'); }
-    else adminShowAlert('실패: '+(r.message||''),'warn');
+    if (r && r.success) { adminShowAlert('✅ 결재라인 저장 완료','success'); APPROVAL_CONFIG = adminApprovalList.filter(function(a){ return a.dept; }); }
+    else adminShowAlert('실패: '+(r && r.message || ''),'warn');
   }, function(m){ adminShowAlert('오류: '+m,'warn'); });
 }
 
@@ -3101,44 +2928,9 @@ function adminSaveApproval() {
   }
 }
 
-// 시수 init은 근태 세션 복원 후 필요할 때만 실행
-// (아래 DOMContentLoaded 블록에서 조율)
-function initSisujeIfNeeded() {
-  if (!GAS_URL) {
-    connectView();
-  } else {
-    init();
-  }
-}
-
-// ============================================================
-// ===== 근태관리 모듈 =====
-// ============================================================
-
-// 근태 GAS URL (시수 GAS와 동일하거나 별도 설정)
-var LEAVE_GAS_URL = ls.get('leave_gas', '');
-
-function setLeaveGas(u) {
-  LEAVE_GAS_URL = u;
-  ls.set('leave_gas', u);
-}
-
-// 근태 GAS 호출 — Vercel 프록시(/api/proxy)를 통해 CORS 우회
-function gasRunLeave(fnName, arg, onSuccess, onFail) {
-  var gasUrl = LEAVE_GAS_URL || GAS_URL;
-  if (!gasUrl) { onFail('GAS 주소가 없습니다. ⚙️ 설정에서 GAS 주소를 입력해주세요.'); return; }
-  fetch('/api/proxy', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ gasUrl: gasUrl, fn: fnName, arg: arg !== undefined ? arg : null }),
-  })
-  .then(function(r){ return r.text(); })
-  .then(function(t){
-    try { onSuccess(JSON.parse(t)); }
-    catch(e){ onFail('응답 파싱 오류: '+t.substring(0,100)); }
-  })
-  .catch(function(err){ onFail(err.message||'오류'); });
-}
+// 근태 기능도 같은 주소·같은 호출을 사용 (예전 이름 유지)
+var LEAVE_GAS_URL = GAS_URL;
+function gasRunLeave(fnName, arg, onSuccess, onFail) { gasRun(fnName, arg, onSuccess, onFail); }
 
 // 근태 사용자 세션
 var leaveUser = null;    // { name, hourly, dept, position, role, myStaff }
@@ -3158,212 +2950,147 @@ function showLeaveAlert(msg, type, areaId) {
   if (type !== 'warn') setTimeout(function(){ if(el) el.innerHTML=''; }, 4000);
 }
 
-// ===== GAS URL 저장 (로그인 화면에서) =====
-function saveLeaveGasFromInput() {
-  var v = document.getElementById('leave-gas-input').value.trim();
-  if (!v || !/^https:\/\/script\.google\.com\/.+\/exec/.test(v)) {
-    alert('올바른 GAS 주소가 아닙니다.'); return;
-  }
-  setLeaveGas(v);
-  document.getElementById('leave-gas-setup').style.display = 'none';
-  showLeaveLoginView();
+// ===== 기관명 표시 =====
+function applyOrgName(name) {
+  if (!name) return;
+  var el = document.getElementById('login-org-name'); if (el) el.textContent = name;
+  var h1 = document.getElementById('header-title');   if (h1) h1.textContent = name + ' 근태관리';
+  document.title = name + ' 근태관리';
+}
+function refreshOrgName() {
+  if (!GAS_URL) return;
+  gasRun('getOrgConfig', null, function(cfg) { if (cfg && cfg.orgName) applyOrgName(cfg.orgName); }, function(){});
 }
 
-// ===== 근태 로그인 뷰 표시 =====
+// ===== 로그인 화면 =====
+function showLoginPane(which) {
+  document.getElementById('login-pane-staff').style.display = which==='admin' ? 'none' : '';
+  document.getElementById('login-pane-admin').style.display = which==='admin' ? '' : 'none';
+  document.getElementById('leave-login-alert').innerHTML = '';
+  var f = document.getElementById(which==='admin' ? 'admin-login-pw' : 'leave-login-pin');
+  if (f) { f.value=''; try { f.focus(); } catch(e) {} }
+}
+
 function showLeaveLoginView() {
+  leaveUser = null; leaveIsAdmin = false;
   clearAllViews();
-  // app-layout과 사이드바 표시
-  var layout = document.getElementById('app-layout');
-  if (layout) layout.style.display = 'flex';
-  // 사이드바는 로그인 전이면 숨김
-  ['tabs-staff','tabs-both','tabs-senior'].forEach(function(id){
-    var s = document.getElementById(id);
-    if (s) s.style.display = 'none';
-  });
-  var el = document.getElementById('view-leave-login');
-  if (el) el.classList.add('active');
+  showSidebar('');
+  setHeaderName('');
+  document.getElementById('view-leave-login').classList.add('active');
+  showLoginPane('staff');
 
-  // GAS URL 없으면 설정 박스 표시
-  var setupBox = document.getElementById('leave-gas-setup');
-  if (setupBox) setupBox.style.display = (!LEAVE_GAS_URL && !GAS_URL) ? '' : 'none';
+  var need = document.getElementById('login-need-gas');
+  if (need) need.style.display = GAS_URL ? 'none' : 'flex';
+  if (!GAS_URL) return;
 
-  // 기관명 표시
-  if (LEAVE_GAS_URL || GAS_URL) {
-    gasRunLeave('getOrgConfig', null, function(cfg) {
-      if (cfg && cfg.orgName) {
-        var el2 = document.getElementById('login-org-name');
-        if (el2) el2.textContent = cfg.orgName;
-        document.title = cfg.orgName + ' 근태관리';
-        var h1 = document.querySelector('.header h1');
-        if (h1) h1.textContent = cfg.orgName;
-      }
-    }, function(){});
-  }
+  refreshOrgName();
 
-  // 직원 이름 목록 로드
+  // 직원 이름 목록
   var sel = document.getElementById('leave-login-name');
   if (sel && sel.options.length <= 1) {
-    gasRunLeave('getStaffNames', null, function(names) {
-      if (Array.isArray(names)) {
-        names.forEach(function(n) {
-          var o = document.createElement('option');
-          o.value = o.textContent = n;
-          sel.appendChild(o);
-        });
-      }
-    }, function(){});
+    gasRun('getStaffNames', null, function(names) {
+      if (!Array.isArray(names)) return;
+      if (!names.length) { showLeaveAlert('등록된 직원이 없습니다. 관리자 로그인 → [직원 관리]에서 먼저 직원을 등록해 주세요.', 'warn', 'leave-login-alert'); return; }
+      names.forEach(function(n) {
+        var o = document.createElement('option');
+        o.value = o.textContent = n;
+        sel.appendChild(o);
+      });
+    }, function(m){ showLeaveAlert('연결 오류: '+m, 'warn', 'leave-login-alert'); });
   }
 }
 
-// ===== 근태 직원 로그인 =====
+// 직원 모드 진입 (로그인 직후 / 새로고침 후 자동 복원)
+function enterUser(res) {
+  leaveUser = res;
+  leaveIsAdmin = false;
+  var isSenior = res.role === '선임';
+  window.APP_SENIOR = isSenior ? res.name : '';
+  var sg = document.getElementById('nav-senior-group'); if (sg) sg.style.display = isSenior ? '' : 'none';
+  showSidebar('tabs-staff');
+  setHeaderName(res.name + (isSenior ? ' (선임)' : ''));
+  setLeaveUserBadge(res.name + (isSenior ? ' (선임)' : ''));
+  refreshOrgName();
+  showView('leave');
+  loadLeaveDashboard();
+  // 시수 화면용 정보는 뒤에서 조용히 준비
+  init(function(){ if (isSenior) startAutoRefresh(); });
+}
+
 function doLeaveLogin() {
   var name = document.getElementById('leave-login-name').value;
   var pin  = document.getElementById('leave-login-pin').value.trim();
-  var alertEl = document.getElementById('leave-login-alert');
   if (!name) { showLeaveAlert('이름을 선택해 주세요.', 'warn', 'leave-login-alert'); return; }
   if (!pin)  { showLeaveAlert('PIN을 입력해 주세요.', 'warn', 'leave-login-alert'); return; }
   showLeaveAlert('확인 중...', 'info', 'leave-login-alert');
-  gasRunLeave('login', JSON.stringify({name:name, pin:pin}), function(res) {
-    if (!res.ok) { showLeaveAlert(res.msg||'로그인 실패', 'warn', 'leave-login-alert'); return; }
-    leaveUser = res;
-    leaveIsAdmin = false;
+  gasRun('login', JSON.stringify({name:name, pin:pin}), function(res) {
+    if (!res || !res.ok) { showLeaveAlert(res && res.msg || '로그인 실패', 'warn', 'leave-login-alert'); return; }
     ls.set('leave_session', JSON.stringify({name:res.name, pin:pin}));
-    showLeaveAlert('', 'info', 'leave-login-alert');
-    // 대시보드로 이동
-    clearAllViews();
-    document.getElementById('app-layout').style.display = 'flex';
-    // 역할에 따라 사이드바 선택
-    var sidebarId = (res.role === '선임') ? 'tabs-both' : 'tabs-staff';
-    ['tabs-staff','tabs-both','tabs-senior'].forEach(function(id){
-      document.getElementById(id).style.display = (id === sidebarId) ? 'flex' : 'none';
-    });
-    document.getElementById('view-leave').classList.add('active');
-    setLeaveUserBadge(res.name + (res.role==='선임' ? ' (선임)' : ''));
-    loadLeaveDashboard();
+    document.getElementById('leave-login-alert').innerHTML = '';
     document.getElementById('leave-login-pin').value = '';
+    enterUser(res);
   }, function(m) {
     showLeaveAlert('오류: '+m, 'warn', 'leave-login-alert');
   });
 }
 
-function doLeaveAdminLoginPrompt() {
-  // 더 이상 직접 사용 안 함 — openSettings()로 통합
-  openSettings();
+// 관리자 모드 진입 → 바로 대시보드
+function enterAdmin() {
+  leaveUser = null;
+  leaveIsAdmin = true;
+  window.APP_SENIOR = '';
+  showSidebar('tabs-admin');
+  setHeaderName('관리자');
+  refreshOrgName();
+  switchAdminTab('dashboard');
 }
 
-// ===== 통합 설정 모달 =====
-// 로그인 화면의 "관리자 로그인" 버튼 — 비밀번호 입력 후 바로 관리자 화면으로 진입
-function openAdminDirectLogin() {
-  var pw = prompt('관리자 비밀번호를 입력하세요:');
-  if (pw === null) return; // 취소
-  if (!LEAVE_GAS_URL && !GAS_URL) {
-    alert('먼저 ⚙️ 설정에서 GAS 주소를 입력해 주세요.');
-    openSettings(); return;
-  }
-  gasRunLeave('adminLogin', JSON.stringify({pw: pw}), function(res) {
-    if (res && res.ok) {
-      window._settingsAdminLoggedIn = true;
-      leaveIsAdmin = true;
-      openLeaveAdminView();
-    } else {
-      alert('비밀번호가 맞지 않습니다.');
-    }
+function doAdminLogin() {
+  var pw = document.getElementById('admin-login-pw').value;
+  if (!pw) { showLeaveAlert('비밀번호를 입력해 주세요.', 'warn', 'leave-login-alert'); return; }
+  if (!GAS_URL) { showLeaveAlert('먼저 ⚙️ 연결 설정에서 GAS 주소를 입력해 주세요.', 'warn', 'leave-login-alert'); return; }
+  showLeaveAlert('확인 중...', 'info', 'leave-login-alert');
+  gasRun('adminLogin', JSON.stringify({pw:pw}), function(res) {
+    if (!res || !res.ok) { showLeaveAlert('비밀번호가 맞지 않습니다.', 'warn', 'leave-login-alert'); return; }
+    try { sessionStorage.setItem('adm_pw', pw); } catch(e) {}   // 새로고침해도 이 탭에서는 유지
+    document.getElementById('leave-login-alert').innerHTML = '';
+    document.getElementById('admin-login-pw').value = '';
+    enterAdmin();
   }, function(m) {
-    alert('오류: ' + m);
+    showLeaveAlert('오류: '+m, 'warn', 'leave-login-alert');
   });
 }
 
+function doLogout() {
+  if (!confirm('로그아웃 하시겠습니까?')) return;
+  ls.del('leave_session');
+  try { sessionStorage.removeItem('adm_pw'); } catch(e) {}
+  location.reload();
+}
+
+// ===== 연결 설정 창 (GAS 주소) =====
 function openSettings() {
   var modal = document.getElementById('settings-modal');
   if (!modal) return;
-  // GAS URL 현재값 채우기
-  var gasInput = document.getElementById('settings-gas-input');
-  if (gasInput) gasInput.value = LEAVE_GAS_URL || GAS_URL || '';
+  document.getElementById('settings-gas-input').value = GAS_URL || '';
   document.getElementById('settings-gas-msg').textContent = '';
-
-  // 관리자 로그인 상태 초기화
-  document.getElementById('settings-admin-alert').innerHTML = '';
-  document.getElementById('settings-admin-pin').value = '';
-  // 로그인 여부에 따라 UI 전환
-  if (window._settingsAdminLoggedIn) {
-    document.getElementById('settings-admin-login').style.display = 'none';
-    document.getElementById('settings-admin-logged').style.display = '';
-  } else {
-    document.getElementById('settings-admin-login').style.display = '';
-    document.getElementById('settings-admin-logged').style.display = 'none';
-  }
-
   modal.style.display = '';
 }
 
 function closeSettings() {
   var modal = document.getElementById('settings-modal');
   if (modal) modal.style.display = 'none';
-  window._settingsAdminLoggedIn = false;
 }
 
 function applySettingsGas() {
   var val = (document.getElementById('settings-gas-input').value || '').trim();
   var msg = document.getElementById('settings-gas-msg');
-  if (!val) { msg.style.color='#e74c3c'; msg.textContent='주소를 입력해주세요.'; return; }
-  if (!val.startsWith('https://')) { msg.style.color='#e74c3c'; msg.textContent='https:// 로 시작하는 주소를 입력하세요.'; return; }
-  msg.style.color='#888'; msg.textContent='연결 확인 중...';
-  // LEAVE_GAS_URL 우선 저장 (근태) — 기존 키와 동일하게 'leave_gas'
-  ls.set('leave_gas', val);
-  LEAVE_GAS_URL = val;
-  // 시수도 같이 저장
-  if (!GAS_URL) { ls.set('gas_url', val); GAS_URL = val; }
-  msg.style.color='var(--success)'; msg.textContent='✅ 저장되었습니다. 페이지를 새로고침합니다...';
-  setTimeout(function(){ location.reload(); }, 1000);
-}
-
-function doSettingsAdminLogin() {
-  var pw = (document.getElementById('settings-admin-pin').value || '').trim();
-  var alertEl = document.getElementById('settings-admin-alert');
-  if (!pw) { alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">비밀번호를 입력하세요.</div>'; return; }
-  if (!LEAVE_GAS_URL && !GAS_URL) {
-    alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">GAS 주소를 먼저 입력하세요.</div>';
-    return;
+  if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(val)) {
+    msg.style.color='var(--danger)'; msg.textContent='https://script.google.com/…/exec 형식의 주소를 입력해 주세요.'; return;
   }
-  alertEl.innerHTML='<div class="alert alert-info" style="margin:0">확인 중...</div>';
-  // 근태 관리자 비밀번호로 로그인
-  gasRunLeave('adminLogin', JSON.stringify({pw:pw}), function(res) {
-    if (res && res.ok) {
-      window._settingsAdminLoggedIn = true;
-      leaveIsAdmin = true;
-      alertEl.innerHTML='<div class="alert alert-success" style="margin:0">✅ 관리자 로그인 성공</div>';
-      document.getElementById('settings-admin-login').style.display = 'none';
-      document.getElementById('settings-admin-logged').style.display = '';
-    } else {
-      alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">비밀번호가 맞지 않습니다.</div>';
-    }
-  }, function(m) {
-    alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">오류: '+m+'</div>';
-  });
-}
-
-function openAdminBody() {
-  // 시수 관리자 패널 열기
-  document.getElementById('app-layout').style.display = 'none';
-  document.querySelectorAll('.view').forEach(function(el){ el.style.display='none'; });
-  document.getElementById('admin-wrap').style.display = 'block';
-  document.getElementById('admin-pin-section').style.display = 'none';
-  document.getElementById('admin-body').style.display = 'block';
-  adminLoadData();
-}
-
-function openLeaveAdminView() {
-  // 근태 관리자 화면 열기
-  leaveIsAdmin = true;
-  clearAllViews();
-  document.getElementById('app-layout').style.display = 'flex';
-  ['tabs-staff','tabs-both'].forEach(function(id){
-    document.getElementById(id).style.display = 'none';
-  });
-  document.getElementById('tabs-senior').style.display = 'flex';
-  document.getElementById('view-leavemgr').classList.add('active');
-  setLeaveUserBadge('관리자');
-  loadLeaveMgr();
+  setGas(val);
+  msg.style.color='var(--success)'; msg.textContent='✅ 저장되었습니다. 화면을 새로 엽니다...';
+  setTimeout(function(){ location.reload(); }, 800);
 }
 
 function setLeaveUserBadge(name) {
@@ -3422,7 +3149,7 @@ function renderLeaveHistTable(list, tbodyId, isDash) {
   list.forEach(function(h, idx) {
     var typeClass = h.type==='휴가'?'lb-leave':h.type==='시간외'?'lb-ot':'lb-sisu';
     var statusClass = h.status==='확인'||h.status==='승인'?'lb-ok':h.status==='반려'||h.status==='거절'?'lb-rej':'lb-wait';
-    var deleteBtn = h.row ? '<button onclick="deleteLeaveHistRow('+h.row+',\''+h.type+'\')" style="font-size:0.75rem;padding:3px 8px;background:#fee2e2;color:#991b1b;border:none;border-radius:4px;cursor:pointer;">삭제</button>' : '-';
+    var deleteBtn = (h.row && h.canDelete !== false) ? '<button onclick="deleteLeaveHistRow('+h.row+',\''+h.type+'\')" style="font-size:0.75rem;padding:3px 8px;background:#fee2e2;color:#991b1b;border:none;border-radius:4px;cursor:pointer;">삭제</button>' : '-';
     html += '<tr>';
     html += '<td style="text-align:center;padding:6px 8px;"><span class="leave-badge '+typeClass+'">'+h.type+'</span></td>';
     html += '<td style="text-align:center;padding:6px 8px;white-space:nowrap;font-size:0.82rem;">'+h.date+'</td>';
@@ -3450,7 +3177,7 @@ function loadLeaveHist() {
 function filterLeaveHist(type) {
   var list = type==='all' ? leaveHistData : leaveHistData.filter(function(h){ return h.type===type; });
   renderLeaveHistTable(list, 'leavehist-body', false);
-  ['all','휴가','시간외'].forEach(function(t){
+  ['all','휴가','시간외','대체휴무'].forEach(function(t){
     var btn = document.getElementById('lh-btn-'+t);
     if (btn) {
       btn.className = t===type ? 'btn btn-primary' : 'btn btn-outline';
@@ -3462,8 +3189,8 @@ function filterLeaveHist(type) {
 
 // ===== 내역 삭제 =====
 function deleteLeaveHistRow(row, type) {
-  if (!confirm('이 신청을 삭제하시겠습니까?\n(선임이 확인한 항목은 삭제되지 않습니다)')) return;
-  var fnName = type==='휴가' ? 'deleteLeaveRow' : type==='시간외' ? 'deleteOvertimeRow' : null;
+  if (!confirm('이 신청을 삭제하시겠습니까?\n(이미 승인·반려된 신청은 삭제되지 않습니다)')) return;
+  var fnName = type==='휴가' ? 'deleteLeaveRow' : type==='시간외' ? 'deleteOvertimeRow' : type==='대체휴무' ? 'deleteCompLeaveRow' : null;
   if (!fnName) { alert('삭제할 수 없는 유형입니다.'); return; }
   gasRunLeave(fnName, JSON.stringify({row:row}), function(res) {
     if (res.ok) {
@@ -3731,7 +3458,7 @@ function calcOvertimeLeave() {
     document.getElementById('ot-wi-actual').textContent = weekInfo.actual;
     // 수당 계산
     gasRunLeave('calcOvertimePay', JSON.stringify({
-      hourly: leaveUser.hourly, dayType: dayType, start: start, end: end, actualWeeklyHours: weekInfo.actual
+      hourly: leaveUser.hourly, dayType: dayType, start: start, end: end, actualWeeklyHours: weekInfo.actual, name: leaveUser.name
     }), function(res) {
       if (!res.ok) { showLeaveAlert(res.msg||'계산 오류','warn','alert-area-overtime'); return; }
       leaveCalcResult = Object.assign({}, res, {date, dayType, start, end, actualWeeklyHours:weekInfo.actual});
@@ -3846,94 +3573,177 @@ function printOvertimeReq() {
   setTimeout(function(){ printWin.print(); }, 800);
 }
 
-// ===== 선임/관리자: 근태 현황 =====
-var leaveMgrData = [];
-
-// ===== 연차 관리 탭 전환 =====
-function switchLeaveMgrTab(tab) {
-  var panels = ['approval','annual','dashboard','staff','comp'];
-  panels.forEach(function(p) {
-    var el = document.getElementById('lmpanel-'+p);
-    if (el) el.style.display = p === tab ? '' : 'none';
-    var btn = document.getElementById('lmtab-'+p);
-    if (btn) {
-      btn.style.background = p === tab ? 'var(--primary)' : 'none';
-      btn.style.color = p === tab ? '#fff' : 'var(--primary)';
-      btn.style.fontWeight = p === tab ? '600' : 'normal';
-    }
-  });
-  if (tab === 'annual') loadAnnualMgr();
-  if (tab === 'dashboard') loadAdminDashboard();
-  if (tab === 'staff') loadStaffMgr();
-  if (tab === 'comp') loadCompMgr();
-}
-
-// ===== 관리자 대시보드 =====
-function _initDashYearSelect() {
-  var sel = document.getElementById('dash-year-select');
+// ============================================================
+// ===== 관리자 화면 =====
+// ============================================================
+function _initYearSelect(id) {
+  var sel = document.getElementById(id);
   if (!sel || sel.options.length > 0) return;
   var y = new Date().getFullYear();
-  for (var i = y-1; i <= y+1; i++) {
+  for (var i = y-2; i <= y+1; i++) {
     var o = document.createElement('option');
     o.value = i; o.textContent = i+'년';
     if (i === y) o.selected = true;
     sel.appendChild(o);
   }
 }
+function fmtNum(n) { return (Math.round((Number(n)||0)*10)/10).toLocaleString(); }
+function statusBadge(s) {
+  s = s || '대기';
+  var cls = (s==='승인'||s==='확인'||s==='부여') ? 'lb-ok' : (s==='반려'||s==='거절'||s==='취소') ? 'lb-rej' : 'lb-wait';
+  return '<span class="leave-badge '+cls+'">'+esc(s)+'</span>';
+}
+function setApprovalBadge(n) {
+  var b = document.getElementById('adm-pending-badge');
+  if (!b) return;
+  b.textContent = n; b.style.display = n > 0 ? '' : 'none';
+}
+
+// ----- 대시보드 -----
+var admDash = null, admDashSel = '';
 
 function loadAdminDashboard() {
-  _initDashYearSelect();
+  _initYearSelect('dash-year-select');
   var year = document.getElementById('dash-year-select').value;
   var body = document.getElementById('dashboard-body');
-  body.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:1.5rem;">불러오는 중...</p>';
-  gasRunLeave('getAdminDashboard', JSON.stringify({year: Number(year)}), function(res) {
-    if (!res.ok) { body.innerHTML = '<p style="color:red;text-align:center;">'+res.msg+'</p>'; return; }
-    var html = '<table style="width:100%;border-collapse:collapse;font-size:0.82rem;min-width:650px;">';
-    html += '<thead><tr style="background:var(--primary);color:white;">';
-    html += '<th style="padding:7px 8px;text-align:left;">이름</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">부여연차</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">휴가사용</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">시수전환</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">잔여연차</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">시간외(h)</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">시간외수당</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">시수(차시)</th>';
-    html += '<th style="padding:7px 8px;text-align:center;">대체휴무</th>';
-    html += '</tr></thead><tbody>';
-    (res.dashboard || []).forEach(function(d, i) {
-      var bg = i%2===0 ? '' : 'background:#f9f9f9;';
-      var remColor = d.annual.remaining <= 2 ? 'color:#ef4444;font-weight:700;' : d.annual.remaining <= 5 ? 'color:#f59e0b;font-weight:600;' : '';
-      var compBadge = d.comp.remaining > 0 ? '<span style="background:#10b981;color:#fff;border-radius:4px;padding:1px 5px;font-size:0.75rem;margin-left:3px;">'+d.comp.remaining+'일</span>' : '';
-      html += '<tr style="'+bg+'">';
-      html += '<td style="padding:6px 8px;font-weight:600;">'+d.name+'</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">'+d.annual.granted+'일</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">'+d.annual.leaveDays+'일</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">'+d.annual.sisuDays+'일</td>';
-      html += '<td style="padding:6px 8px;text-align:center;'+remColor+'">'+d.annual.remaining+'일</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">'+d.overtime.hours+'h</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">'+Number(d.overtime.pay).toLocaleString()+'원</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">'+d.sisuje.confirmed+'/'+d.sisuje.chi+'차시</td>';
-      html += '<td style="padding:6px 8px;text-align:center;">부여'+d.comp.granted+'/사용'+d.comp.used+compBadge+'</td>';
-      html += '</tr>';
-    });
-    html += '</tbody></table>';
-    body.innerHTML = html;
+  body.innerHTML = '<div class="adm-table"><div class="empty">불러오는 중...</div></div>';
+  gasRun('getAdminDashboard', JSON.stringify({year: Number(year)}), function(res) {
+    if (!res || !res.ok) { body.innerHTML = '<div class="adm-table"><div class="empty danger-text">'+esc(res && res.msg || '불러오기 실패')+'</div></div>'; return; }
+    admDash = res;
+    var s = res.summary || {};
+    setApprovalBadge((s.pendingLeave||0) + (s.pendingOvertime||0) + (s.pendingComp||0));
+    renderAdminKpis();
+    renderAdminDashboard();
   }, function(m) {
-    body.innerHTML = '<p style="color:red;text-align:center;">오류: '+m+'</p>';
+    body.innerHTML = '<div class="adm-table"><div class="empty danger-text">오류: '+esc(m)+'</div></div>';
   });
 }
 
-// ===== 직원 관리 =====
+function renderAdminKpis() {
+  var s = admDash.summary || {}, y = admDash.year;
+  var pend = (s.pendingLeave||0) + (s.pendingOvertime||0) + (s.pendingComp||0);
+  var html = '';
+  html += '<div class="kpi"><div class="k-label">직원</div><div class="k-num">'+(s.staffCount||0)+'<small>명</small></div><div class="k-sub">'+y+'년 기준</div></div>';
+  html += '<div class="kpi'+(pend>0?' kpi-alert" onclick="switchAdminTab(\'approval\')" title="신청 처리로 이동':'')+'"><div class="k-label">처리 대기</div><div class="k-num">'+pend+'<small>건</small></div>'
+        + '<div class="k-sub">휴가 '+(s.pendingLeave||0)+' · 시간외 '+(s.pendingOvertime||0)+' · 대체휴무 '+(s.pendingComp||0)+'</div></div>';
+  html += '<div class="kpi"><div class="k-label">휴가 사용 (승인)</div><div class="k-num">'+fmtNum(s.leaveDays)+'<small>일</small></div><div class="k-sub">전 직원 합계</div></div>';
+  html += '<div class="kpi"><div class="k-label">시수 사용</div><div class="k-num">'+fmtNum(s.sisuChi)+'<small>차시</small></div><div class="k-sub">선임 미확인 '+(s.pendingSisu||0)+'차시</div></div>';
+  html += '<div class="kpi"><div class="k-label">시간외 (승인)</div><div class="k-num">'+fmtNum(s.otHours)+'<small>시간</small></div><div class="k-sub">수당 '+fmtNum(s.otPay)+'원</div></div>';
+  html += '<div class="kpi"><div class="k-label">대체시수</div><div class="k-num">'+fmtNum(s.altOccHours)+'<small>h 발생</small></div><div class="k-sub">사용 '+fmtNum(s.altUseHours)+'h · 선임 미확인 '+(s.pendingAlt||0)+'건</div></div>';
+  document.getElementById('dash-kpis').innerHTML = html;
+}
+
+function renderAdminDashboard() {
+  if (!admDash) return;
+  var q = (document.getElementById('dash-search').value || '').trim();
+  var body = document.getElementById('dashboard-body');
+  var rows = admDash.dashboard || [];
+  var html = '<table class="adm-table" style="min-width:1040px;"><thead>';
+  html += '<tr class="grp-row"><th colspan="2"></th><th colspan="3" class="sep">연차</th><th class="sep">휴가</th><th class="sep">시수</th><th colspan="2" class="sep">시간외</th><th colspan="3" class="sep">대체시수 (시간)</th><th colspan="3" class="sep">대체휴무 (일)</th><th class="sep"></th></tr>';
+  html += '<tr><th class="l">이름</th><th class="l">부서 · 직위</th>'
+        + '<th class="sep">부여</th><th>사용</th><th>잔여</th>'
+        + '<th class="sep">사용일</th>'
+        + '<th class="sep">입력 / 확인</th>'
+        + '<th class="sep">시간</th><th>수당</th>'
+        + '<th class="sep">발생</th><th>사용</th><th>잔여</th>'
+        + '<th class="sep">부여</th><th>사용</th><th>잔여</th>'
+        + '<th class="sep">대기</th></tr></thead><tbody>';
+  var shown = 0;
+  rows.forEach(function(d, i) {
+    if (q && (d.name + ' ' + d.dept + ' ' + d.position).indexOf(q) < 0) return;
+    shown++;
+    var a = d.annual, pct = a.granted > 0 ? Math.min(100, Math.round(a.used / a.granted * 100)) : 0;
+    var remCls = a.granted > 0 && a.remaining <= 2 ? 'danger-text' : a.granted > 0 && a.remaining <= 5 ? 'warn-text' : 'num-strong';
+    var pend = d.leave.pending + d.overtime.pending + d.comp.pending;
+    html += '<tr class="clickable'+(d.name===admDashSel?' selected':'')+'" onclick="selectAdminStaff('+i+')">';
+    html += '<td class="l"><b>'+esc(d.name)+'</b>'+(d.role==='선임'?' <span class="leave-badge lb-leave">선임</span>':'')+'</td>';
+    html += '<td class="l muted">'+esc([d.dept, d.position].filter(Boolean).join(' · '))+'</td>';
+    html += '<td class="sep">'+fmtNum(a.granted)+'</td>';
+    html += '<td>'+fmtNum(a.used)+'<div class="mini-bar"><i style="width:'+pct+'%"></i></div></td>';
+    html += '<td class="'+remCls+'">'+fmtNum(a.remaining)+'</td>';
+    html += '<td class="sep">'+fmtNum(d.leave.days)+'일</td>';
+    html += '<td class="sep">'+d.sisuje.saved+' / '+d.sisuje.confirmed+'<span class="muted"> 차시</span></td>';
+    html += '<td class="sep">'+fmtNum(d.overtime.hours)+'h</td><td>'+fmtNum(d.overtime.pay)+'원</td>';
+    html += '<td class="sep">'+fmtNum(d.alt.occHours)+'</td><td>'+fmtNum(d.alt.useHours)+'</td><td class="num-strong">'+fmtNum(d.alt.remainHours)+'</td>';
+    html += '<td class="sep">'+fmtNum(d.comp.granted)+'</td><td>'+fmtNum(d.comp.used)+'</td><td class="num-strong">'+fmtNum(d.comp.remaining)+'</td>';
+    html += '<td class="sep">'+(pend>0?'<span class="leave-badge lb-wait">'+pend+'건</span>':'<span class="muted">-</span>')+'</td>';
+    html += '</tr>';
+  });
+  if (!shown) html += '<tr><td colspan="16" class="empty">'+(rows.length ? '검색 결과가 없습니다.' : '등록된 직원이 없습니다. 왼쪽 아래 [직원 관리]에서 직원을 등록해 주세요.')+'</td></tr>';
+  html += '</tbody></table>';
+  body.innerHTML = html;
+  var cur = rows.filter(function(d){ return d.name===admDashSel; })[0];
+  if (cur) renderAdminDetail(cur); else document.getElementById('dash-detail').innerHTML = '';
+}
+
+function selectAdminStaff(i) {
+  var d = admDash.dashboard[i];
+  admDashSel = (admDashSel === d.name) ? '' : d.name;   // 다시 누르면 접기
+  renderAdminDashboard();
+  if (admDashSel) { var el = document.getElementById('dash-detail'); if (el && el.scrollIntoView) el.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+}
+
+function renderAdminDetail(d) {
+  function box(title, sub, items) {
+    return '<div class="detail-box"><h4>'+title+'<span>'+sub+'</span></h4><div class="detail-list">'
+      + (items.length ? items.join('') : '<div class="muted" style="padding:0.6rem 0;">내역이 없습니다.</div>') + '</div></div>';
+  }
+  function item(main, sub, right) {
+    return '<div class="detail-item"><div class="d-main">'+main+(sub?'<div class="d-sub">'+sub+'</div>':'')+'</div><div class="d-right">'+right+'</div></div>';
+  }
+  var y = admDash.year;
+  var leave = d.leave.list.map(function(x){
+    return item('<b>'+esc(x.type)+'</b> '+esc(x.start)+(x.end && x.end!==x.start ? ' ~ '+esc(x.end) : ''), esc(x.reason), fmtNum(x.days)+'일 '+statusBadge(x.status));
+  });
+  var sisu = d.sisuje.list.map(function(x){
+    return item(x.month+'월 '+x.day+'일 '+esc(x.start)+'시~'+esc(x.end)+'시', esc(x.docNo)+(x.note?' · '+esc(x.note):''), statusBadge(x.confirmed?'확인':'대기'));
+  });
+  var ot = d.overtime.list.map(function(x){
+    return item('<b>'+esc(x.workDate)+'</b> '+esc(x.start)+'~'+esc(x.end)+' ('+fmtNum(x.hours)+'h)', esc(x.content), fmtNum(x.pay)+'원 '+statusBadge(x.status));
+  });
+  var alt = d.alt.list.map(function(x){
+    var main = (x.occ ? '발생 <b>'+esc(x.occ)+'</b> +'+fmtNum(x.occHours)+'h' : '') + (x.use ? (x.occ?' → ':'')+'사용 <b>'+esc(x.use)+'</b> -'+fmtNum(x.useHours)+'h' : '');
+    var right = (x.occ ? '<span class="d-sub">발생</span> '+statusBadge(x.occConfirmed?'확인':'대기') : '') + (x.use ? ' <span class="d-sub">사용</span> '+statusBadge(x.useConfirmed?'확인':'대기') : '');
+    return item(main, esc(x.occReason), right);
+  });
+  var comp = d.comp.list.map(function(x){
+    return item('<b>'+x.kind+'</b> '+esc(x.date), esc(x.reason), (x.kind==='부여'?'+':'-')+fmtNum(x.days)+'일 '+statusBadge(x.status));
+  });
+  var a = d.annual;
+  var html = '<div class="card" style="margin-top:1rem;">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.9rem;">'
+    + '<div style="font-size:1.05rem;font-weight:700;color:var(--primary);">👤 '+esc(d.name)+' <span class="muted" style="font-size:0.82rem;font-weight:400;">'+esc([d.dept,d.position].filter(Boolean).join(' · '))+' · '+y+'년</span></div>'
+    + '<div class="muted" style="font-size:0.84rem;">연차 부여 <b>'+fmtNum(a.granted)+'</b>일 − 휴가 <b>'+fmtNum(a.leaveDays)+'</b>일 − 시수 <b>'+fmtNum(a.sisuDays)+'</b>일 = 잔여 <b style="color:var(--primary);">'+fmtNum(a.remaining)+'</b>일'
+    + ' <button class="row-btn plain no-print" onclick="admDashSel=\'\';renderAdminDashboard()">닫기</button></div></div>'
+    + '<div class="detail-grid">'
+    + box('🗓️ 휴가', '승인 '+fmtNum(d.leave.days)+'일 · 신청 '+d.leave.count+'건', leave)
+    + box('📋 시수', d.sisuje.saved+'차시 (확인 '+d.sisuje.confirmed+') → 연차 '+d.sisuje.days+'일 차감', sisu)
+    + box('⏰ 시간외', '승인 '+fmtNum(d.overtime.hours)+'h · '+fmtNum(d.overtime.pay)+'원', ot)
+    + box('🔄 대체시수', '발생 '+fmtNum(d.alt.occHours)+'h · 사용 '+fmtNum(d.alt.useHours)+'h · 잔여 '+fmtNum(d.alt.remainHours)+'h', alt)
+    + box('🎁 대체휴무', '부여 '+fmtNum(d.comp.granted)+'일 · 사용 '+fmtNum(d.comp.used)+'일 · 잔여 '+fmtNum(d.comp.remaining)+'일', comp)
+    + '</div></div>';
+  document.getElementById('dash-detail').innerHTML = html;
+}
+
+// ----- 직원 관리 -----
 var staffMgrRows = [];
+
+function staffMgrAlert(msg, type) {
+  var el = document.getElementById('staff-mgr-alert');
+  if (!el) return;
+  el.innerHTML = msg ? '<div class="alert alert-'+(type||'info')+'">'+msg+'</div>' : '';
+  if (msg && type === 'success') setTimeout(function(){ el.innerHTML=''; }, 4000);
+}
+
 function loadStaffMgr() {
   var tbody = document.getElementById('staff-mgr-body');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:1.2rem;color:var(--text-muted)">불러오는 중...</td></tr>';
-  gasRunLeave('getAdminStaff', null, function(rows) {
-    staffMgrRows = rows || [];
+  tbody.innerHTML = '<tr><td colspan="12" class="empty">불러오는 중...</td></tr>';
+  gasRun('getAdminStaff', null, function(rows) {
+    staffMgrRows = Array.isArray(rows) ? rows : [];
     renderStaffMgr();
   }, function(m) {
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;color:red;">오류: '+m+'</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="12" class="empty danger-text">오류: '+esc(m)+'</td></tr>';
   });
 }
 
@@ -3941,140 +3751,103 @@ function renderStaffMgr() {
   var tbody = document.getElementById('staff-mgr-body');
   if (!tbody) return;
   if (!staffMgrRows.length) {
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:1.2rem;color:var(--text-muted)">직원이 없습니다.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="12" class="empty">직원이 없습니다. [+ 직원 추가]를 눌러 등록하세요.</td></tr>';
     return;
   }
   var html = '';
   staffMgrRows.forEach(function(r, i) {
-    var inp = function(field, val, type) {
-      type = type || 'text';
-      return '<input data-i="'+i+'" data-f="'+field+'" type="'+type+'" value="'+(val||'')+'" style="width:100%;min-width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:0.8rem;box-sizing:border-box;">';
+    var inp = function(field, type, ph) {
+      var v = r[field]; if (v === 0 && field !== 'hourly') v = '';
+      return '<td><input data-i="'+i+'" data-f="'+field+'" type="'+(type||'text')+'" value="'+esc(v==null?'':v)+'" placeholder="'+(ph||'')+'"></td>';
     };
-    var roleOpts = ['일반','선임','관리자'].map(function(o) {
-      return '<option value="'+o+'"'+(r.role===o?' selected':'')+'>'+o+'</option>';
-    }).join('');
-    html += '<tr style="border-bottom:1px solid var(--border);">';
-    html += '<td style="padding:4px 5px;">'+inp('name',r.name)+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('pin',r.pin)+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('hourly',r.hourly,'number')+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('dept',r.dept)+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('position',r.position)+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('contact',r.contact)+'</td>';
-    html += '<td style="padding:4px 5px;"><select data-i="'+i+'" data-f="role" style="padding:4px;border:1px solid var(--border);border-radius:4px;font-size:0.8rem;">'+roleOpts+'</select></td>';
-    html += '<td style="padding:4px 5px;">'+inp('supervisor',r.supervisor)+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('annualLeave',r.annualLeave,'number')+'</td>';
-    html += '<td style="padding:4px 5px;">'+inp('weeklyHours',r.weeklyHours,'number')+'</td>';
-    html += '<td style="padding:4px 5px;text-align:center;"><button onclick="removeStaffRow('+i+')" style="background:#ef4444;color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:0.78rem;">삭제</button></td>';
-    html += '</tr>';
+    var roles = ['일반','선임']; if (roles.indexOf(r.role) < 0 && r.role) roles.push(r.role);
+    var roleOpts = roles.map(function(o){ return '<option value="'+esc(o)+'"'+(r.role===o?' selected':'')+'>'+esc(o)+'</option>'; }).join('');
+    html += '<tr>'
+      + inp('name') + inp('pin') + inp('dept') + inp('position') + inp('contact')
+      + '<td><select data-i="'+i+'" data-f="role">'+roleOpts+'</select></td>'
+      + '<td><select data-i="'+i+'" data-f="supervisor"></select></td>'
+      + inp('hourly','number') + inp('annualLeave','number') + inp('weeklyHours','number','40') + inp('note')
+      + '<td><button class="row-btn no" onclick="removeStaffRow('+i+')">삭제</button></td>'
+      + '</tr>';
   });
   tbody.innerHTML = html;
-  // 인풋 이벤트 연결
+  refreshSupervisorOptions();
+  // 입력하는 즉시 기억 (표를 다시 그리지 않으므로 입력 중 커서가 튀지 않음)
   tbody.querySelectorAll('[data-i]').forEach(function(el) {
-    el.addEventListener('change', function() {
-      var idx = Number(this.dataset.i);
-      var field = this.dataset.f;
-      staffMgrRows[idx][field] = this.value;
-    });
+    var handler = function() {
+      var f = this.dataset.f;
+      staffMgrRows[Number(this.dataset.i)][f] = this.value;
+      if (f === 'role' || f === 'name') refreshSupervisorOptions();
+    };
+    el.addEventListener('input', handler);
+    el.addEventListener('change', handler);
+  });
+}
+
+// '담당 선임' 선택 목록 = 역할이 선임인 직원들 (본인 제외)
+function refreshSupervisorOptions() {
+  var seniors = staffMgrRows.filter(function(r){ return r.role==='선임' && String(r.name||'').trim(); }).map(function(r){ return String(r.name).trim(); });
+  document.querySelectorAll('#staff-mgr-body select[data-f="supervisor"]').forEach(function(sel) {
+    var r = staffMgrRows[Number(sel.dataset.i)];
+    var sups = seniors.filter(function(n){ return n !== r.name; });
+    if (r.supervisor && sups.indexOf(r.supervisor) < 0) sups.push(r.supervisor);
+    sel.innerHTML = '<option value="">(없음)</option>' + sups.map(function(n){ return '<option value="'+esc(n)+'"'+(r.supervisor===n?' selected':'')+'>'+esc(n)+'</option>'; }).join('');
   });
 }
 
 function addStaffRow() {
-  staffMgrRows.push({name:'',pin:'',hourly:0,dept:'',position:'',contact:'',role:'일반',supervisor:'',annualLeave:0,weeklyHours:0});
+  staffMgrRows.push({name:'',pin:'',hourly:0,dept:'',position:'',contact:'',role:'일반',supervisor:'',annualLeave:15,weeklyHours:'',note:''});
   renderStaffMgr();
+  var inputs = document.querySelectorAll('#staff-mgr-body tr:last-child input');
+  if (inputs[0]) inputs[0].focus();
 }
 
 function removeStaffRow(i) {
-  if (!confirm('삭제하시겠습니까?')) return;
+  var n = staffMgrRows[i].name;
+  if (n && !confirm('['+n+'] 직원을 목록에서 삭제하시겠습니까?\n(저장을 눌러야 반영됩니다. 이미 신청한 기록은 시트에 남습니다.)')) return;
   staffMgrRows.splice(i, 1);
   renderStaffMgr();
 }
 
 function saveStaffMgr() {
-  var alert2 = document.getElementById('staff-mgr-alert');
-  for (var i = 0; i < staffMgrRows.length; i++) {
-    if (!staffMgrRows[i].name.trim()) {
-      alert2.innerHTML = '<div class="alert alert-warn">이름을 입력해 주세요. ('+((i+1))+'번째)</div>';
-      return;
-    }
+  var rows = staffMgrRows.filter(function(r){ return String(r.name||'').trim() || String(r.pin||'').trim(); });
+  for (var i = 0; i < rows.length; i++) {
+    if (!String(rows[i].name||'').trim()) { staffMgrAlert((i+1)+'번째 줄의 이름을 입력해 주세요.', 'warn'); return; }
+    if (!String(rows[i].pin||'').trim())  { staffMgrAlert('['+rows[i].name+'] 직원의 PIN을 입력해 주세요.', 'warn'); return; }
   }
-  alert2.innerHTML = '<div class="alert alert-info">저장 중...</div>';
-  gasRunLeave('saveStaff', JSON.stringify(staffMgrRows), function(res) {
-    if (res.ok) {
-      alert2.innerHTML = '<div class="alert alert-success">✅ 저장되었습니다.</div>';
-      loadStaffMgr();
-    } else {
-      alert2.innerHTML = '<div class="alert alert-warn">오류: '+(res.msg||'')+'</div>';
-    }
-  }, function(m) {
-    alert2.innerHTML = '<div class="alert alert-warn">오류: '+m+'</div>';
-  });
+  staffMgrAlert('저장 중...', 'info');
+  gasRun('saveStaff', JSON.stringify(rows), function(res) {
+    if (res && res.ok) { staffMgrAlert('✅ 직원 '+rows.length+'명이 저장되었습니다.', 'success'); loadStaffMgr(); }
+    else staffMgrAlert('저장 실패: '+esc(res && res.msg || ''), 'warn');
+  }, function(m) { staffMgrAlert('오류: '+esc(m), 'warn'); });
 }
 
-// ===== 대체휴무 관리 =====
+// ----- 대체휴무 (부여 · 잔여 · 부여 내역) -----
 function loadCompMgr() {
-  // 직원 목록 셀렉트 채우기
-  gasRunLeave('getStaffNames', null, function(names) {
+  var balBody = document.getElementById('comp-balance-body');
+  var grantBody = document.getElementById('comp-grant-body');
+  gasRun('getStaffNames', null, function(names) {
     var sel = document.getElementById('comp-grant-name');
-    if (sel) {
-      sel.innerHTML = '<option value="">직원 선택</option>';
-      (names||[]).forEach(function(n) {
-        var o = document.createElement('option');
-        o.value = n; o.textContent = n;
-        sel.appendChild(o);
-      });
-    }
+    if (!sel) return;
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">직원 선택</option>' + (names||[]).map(function(n){ return '<option value="'+esc(n)+'">'+esc(n)+'</option>'; }).join('');
+    sel.value = cur;
   }, function(){});
 
-  // 사용 신청 목록
-  gasRunLeave('getAdminCompLeaveRequests', null, function(rows) {
-    var tbody = document.getElementById('comp-req-body');
-    if (!tbody) return;
-    if (!rows || !rows.length) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:1.2rem;color:var(--text-muted)">신청 내역이 없습니다.</td></tr>';
-      return;
-    }
-    var html = '';
-    rows.forEach(function(r) {
-      var statusColor = r.status==='승인'?'color:#10b981;':r.status==='반려'?'color:#ef4444;':'color:#f59e0b;';
-      html += '<tr style="border-bottom:1px solid var(--border);">';
-      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.date+'</td>';
-      html += '<td style="padding:5px 7px;font-weight:600;">'+r.name+'</td>';
-      html += '<td style="padding:5px 7px;text-align:center;">'+r.days+'일</td>';
-      html += '<td style="padding:5px 7px;">'+r.useDate+'</td>';
-      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.reason+'</td>';
-      html += '<td style="padding:5px 7px;text-align:center;'+statusColor+'font-weight:600;">'+r.status+'</td>';
-      if (r.status === '대기') {
-        html += '<td style="padding:5px 7px;text-align:center;"><button onclick="processCompLeave('+r.row+',\'승인\')" style="background:#10b981;color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:0.78rem;margin-right:3px;">승인</button><button onclick="processCompLeave('+r.row+',\'반려\')" style="background:#ef4444;color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:0.78rem;">반려</button></td>';
-      } else {
-        html += '<td style="padding:5px 7px;text-align:center;font-size:0.78rem;color:var(--text-muted);">처리완료</td>';
-      }
-      html += '</tr>';
-    });
-    tbody.innerHTML = html;
-  }, function(m) {
-    document.getElementById('comp-req-body').innerHTML = '<tr><td colspan="7" style="text-align:center;color:red;">오류: '+m+'</td></tr>';
-  });
+  gasRun('getAdminCompLeaveGrants', null, function(rows) {
+    rows = Array.isArray(rows) ? rows : [];
+    grantBody.innerHTML = rows.length ? rows.map(function(r) {
+      return '<tr><td>'+esc(r.date)+'</td><td><b>'+esc(r.name)+'</b></td><td>'+fmtNum(r.days)+'일</td><td class="l">'+esc(r.reason)+'</td><td>'+statusBadge(r.status)+'</td>'
+        + '<td>'+(r.status==='부여' ? '<button class="row-btn plain" onclick="cancelCompGrant('+r.row+')">취소</button>' : '')+'</td></tr>';
+    }).join('') : '<tr><td colspan="6" class="empty">부여 내역이 없습니다.</td></tr>';
+  }, function(m){ grantBody.innerHTML = '<tr><td colspan="6" class="empty danger-text">오류: '+esc(m)+'</td></tr>'; });
 
-  // 부여 내역
-  gasRunLeave('getAdminCompLeaveGrants', null, function(rows) {
-    var tbody = document.getElementById('comp-grant-body');
-    if (!tbody) return;
-    if (!rows || !rows.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.2rem;color:var(--text-muted)">부여 내역이 없습니다.</td></tr>';
-      return;
-    }
-    var html = '';
-    rows.forEach(function(r) {
-      html += '<tr style="border-bottom:1px solid var(--border);">';
-      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.date+'</td>';
-      html += '<td style="padding:5px 7px;font-weight:600;">'+r.name+'</td>';
-      html += '<td style="padding:5px 7px;text-align:center;">'+r.days+'일</td>';
-      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.reason+'</td>';
-      html += '<td style="padding:5px 7px;text-align:center;color:#10b981;font-weight:600;">'+r.status+'</td>';
-      html += '</tr>';
-    });
-    tbody.innerHTML = html;
-  }, function(){});
+  gasRun('getAdminDashboard', JSON.stringify({year: new Date().getFullYear()}), function(res) {
+    var rows = (res && res.dashboard || []).filter(function(d){ return d.comp.granted > 0 || d.comp.pending > 0; });
+    balBody.innerHTML = rows.length ? rows.map(function(d) {
+      return '<tr><td class="l"><b>'+esc(d.name)+'</b></td><td>'+fmtNum(d.comp.granted)+'</td><td>'+fmtNum(d.comp.used)+'</td><td class="num-strong">'+fmtNum(d.comp.remaining)+'</td></tr>';
+    }).join('') : '<tr><td colspan="4" class="empty">부여된 대체휴무가 없습니다.</td></tr>';
+  }, function(m){ balBody.innerHTML = '<tr><td colspan="4" class="empty danger-text">오류: '+esc(m)+'</td></tr>'; });
 }
 
 function doGrantCompLeave() {
@@ -4085,23 +3858,39 @@ function doGrantCompLeave() {
   if (!name) { alertEl.innerHTML = '<div class="alert alert-warn">직원을 선택하세요.</div>'; return; }
   if (!days || Number(days) <= 0) { alertEl.innerHTML = '<div class="alert alert-warn">일수를 입력하세요.</div>'; return; }
   alertEl.innerHTML = '<div class="alert alert-info">처리 중...</div>';
-  gasRunLeave('grantCompLeave', JSON.stringify({name, days: Number(days), reason}), function(res) {
-    if (res.ok) {
-      alertEl.innerHTML = '<div class="alert alert-success">✅ '+name+'에게 대체휴무 '+days+'일을 부여했습니다.</div>';
+  gasRun('grantCompLeave', JSON.stringify({name:name, days:Number(days), reason:reason}), function(res) {
+    if (res && res.ok) {
+      alertEl.innerHTML = '<div class="alert alert-success">✅ '+esc(name)+' 님에게 대체휴무 '+esc(days)+'일을 부여했습니다.</div>';
       document.getElementById('comp-grant-reason').value = '';
       loadCompMgr();
     } else {
-      alertEl.innerHTML = '<div class="alert alert-warn">오류: '+(res.msg||'')+'</div>';
+      alertEl.innerHTML = '<div class="alert alert-warn">오류: '+esc(res && res.msg || '')+'</div>';
     }
-  }, function(m) {
-    alertEl.innerHTML = '<div class="alert alert-warn">오류: '+m+'</div>';
-  });
+  }, function(m) { alertEl.innerHTML = '<div class="alert alert-warn">오류: '+esc(m)+'</div>'; });
 }
 
-function processCompLeave(row, status) {
-  gasRunLeave('updateCompLeaveStatus', JSON.stringify({row, status}), function(res) {
-    if (res.ok) loadCompMgr();
-  }, function(){});
+function cancelCompGrant(row) {
+  if (!confirm('이 부여 건을 취소하시겠습니까?')) return;
+  var alertEl = document.getElementById('comp-grant-alert');
+  gasRun('cancelCompGrant', JSON.stringify({row:row}), function(res) {
+    if (res && res.ok) { alertEl.innerHTML = '<div class="alert alert-success">✅ 취소되었습니다.</div>'; loadCompMgr(); }
+    else alertEl.innerHTML = '<div class="alert alert-warn">'+esc(res && res.msg || '취소 실패')+'</div>';
+  }, function(m) { alertEl.innerHTML = '<div class="alert alert-warn">오류: '+esc(m)+'</div>'; });
+}
+
+// ===== 직원: 대체휴무 신청 화면 =====
+function loadCompApply() {
+  var balEl = document.getElementById('comp-apply-balance');
+  if (balEl) balEl.textContent = '불러오는 중...';
+  var d = document.getElementById('comp-apply-date');
+  if (d && !d.value) d.value = new Date().toISOString().split('T')[0];
+  gasRun('getMyCompLeave', JSON.stringify({name: leaveUser.name}), function(res) {
+    if (!balEl || !res) return;
+    balEl.innerHTML = '부여 <strong>'+fmtNum(res.granted)+'일</strong> · 사용 <strong>'+fmtNum(res.used)+'일</strong>'
+      + (res.pending ? ' · 승인 대기 <strong>'+fmtNum(res.pending)+'일</strong>' : '')
+      + ' · 잔여 <strong style="color:var(--success);">'+fmtNum(res.remaining)+'일</strong>'
+      + (res.granted ? '' : '<div class="hint" style="margin-top:4px;">아직 부여된 대체휴무가 없습니다. 관리자가 부여하면 신청할 수 있습니다.</div>');
+  }, function(m){ if (balEl) balEl.textContent = '오류: '+m; });
 }
 
 // ===== 직원: 대체휴무 로드 =====
@@ -4110,13 +3899,13 @@ function loadMyCompLeave() {
   var card = document.getElementById('comp-leave-card');
   var applyBtn = document.getElementById('comp-apply-btn');
   gasRunLeave('getMyCompLeave', JSON.stringify({name: leaveUser.name}), function(res) {
-    if (!res || res.granted === 0) {
+    if (!res || (!res.granted && !(res.list && res.list.length))) {
       if (card) card.style.display = 'none';
       if (applyBtn) applyBtn.style.display = 'none';
       return;
     }
     if (card) card.style.display = '';
-    if (applyBtn) applyBtn.style.display = '';
+    if (applyBtn) applyBtn.style.display = res.remaining > 0 ? '' : 'none';
     var el = document.getElementById('comp-bal-granted');
     if (el) el.textContent = res.granted;
     el = document.getElementById('comp-bal-used');
@@ -4125,12 +3914,13 @@ function loadMyCompLeave() {
     if (el) el.textContent = res.remaining;
     // 목록
     var list = document.getElementById('comp-leave-list');
+    if (list) list.innerHTML = '';
     if (list && res.list && res.list.length) {
       var html = '<div style="margin-top:0.5rem;">';
       res.list.slice(0,5).forEach(function(item) {
         html += '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">';
-        html += '<span>'+item.date+' '+item.reason+'</span>';
-        html += '<span style="font-weight:600;color:'+(item.status==='부여'?'#10b981':item.status==='사용'?'#ef4444':'#f59e0b')+'">'+item.status+' '+item.days+'일</span>';
+        html += '<span>'+esc(item.date)+' · '+(item.kind==='사용'?'사용':'부여')+(item.reason?' · '+esc(item.reason):'')+'</span>';
+        html += '<span style="white-space:nowrap;font-weight:600;">'+(item.kind==='사용'?'-':'+')+item.days+'일 '+statusBadge(item.status)+'</span>';
         html += '</div>';
       });
       html += '</div>';
@@ -4150,9 +3940,9 @@ function submitCompLeaveApply() {
   showLeaveAlert('신청 중...','info','alert-area-comp-apply');
   gasRunLeave('submitCompLeave', JSON.stringify({name: leaveUser.name, days: Number(days), useDate: date, reason}), function(res) {
     if (res.ok) {
-      showLeaveAlert('✅ 대체휴무 신청이 완료되었습니다.','success','alert-area-comp-apply');
-      document.getElementById('comp-apply-date').value = '';
+      showLeaveAlert('✅ 대체휴무 신청이 완료되었습니다. 관리자 승인 후 사용 처리됩니다.','success','alert-area-comp-apply');
       document.getElementById('comp-apply-reason').value = '';
+      loadCompApply();
     } else {
       showLeaveAlert('오류: '+(res.msg||''),'warn','alert-area-comp-apply');
     }
@@ -4162,80 +3952,40 @@ function submitCompLeaveApply() {
 }
 
 // ===== 연도별 연차 관리 =====
-function _initAnnualYearSelect() {
-  var sel = document.getElementById('annual-year-select');
-  if (!sel) return;
-  if (sel.options.length > 0) return; // 이미 초기화됨
-  var thisYear = new Date().getFullYear();
-  // 현재 연도 기준 ±2년
-  for (var y = thisYear - 1; y <= thisYear + 1; y++) {
-    var o = document.createElement('option');
-    o.value = y; o.textContent = y + '년';
-    if (y === thisYear) o.selected = true;
-    sel.appendChild(o);
-  }
-}
-
 function addAnnualYear() {
   var y = prompt('추가할 연도를 입력하세요 (예: 2027):');
   if (!y || isNaN(Number(y))) return;
   var sel = document.getElementById('annual-year-select');
-  // 이미 있으면 선택만
-  for (var i = 0; i < sel.options.length; i++) {
-    if (Number(sel.options[i].value) === Number(y)) { sel.selectedIndex = i; loadAnnualMgr(); return; }
+  var has = Array.from(sel.options).some(function(o){ return Number(o.value) === Number(y); });
+  if (!has) {
+    var o = document.createElement('option');
+    o.value = Number(y); o.textContent = Number(y) + '년';
+    sel.appendChild(o);
+    Array.from(sel.options).sort(function(a,b){ return Number(a.value)-Number(b.value); }).forEach(function(op){ sel.appendChild(op); });
   }
-  var o = document.createElement('option');
-  o.value = Number(y); o.textContent = y + '년'; o.selected = true;
-  sel.appendChild(o);
-  // 연도순 정렬
-  var opts = Array.from(sel.options).sort(function(a,b){ return Number(a.value)-Number(b.value); });
-  while (sel.options.length) sel.remove(0);
-  opts.forEach(function(op){ sel.appendChild(op); if(Number(op.value)===Number(y)) sel.value=y; });
+  sel.value = String(Number(y));
   loadAnnualMgr();
 }
 
 function loadAnnualMgr() {
-  _initAnnualYearSelect();
+  _initYearSelect('annual-year-select');
   var year = document.getElementById('annual-year-select').value;
   var tbody = document.getElementById('annual-mgr-body');
-  tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.2rem;color:var(--text-muted)">불러오는 중...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="3" class="empty">불러오는 중...</td></tr>';
 
-  // 직원 목록 + 해당 연도 연차 데이터 병렬 로드
-  var staffNames = [], balMap = {};
-  var done = 0;
+  var staff = [], balMap = {}, done = 0;
   function tryRender() {
-    done++;
-    if (done < 2) return;
-    tbody.innerHTML = '';
-    if (staffNames.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.2rem;color:var(--text-muted)">직원 목록이 없습니다.</td></tr>';
-      return;
-    }
-    staffNames.forEach(function(name) {
-      var bal = balMap[name] || { granted: '', note: '' };
-      var tr = document.createElement('tr');
-      tr.style.borderBottom = '1px solid var(--border)';
-      tr.innerHTML =
-        '<td style="padding:7px 10px;font-weight:600;">'+name+'</td>' +
-        '<td style="padding:7px 10px;text-align:center;">' +
-          '<input type="number" min="0" max="99" step="0.5" value="'+(bal.granted||'')+'" ' +
-          'data-name="'+name+'" class="annual-granted-input" ' +
-          'style="width:70px;padding:5px;border:1.5px solid var(--border);border-radius:5px;text-align:center;font-size:0.9rem;">' +
-        '</td>' +
-        '<td style="padding:7px 10px;">' +
-          '<input type="text" value="'+(bal.note||'')+'" data-name="'+name+'" class="annual-note-input" ' +
-          'placeholder="메모" style="width:100%;padding:5px;border:1.5px solid var(--border);border-radius:5px;font-size:0.82rem;">' +
-        '</td>';
-      tbody.appendChild(tr);
-    });
+    if (++done < 2) return;
+    if (!staff.length) { tbody.innerHTML = '<tr><td colspan="3" class="empty">직원 목록이 없습니다.</td></tr>'; return; }
+    tbody.innerHTML = staff.map(function(s) {
+      var bal = balMap[s.name] || { granted: '', note: '' };
+      return '<tr><td class="l"><b>'+esc(s.name)+'</b></td>'
+        + '<td><input type="number" min="0" max="99" step="0.5" value="'+esc(bal.granted===0?'':bal.granted)+'" data-name="'+esc(s.name)+'" class="annual-granted-input" placeholder="기본 '+esc(s.annualLeave||0)+'" style="text-align:center;"></td>'
+        + '<td><input type="text" value="'+esc(bal.note||'')+'" data-name="'+esc(s.name)+'" class="annual-note-input" placeholder="메모"></td></tr>';
+    }).join('');
   }
-
-  gasRunLeave('getStaffNames', null, function(names) {
-    staffNames = Array.isArray(names) ? names : [];
-    tryRender();
-  }, function(){ tryRender(); });
-
-  gasRunLeave('getLeaveBalance', JSON.stringify({year: Number(year)}), function(list) {
+  gasRun('getAdminStaff', null, function(rows) { staff = Array.isArray(rows) ? rows : []; tryRender(); }, function(){ tryRender(); });
+  gasRun('getLeaveBalance', JSON.stringify({year: Number(year)}), function(list) {
     if (Array.isArray(list)) list.forEach(function(r){ balMap[r.name] = r; });
     tryRender();
   }, function(){ tryRender(); });
@@ -4247,101 +3997,111 @@ function saveAnnualMgr() {
   var rows = [];
   document.querySelectorAll('.annual-granted-input').forEach(function(inp) {
     var name = inp.getAttribute('data-name');
-    var granted = inp.value !== '' ? Number(inp.value) : null;
-    var noteEl = document.querySelector('.annual-note-input[data-name="'+name+'"]');
-    var note = noteEl ? noteEl.value : '';
-    if (name && granted !== null) rows.push({name: name, granted: granted, note: note});
+    var noteEl = inp.closest('tr').querySelector('.annual-note-input');
+    if (name && inp.value !== '') rows.push({name: name, granted: Number(inp.value), note: noteEl ? noteEl.value : ''});
   });
-  if (rows.length === 0) { alertEl.innerHTML='<div class="alert alert-warn">저장할 데이터가 없습니다.</div>'; return; }
   alertEl.innerHTML='<div class="alert alert-info">저장 중...</div>';
-  gasRunLeave('saveLeaveBalance', JSON.stringify({rows: rows, year: Number(year)}), function(res) {
+  gasRun('saveLeaveBalance', JSON.stringify({rows: rows, year: Number(year)}), function(res) {
     if (res && res.ok) {
       alertEl.innerHTML='<div class="alert alert-success">✅ '+year+'년 연차가 저장되었습니다.</div>';
       setTimeout(function(){ alertEl.innerHTML=''; }, 3000);
     } else {
-      alertEl.innerHTML='<div class="alert alert-warn">저장 실패: '+(res&&res.msg||'오류')+'</div>';
+      alertEl.innerHTML='<div class="alert alert-warn">저장 실패: '+esc(res&&res.msg||'오류')+'</div>';
     }
-  }, function(m){ alertEl.innerHTML='<div class="alert alert-warn">오류: '+m+'</div>'; });
+  }, function(m){ alertEl.innerHTML='<div class="alert alert-warn">오류: '+esc(m)+'</div>'; });
 }
+
+// ===== 신청 처리 (선임: 담당 직원만 / 관리자: 전체) =====
+var leaveMgrData = [];
+var leaveMgrPendingOnly = true;
 
 function loadLeaveMgr() {
   if (!leaveUser && !leaveIsAdmin) { showLeaveLoginView(); return; }
-  currentLeaveMgrMode = currentLeaveMgrMode || '휴가';
-  filterLeaveMgr(currentLeaveMgrMode);
+  var compBtn = document.getElementById('lm-btn-comp');
+  if (compBtn) compBtn.style.display = leaveIsAdmin ? '' : 'none';   // 대체휴무 승인은 관리자만
+  if (!leaveIsAdmin && currentLeaveMgrMode === '대체휴무') currentLeaveMgrMode = '휴가';
+  var sub = document.getElementById('leavemgr-sub');
+  if (sub) sub.textContent = leaveIsAdmin ? '전체 직원의 휴가·시간외·대체휴무 사용 신청을 승인하거나 반려합니다.' : '담당 직원의 휴가·시간외 신청을 확인합니다.';
+  filterLeaveMgr(currentLeaveMgrMode || '휴가');
+}
+
+function setLeaveMgrScope(pendingOnly) {
+  leaveMgrPendingOnly = pendingOnly;
+  renderLeaveMgrTable();
 }
 
 function filterLeaveMgr(type) {
   currentLeaveMgrMode = type;
   var tbody = document.getElementById('leavemgr-body');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" class="empty">불러오는 중...</td></tr>';
+  [['lm-btn-leave','휴가'],['lm-btn-ot','시간외'],['lm-btn-comp','대체휴무']].forEach(function(p){
+    var b = document.getElementById(p[0]); if (b) b.classList.toggle('on', p[1]===type);
+  });
 
-  // 버튼 스타일
-  var btnLeave = document.getElementById('lm-btn-leave');
-  var btnOt    = document.getElementById('lm-btn-ot');
-  if (btnLeave) { btnLeave.className = type==='휴가' ? 'btn btn-primary' : 'btn btn-outline'; btnLeave.style.fontSize='0.8rem'; btnLeave.style.padding='5px 12px'; }
-  if (btnOt)    { btnOt.className    = type==='시간외' ? 'btn btn-primary' : 'btn btn-outline'; btnOt.style.fontSize='0.8rem'; btnOt.style.padding='5px 12px'; }
-
-  var fnName, argStr;
+  var fnName, argStr = null;
   if (leaveIsAdmin) {
-    fnName = type==='휴가' ? 'getAdminLeaves' : 'getAdminOvertimes';
-    argStr = null;
+    fnName = type==='휴가' ? 'getAdminLeaves' : type==='시간외' ? 'getAdminOvertimes' : 'getAdminCompLeaveRequests';
   } else if (leaveUser && leaveUser.role==='선임') {
     fnName = type==='휴가' ? 'getSupervisorLeaves' : 'getSupervisorOvertimes';
     argStr = JSON.stringify({staffNames: leaveUser.myStaff || []});
   } else {
-    if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">선임 또는 관리자만 볼 수 있습니다.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">선임 또는 관리자만 볼 수 있습니다.</td></tr>';
     return;
   }
-
-  gasRunLeave(fnName, argStr, function(list) {
+  gasRun(fnName, argStr, function(list) {
+    if (currentLeaveMgrMode !== type) return;   // 그 사이 다른 종류를 눌렀으면 무시
     leaveMgrData = Array.isArray(list) ? list : [];
-    renderLeaveMgrTable(leaveMgrData, type);
+    renderLeaveMgrTable();
   }, function(m) {
-    showLeaveAlert('불러오기 오류: '+m,'warn','alert-area-leavemgr');
+    tbody.innerHTML = '<tr><td colspan="5" class="empty danger-text">불러오기 오류: '+esc(m)+'</td></tr>';
   });
 }
 
-function renderLeaveMgrTable(list, type) {
+function renderLeaveMgrTable() {
   var tbody = document.getElementById('leavemgr-body');
   if (!tbody) return;
+  var type = currentLeaveMgrMode;
+  document.getElementById('lm-scope-pending').classList.toggle('on', leaveMgrPendingOnly);
+  document.getElementById('lm-scope-all').classList.toggle('on', !leaveMgrPendingOnly);
+  var isPending = function(h){ return !h.status || h.status==='대기'; };
+  var list = leaveMgrPendingOnly ? leaveMgrData.filter(isPending) : leaveMgrData;
   if (!list.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">내역이 없습니다.</td></tr>';
+    var total = leaveMgrData.length;
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">'+(leaveMgrPendingOnly ? '처리할 '+type+' 신청이 없습니다.'+(total ? ' (전체 '+total+'건 — [전체]를 누르면 보입니다)' : '') : '내역이 없습니다.')+'</td></tr>';
     return;
   }
-  var html = '';
-  list.forEach(function(h) {
-    var statusClass = h.status==='확인'||h.status==='승인'?'lb-ok':h.status==='반려'||h.status==='거절'?'lb-rej':'lb-wait';
-    var approveBtn = h.row && h.status!=='확인' ?
-      '<button onclick="updateLeaveMgrStatus('+h.row+',\'확인\',\''+type+'\')" style="font-size:0.75rem;padding:3px 8px;background:#d1fae5;color:#065f46;border:none;border-radius:4px;cursor:pointer;margin-right:4px;">✅ 확인</button>' : '';
-    var rejectBtn = h.row && h.status!=='반려' ?
-      '<button onclick="updateLeaveMgrStatus('+h.row+',\'반려\',\''+type+'\')" style="font-size:0.75rem;padding:3px 8px;background:#fee2e2;color:#991b1b;border:none;border-radius:4px;cursor:pointer;">✗ 반려</button>' : '';
-    html += '<tr>';
-    html += '<td style="text-align:center;padding:6px 8px;font-weight:600;">'+h.name+'</td>';
-    html += '<td style="text-align:center;padding:6px 8px;white-space:nowrap;font-size:0.82rem;">'+h.date+'</td>';
-    html += '<td style="padding:6px 8px;font-size:0.82rem;">'+h.detail+'</td>';
-    html += '<td style="text-align:center;padding:6px 8px;"><span class="leave-badge '+statusClass+'">'+h.status+'</span></td>';
-    html += '<td style="text-align:center;padding:6px 4px;white-space:nowrap;">'+approveBtn+rejectBtn+'</td>';
-    html += '</tr>';
-  });
-  tbody.innerHTML = html;
+  tbody.innerHTML = list.map(function(h) {
+    var done = h.status==='승인' || h.status==='확인';
+    var approveBtn = !done ? '<button class="row-btn ok" onclick="updateLeaveMgrStatus('+h.row+',\'승인\')">✅ 승인</button> ' : '';
+    var rejectBtn  = h.status!=='반려' ? '<button class="row-btn no" onclick="updateLeaveMgrStatus('+h.row+',\'반려\')">✗ 반려</button>' : '';
+    var photo = h.photoUrl ? ' <a href="'+esc(h.photoUrl)+'" target="_blank" rel="noopener">[사진]</a>' : '';
+    return '<tr><td>'+esc(h.date)+'</td><td><b>'+esc(h.name)+'</b></td><td class="l">'+esc(h.detail || '')+photo+'</td>'
+      + '<td>'+statusBadge(h.status)+'</td><td style="white-space:nowrap;">'+approveBtn+rejectBtn+'</td></tr>';
+  }).join('');
 }
 
-function updateLeaveMgrStatus(row, status, type) {
-  var fnName = type==='휴가' ? 'updateLeaveStatus' : 'updateOvertimeStatus';
-  gasRunLeave(fnName, JSON.stringify({row:row, status:status}), function(res) {
-    if (res) {
-      showLeaveAlert('✅ 상태가 변경되었습니다.','success','alert-area-leavemgr');
-      filterLeaveMgr(type);
+function updateLeaveMgrStatus(row, status) {
+  var type = currentLeaveMgrMode;
+  var fnName = type==='휴가' ? 'updateLeaveStatus' : type==='시간외' ? 'updateOvertimeStatus' : 'updateCompLeaveStatus';
+  var item = leaveMgrData.filter(function(h){ return h.row===row; })[0];
+  var wasPending = item && (!item.status || item.status==='대기');
+  gasRun(fnName, JSON.stringify({row:row, status:status}), function(res) {
+    if (res && res.ok) {
+      showLeaveAlert('✅ '+(item ? esc(item.name)+' 님의 ' : '')+type+' 신청을 '+status+' 처리했습니다.','success','alert-area-leavemgr');
+      if (item) item.status = status;
+      if (leaveIsAdmin && wasPending) {
+        var b = document.getElementById('adm-pending-badge');
+        setApprovalBadge(Math.max(0, (Number(b && b.textContent) || 0) - 1));
+      }
+      renderLeaveMgrTable();
     } else {
-      showLeaveAlert('변경 실패','warn','alert-area-leavemgr');
+      showLeaveAlert('변경 실패'+(res && res.msg ? ': '+esc(res.msg) : ''),'warn','alert-area-leavemgr');
     }
-  }, function(m){ showLeaveAlert('오류: '+m,'warn','alert-area-leavemgr'); });
+  }, function(m){ showLeaveAlert('오류: '+esc(m),'warn','alert-area-leavemgr'); });
 }
 
-// ===== 앱 시작: 근태 세션 복원 → 없으면 로그인 화면 =====
-// (시수 init은 사이드바에서 시수 탭 클릭 시 필요)
+// ===== 앱 시작: 저장된 로그인 복원 → 없으면 로그인 화면 =====
 document.addEventListener('DOMContentLoaded', function(){
-  // 오늘 날짜 초기화
   var today = new Date().toISOString().split('T')[0];
   ['leave-start','leave-end','ot-date'].forEach(function(id){
     var el = document.getElementById(id);
@@ -4350,41 +4110,28 @@ document.addEventListener('DOMContentLoaded', function(){
   calcLeaveDaysLeave();
   onOtDateChangeLeave();
 
-  var saved = ls.get('leave_session', '');
-  if (!saved) {
-    // 세션 없으면 로그인 화면
-    showLeaveLoginView();
+  if (!GAS_URL) { showLeaveLoginView(); return; }
+
+  // 1) 관리자 (같은 탭에서 새로고침한 경우)
+  var admPw = '';
+  try { admPw = sessionStorage.getItem('adm_pw') || ''; } catch(e) {}
+  if (admPw) {
+    gasRun('adminLogin', JSON.stringify({pw:admPw}), function(res){
+      if (res && res.ok) enterAdmin();
+      else { try { sessionStorage.removeItem('adm_pw'); } catch(e) {} showLeaveLoginView(); }
+    }, function(){ showLeaveLoginView(); });
     return;
   }
-  try {
-    var sess = JSON.parse(saved);
-    if (!sess || !sess.name || !sess.pin) { showLeaveLoginView(); return; }
-    if (!LEAVE_GAS_URL && !GAS_URL) { showLeaveLoginView(); return; }
-    // 조용히 재로그인
-    gasRunLeave('login', JSON.stringify({name:sess.name, pin:sess.pin}), function(res){
-      if (res && res.ok) {
-        leaveUser = res;
-        leaveIsAdmin = false;
-        clearAllViews();
-        document.getElementById('app-layout').style.display = 'flex';
-        var sidebarId = (res.role === '선임') ? 'tabs-both' : 'tabs-staff';
-        ['tabs-staff','tabs-both','tabs-senior'].forEach(function(id){
-          document.getElementById(id).style.display = (id === sidebarId) ? 'flex' : 'none';
-        });
-        document.getElementById('view-leave').classList.add('active');
-        setLeaveUserBadge(res.name + (res.role==='선임' ? ' (선임)' : ''));
-        loadLeaveDashboard();
-        // 시수 데이터도 백그라운드 로드
-        if (GAS_URL) init();
-      } else {
-        ls.set('leave_session', '');
-        showLeaveLoginView();
-      }
-    }, function(){
-      showLeaveLoginView();
-    });
-  } catch(e) { showLeaveLoginView(); }
-});
 
-// (날짜 초기화는 위 DOMContentLoaded 블록에서 처리됨)
+  // 2) 직원 (이 기기에 저장된 이름+PIN으로 조용히 다시 로그인)
+  var sess = null;
+  try { sess = JSON.parse(ls.get('leave_session', '') || 'null'); } catch(e) {}
+  if (!sess || !sess.name || !sess.pin) { showLeaveLoginView(); return; }
+  gasRun('login', JSON.stringify({name:sess.name, pin:sess.pin}), function(res){
+    if (res && res.ok) enterUser(res);
+    else { ls.del('leave_session'); showLeaveLoginView(); }
+  }, function(){ showLeaveLoginView(); });
+});
 </script>
+</body>
+</html>
