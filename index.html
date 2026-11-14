@@ -1878,10 +1878,10 @@ function setGas(u) {
 
 function gasRun(fnName, arg, onSuccess, onFail) {
   if (!GAS_URL) { onFail('GAS 주소가 설정되지 않았습니다. 기관 연결을 먼저 해주세요.'); return; }
-  fetch(GAS_URL, {
+  fetch('/api/proxy', {
     method: 'POST',
-    body: JSON.stringify({ fn: fnName, arg: arg !== undefined ? arg : null }),
-    redirect: 'follow'
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ gasUrl: GAS_URL, fn: fnName, arg: arg !== undefined ? arg : null }),
   })
   .then(function(r){ return r.text(); })
   .then(function(t){
@@ -2942,17 +2942,14 @@ function setLeaveGas(u) {
   ls.set('leave_gas', u);
 }
 
-// 근태 GAS 호출
-// GAS는 CORS 헤더를 직접 못 보내므로 Content-Type: text/plain으로 보내면
-// 브라우저가 simple request로 처리해 프리플라이트 없이 통과됨
+// 근태 GAS 호출 — Vercel 프록시(/api/proxy)를 통해 CORS 우회
 function gasRunLeave(fnName, arg, onSuccess, onFail) {
-  var url = LEAVE_GAS_URL || GAS_URL;
-  if (!url) { onFail('GAS 주소가 없습니다. ⚙️ 설정에서 GAS 주소를 입력해주세요.'); return; }
-  fetch(url, {
+  var gasUrl = LEAVE_GAS_URL || GAS_URL;
+  if (!gasUrl) { onFail('GAS 주소가 없습니다. ⚙️ 설정에서 GAS 주소를 입력해주세요.'); return; }
+  fetch('/api/proxy', {
     method: 'POST',
-    body: JSON.stringify({ fn: fnName, arg: arg !== undefined ? arg : null }),
-    redirect: 'follow'
-    // Content-Type 헤더 없음 → text/plain simple request → CORS OK
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ gasUrl: gasUrl, fn: fnName, arg: arg !== undefined ? arg : null }),
   })
   .then(function(r){ return r.text(); })
   .then(function(t){
