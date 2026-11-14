@@ -776,10 +776,54 @@
       </table>
     </div>
   </div>
+  <!-- 대체휴무 현황 카드 -->
+  <div class="card" id="comp-leave-card" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+      <div class="card-title" style="margin:0;">🔄 대체휴무 현황</div>
+    </div>
+    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+      <div class="stat-box"><div class="stat-num" id="comp-bal-granted">-</div><div class="stat-label">부여 일수</div></div>
+      <div class="stat-box stat-warn"><div class="stat-num" id="comp-bal-used">-</div><div class="stat-label">사용 일수</div></div>
+      <div class="stat-box stat-success"><div class="stat-num" id="comp-bal-remaining">-</div><div class="stat-label">잔여 일수</div></div>
+    </div>
+    <div id="comp-leave-list" style="font-size:0.82rem;color:var(--text-muted);"></div>
+  </div>
+
   <div class="btn-group no-print">
     <button class="btn btn-primary" onclick="loadLeaveDashboard()">🔄 새로고침</button>
     <button class="btn btn-accent" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
     <button class="btn btn-outline" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
+    <button class="btn btn-outline" id="comp-apply-btn" onclick="switchTab('comp-apply')" style="display:none;">🔄 대체휴무 신청</button>
+  </div>
+</div>
+
+<!-- ========== 근태관리: 대체휴무 신청 ========== -->
+<div class="view" id="view-comp-apply">
+  <div id="alert-area-comp-apply"></div>
+  <div class="card">
+    <div class="card-title">🔄 대체휴무 사용 신청</div>
+    <div id="comp-apply-balance" style="background:var(--primary-light);border-radius:8px;padding:0.8rem;margin-bottom:1rem;font-size:0.85rem;"></div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>사용 일수</label>
+        <select id="comp-apply-days" style="width:100%">
+          <option value="1">1일</option>
+          <option value="0.5">0.5일 (반일)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>사용 날짜</label>
+        <input type="date" id="comp-apply-date" style="width:100%">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:0.8rem;">
+      <label>사유</label>
+      <input type="text" id="comp-apply-reason" placeholder="대체휴무 사용 사유" style="width:100%">
+    </div>
+  </div>
+  <div class="btn-group no-print">
+    <button class="btn btn-primary" onclick="submitCompLeaveApply()">📤 신청</button>
+    <button class="btn btn-outline" onclick="switchTab('leave')">← 뒤로</button>
   </div>
 </div>
 
@@ -965,11 +1009,17 @@
   <div id="alert-area-leavemgr"></div>
 
   <!-- 탭 전환 -->
-  <div style="display:flex;gap:0.3rem;margin-bottom:0.8rem;border-bottom:2px solid var(--border);">
+  <div style="display:flex;gap:0.3rem;margin-bottom:0.8rem;border-bottom:2px solid var(--border);flex-wrap:wrap;">
     <button id="lmtab-approval" onclick="switchLeaveMgrTab('approval')"
-      style="padding:7px 16px;border:none;background:var(--primary);color:#fff;border-radius:6px 6px 0 0;font-size:0.85rem;cursor:pointer;font-weight:600;">📋 신청 처리</button>
+      style="padding:7px 14px;border:none;background:var(--primary);color:#fff;border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;font-weight:600;">📋 신청 처리</button>
     <button id="lmtab-annual" onclick="switchLeaveMgrTab('annual')"
-      style="padding:7px 16px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.85rem;cursor:pointer;">📅 연차 관리</button>
+      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">📅 연차 관리</button>
+    <button id="lmtab-dashboard" onclick="switchLeaveMgrTab('dashboard')"
+      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">📊 대시보드</button>
+    <button id="lmtab-staff" onclick="switchLeaveMgrTab('staff')"
+      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">👥 직원 관리</button>
+    <button id="lmtab-comp" onclick="switchLeaveMgrTab('comp')"
+      style="padding:7px 14px;border:none;background:none;color:var(--primary);border-radius:6px 6px 0 0;font-size:0.82rem;cursor:pointer;">🔄 대체휴무</button>
   </div>
 
   <!-- 패널1: 신청 처리 -->
@@ -1035,6 +1085,125 @@
       <div id="annual-mgr-alert" style="margin-top:0.5rem;"></div>
     </div>
   </div>
+
+  <!-- 패널3: 전체 대시보드 -->
+  <div id="lmpanel-dashboard" style="display:none;">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.8rem;">
+        <div class="card-title" style="margin:0;">📊 전체 직원 대시보드</div>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <label style="font-size:0.82rem;color:var(--text-muted);">연도</label>
+          <select id="dash-year-select" onchange="loadAdminDashboard()"
+            style="padding:5px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;"></select>
+          <button onclick="loadAdminDashboard()" class="btn btn-outline" style="font-size:0.78rem;padding:5px 10px;">🔄</button>
+        </div>
+      </div>
+      <div id="dashboard-body" style="overflow-x:auto;">
+        <p style="text-align:center;color:var(--text-muted);padding:1.5rem;">불러오는 중...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 패널4: 직원 관리 -->
+  <div id="lmpanel-staff" style="display:none;">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
+        <div class="card-title" style="margin:0;">👥 직원 관리</div>
+        <button onclick="addStaffRow()" class="btn btn-primary" style="font-size:0.78rem;padding:5px 12px;">+ 직원 추가</button>
+      </div>
+      <div style="font-size:0.76rem;color:var(--text-muted);margin-bottom:0.6rem;">💡 이름·PIN은 필수. 역할: 일반/선임/관리자. 주간기준시간: 단축근무자만 입력(빈칸=40시간)</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.82rem;min-width:700px;">
+          <thead><tr style="background:var(--primary);color:white;">
+            <th style="padding:6px 8px;">이름</th>
+            <th style="padding:6px 8px;">PIN</th>
+            <th style="padding:6px 8px;">시급</th>
+            <th style="padding:6px 8px;">부서</th>
+            <th style="padding:6px 8px;">직위</th>
+            <th style="padding:6px 8px;">연락처</th>
+            <th style="padding:6px 8px;">역할</th>
+            <th style="padding:6px 8px;">담당선임</th>
+            <th style="padding:6px 8px;">연차일수</th>
+            <th style="padding:6px 8px;">주간시간</th>
+            <th style="padding:6px 8px;">삭제</th>
+          </tr></thead>
+          <tbody id="staff-mgr-body">
+            <tr><td colspan="11" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="btn-group" style="margin-top:0.8rem;">
+        <button class="btn btn-primary" onclick="saveStaffMgr()">💾 저장</button>
+        <button class="btn btn-outline" onclick="loadStaffMgr()">🔄 새로고침</button>
+      </div>
+      <div id="staff-mgr-alert" style="margin-top:0.5rem;"></div>
+    </div>
+  </div>
+
+  <!-- 패널5: 대체휴무 관리 -->
+  <div id="lmpanel-comp" style="display:none;">
+    <div class="card" style="margin-bottom:0.8rem;">
+      <div class="card-title">🎁 대체휴무 부여</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;">
+        <div style="flex:1;min-width:120px;">
+          <label style="font-size:0.78rem;color:var(--text-muted);display:block;margin-bottom:3px;">직원</label>
+          <select id="comp-grant-name" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;">
+            <option value="">직원 선택</option>
+          </select>
+        </div>
+        <div style="width:80px;">
+          <label style="font-size:0.78rem;color:var(--text-muted);display:block;margin-bottom:3px;">일수</label>
+          <input id="comp-grant-days" type="number" min="0.5" step="0.5" value="1"
+            style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;">
+        </div>
+        <div style="flex:2;min-width:150px;">
+          <label style="font-size:0.78rem;color:var(--text-muted);display:block;margin-bottom:3px;">사유</label>
+          <input id="comp-grant-reason" type="text" placeholder="예) 토요일 행사 참여"
+            style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.85rem;box-sizing:border-box;">
+        </div>
+        <button onclick="doGrantCompLeave()" class="btn btn-primary" style="white-space:nowrap;padding:8px 16px;">부여</button>
+      </div>
+      <div id="comp-grant-alert" style="margin-top:0.5rem;"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:0.8rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
+        <div class="card-title" style="margin:0;">📋 대체휴무 사용 신청 처리</div>
+        <button onclick="loadCompMgr()" class="btn btn-outline" style="font-size:0.78rem;padding:5px 10px;">🔄</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+          <thead><tr style="background:var(--primary);color:white;">
+            <th style="padding:6px 8px;">신청일</th><th style="padding:6px 8px;">이름</th>
+            <th style="padding:6px 8px;">일수</th><th style="padding:6px 8px;">사용날짜</th>
+            <th style="padding:6px 8px;">사유</th><th style="padding:6px 8px;">상태</th>
+            <th style="padding:6px 8px;">처리</th>
+          </tr></thead>
+          <tbody id="comp-req-body">
+            <tr><td colspan="7" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
+        <div class="card-title" style="margin:0;">📜 대체휴무 부여 내역</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+          <thead><tr style="background:var(--primary);color:white;">
+            <th style="padding:6px 8px;">부여일</th><th style="padding:6px 8px;">이름</th>
+            <th style="padding:6px 8px;">일수</th><th style="padding:6px 8px;">사유</th><th style="padding:6px 8px;">상태</th>
+          </tr></thead>
+          <tbody id="comp-grant-body">
+            <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 </div><!-- /content-area -->
@@ -1528,6 +1697,18 @@ function switchTab(tab) {
     if (!leaveUser) { showLeaveLoginView(); return; }
     clearAllViews(); document.getElementById('view-leavehist').classList.add('active');
     loadLeaveHist(); return;
+  }
+  if (tab==='comp-apply') {
+    if (!leaveUser) { showLeaveLoginView(); return; }
+    clearAllViews(); document.getElementById('view-comp-apply').classList.add('active');
+    // 대체휴무 잔여 현황 표시
+    var balEl = document.getElementById('comp-apply-balance');
+    gasRunLeave('getMyCompLeave', JSON.stringify({name: leaveUser.name}), function(res) {
+      if (balEl && res) {
+        balEl.innerHTML = '부여 <strong>'+res.granted+'일</strong> · 사용 <strong>'+res.used+'일</strong> · 잔여 <strong style="color:#10b981;">'+res.remaining+'일</strong>';
+      }
+    }, function(){});
+    return;
   }
 }
 
@@ -3174,6 +3355,7 @@ function loadLeaveDashboard() {
   if (!leaveUser) return;
   var tbody = document.getElementById('leave-dash-body');
   if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--text-muted)">불러오는 중...</td></tr>';
+  loadMyCompLeave(); // 대체휴무 현황도 함께 로드
 
   // 연차 잔여
   gasRunLeave('getMyLeaveBalance', JSON.stringify({name:leaveUser.name, year:new Date().getFullYear()}), function(bal) {
@@ -3648,18 +3830,314 @@ var leaveMgrData = [];
 
 // ===== 연차 관리 탭 전환 =====
 function switchLeaveMgrTab(tab) {
-  document.getElementById('lmpanel-approval').style.display = tab === 'approval' ? '' : 'none';
-  document.getElementById('lmpanel-annual').style.display   = tab === 'annual'   ? '' : 'none';
-  var btnA = document.getElementById('lmtab-approval');
-  var btnB = document.getElementById('lmtab-annual');
-  if (tab === 'approval') {
-    btnA.style.background = 'var(--primary)'; btnA.style.color = '#fff';
-    btnB.style.background = 'none';           btnB.style.color = 'var(--primary)';
-  } else {
-    btnB.style.background = 'var(--primary)'; btnB.style.color = '#fff';
-    btnA.style.background = 'none';           btnA.style.color = 'var(--primary)';
-    loadAnnualMgr();
+  var panels = ['approval','annual','dashboard','staff','comp'];
+  panels.forEach(function(p) {
+    var el = document.getElementById('lmpanel-'+p);
+    if (el) el.style.display = p === tab ? '' : 'none';
+    var btn = document.getElementById('lmtab-'+p);
+    if (btn) {
+      btn.style.background = p === tab ? 'var(--primary)' : 'none';
+      btn.style.color = p === tab ? '#fff' : 'var(--primary)';
+      btn.style.fontWeight = p === tab ? '600' : 'normal';
+    }
+  });
+  if (tab === 'annual') loadAnnualMgr();
+  if (tab === 'dashboard') loadAdminDashboard();
+  if (tab === 'staff') loadStaffMgr();
+  if (tab === 'comp') loadCompMgr();
+}
+
+// ===== 관리자 대시보드 =====
+function _initDashYearSelect() {
+  var sel = document.getElementById('dash-year-select');
+  if (!sel || sel.options.length > 0) return;
+  var y = new Date().getFullYear();
+  for (var i = y-1; i <= y+1; i++) {
+    var o = document.createElement('option');
+    o.value = i; o.textContent = i+'년';
+    if (i === y) o.selected = true;
+    sel.appendChild(o);
   }
+}
+
+function loadAdminDashboard() {
+  _initDashYearSelect();
+  var year = document.getElementById('dash-year-select').value;
+  var body = document.getElementById('dashboard-body');
+  body.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:1.5rem;">불러오는 중...</p>';
+  gasRunLeave('getAdminDashboard', JSON.stringify({year: Number(year)}), function(res) {
+    if (!res.ok) { body.innerHTML = '<p style="color:red;text-align:center;">'+res.msg+'</p>'; return; }
+    var html = '<table style="width:100%;border-collapse:collapse;font-size:0.82rem;min-width:650px;">';
+    html += '<thead><tr style="background:var(--primary);color:white;">';
+    html += '<th style="padding:7px 8px;text-align:left;">이름</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">부여연차</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">휴가사용</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">시수전환</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">잔여연차</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">시간외(h)</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">시간외수당</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">시수(차시)</th>';
+    html += '<th style="padding:7px 8px;text-align:center;">대체휴무</th>';
+    html += '</tr></thead><tbody>';
+    (res.dashboard || []).forEach(function(d, i) {
+      var bg = i%2===0 ? '' : 'background:#f9f9f9;';
+      var remColor = d.annual.remaining <= 2 ? 'color:#ef4444;font-weight:700;' : d.annual.remaining <= 5 ? 'color:#f59e0b;font-weight:600;' : '';
+      var compBadge = d.comp.remaining > 0 ? '<span style="background:#10b981;color:#fff;border-radius:4px;padding:1px 5px;font-size:0.75rem;margin-left:3px;">'+d.comp.remaining+'일</span>' : '';
+      html += '<tr style="'+bg+'">';
+      html += '<td style="padding:6px 8px;font-weight:600;">'+d.name+'</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">'+d.annual.granted+'일</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">'+d.annual.leaveDays+'일</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">'+d.annual.sisuDays+'일</td>';
+      html += '<td style="padding:6px 8px;text-align:center;'+remColor+'">'+d.annual.remaining+'일</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">'+d.overtime.hours+'h</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">'+Number(d.overtime.pay).toLocaleString()+'원</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">'+d.sisuje.confirmed+'/'+d.sisuje.chi+'차시</td>';
+      html += '<td style="padding:6px 8px;text-align:center;">부여'+d.comp.granted+'/사용'+d.comp.used+compBadge+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    body.innerHTML = html;
+  }, function(m) {
+    body.innerHTML = '<p style="color:red;text-align:center;">오류: '+m+'</p>';
+  });
+}
+
+// ===== 직원 관리 =====
+var staffMgrRows = [];
+function loadStaffMgr() {
+  var tbody = document.getElementById('staff-mgr-body');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:1.2rem;color:var(--text-muted)">불러오는 중...</td></tr>';
+  gasRunLeave('getAdminStaff', null, function(rows) {
+    staffMgrRows = rows || [];
+    renderStaffMgr();
+  }, function(m) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;color:red;">오류: '+m+'</td></tr>';
+  });
+}
+
+function renderStaffMgr() {
+  var tbody = document.getElementById('staff-mgr-body');
+  if (!tbody) return;
+  if (!staffMgrRows.length) {
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:1.2rem;color:var(--text-muted)">직원이 없습니다.</td></tr>';
+    return;
+  }
+  var html = '';
+  staffMgrRows.forEach(function(r, i) {
+    var inp = function(field, val, type) {
+      type = type || 'text';
+      return '<input data-i="'+i+'" data-f="'+field+'" type="'+type+'" value="'+(val||'')+'" style="width:100%;min-width:60px;padding:4px 6px;border:1px solid var(--border);border-radius:4px;font-size:0.8rem;box-sizing:border-box;">';
+    };
+    var roleOpts = ['일반','선임','관리자'].map(function(o) {
+      return '<option value="'+o+'"'+(r.role===o?' selected':'')+'>'+o+'</option>';
+    }).join('');
+    html += '<tr style="border-bottom:1px solid var(--border);">';
+    html += '<td style="padding:4px 5px;">'+inp('name',r.name)+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('pin',r.pin)+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('hourly',r.hourly,'number')+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('dept',r.dept)+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('position',r.position)+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('contact',r.contact)+'</td>';
+    html += '<td style="padding:4px 5px;"><select data-i="'+i+'" data-f="role" style="padding:4px;border:1px solid var(--border);border-radius:4px;font-size:0.8rem;">'+roleOpts+'</select></td>';
+    html += '<td style="padding:4px 5px;">'+inp('supervisor',r.supervisor)+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('annualLeave',r.annualLeave,'number')+'</td>';
+    html += '<td style="padding:4px 5px;">'+inp('weeklyHours',r.weeklyHours,'number')+'</td>';
+    html += '<td style="padding:4px 5px;text-align:center;"><button onclick="removeStaffRow('+i+')" style="background:#ef4444;color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:0.78rem;">삭제</button></td>';
+    html += '</tr>';
+  });
+  tbody.innerHTML = html;
+  // 인풋 이벤트 연결
+  tbody.querySelectorAll('[data-i]').forEach(function(el) {
+    el.addEventListener('change', function() {
+      var idx = Number(this.dataset.i);
+      var field = this.dataset.f;
+      staffMgrRows[idx][field] = this.value;
+    });
+  });
+}
+
+function addStaffRow() {
+  staffMgrRows.push({name:'',pin:'',hourly:0,dept:'',position:'',contact:'',role:'일반',supervisor:'',annualLeave:0,weeklyHours:0});
+  renderStaffMgr();
+}
+
+function removeStaffRow(i) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  staffMgrRows.splice(i, 1);
+  renderStaffMgr();
+}
+
+function saveStaffMgr() {
+  var alert2 = document.getElementById('staff-mgr-alert');
+  for (var i = 0; i < staffMgrRows.length; i++) {
+    if (!staffMgrRows[i].name.trim()) {
+      alert2.innerHTML = '<div class="alert alert-warn">이름을 입력해 주세요. ('+((i+1))+'번째)</div>';
+      return;
+    }
+  }
+  alert2.innerHTML = '<div class="alert alert-info">저장 중...</div>';
+  gasRunLeave('saveStaff', JSON.stringify(staffMgrRows), function(res) {
+    if (res.ok) {
+      alert2.innerHTML = '<div class="alert alert-success">✅ 저장되었습니다.</div>';
+      loadStaffMgr();
+    } else {
+      alert2.innerHTML = '<div class="alert alert-warn">오류: '+(res.msg||'')+'</div>';
+    }
+  }, function(m) {
+    alert2.innerHTML = '<div class="alert alert-warn">오류: '+m+'</div>';
+  });
+}
+
+// ===== 대체휴무 관리 =====
+function loadCompMgr() {
+  // 직원 목록 셀렉트 채우기
+  gasRunLeave('getStaffNames', null, function(names) {
+    var sel = document.getElementById('comp-grant-name');
+    if (sel) {
+      sel.innerHTML = '<option value="">직원 선택</option>';
+      (names||[]).forEach(function(n) {
+        var o = document.createElement('option');
+        o.value = n; o.textContent = n;
+        sel.appendChild(o);
+      });
+    }
+  }, function(){});
+
+  // 사용 신청 목록
+  gasRunLeave('getAdminCompLeaveRequests', null, function(rows) {
+    var tbody = document.getElementById('comp-req-body');
+    if (!tbody) return;
+    if (!rows || !rows.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:1.2rem;color:var(--text-muted)">신청 내역이 없습니다.</td></tr>';
+      return;
+    }
+    var html = '';
+    rows.forEach(function(r) {
+      var statusColor = r.status==='승인'?'color:#10b981;':r.status==='반려'?'color:#ef4444;':'color:#f59e0b;';
+      html += '<tr style="border-bottom:1px solid var(--border);">';
+      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.date+'</td>';
+      html += '<td style="padding:5px 7px;font-weight:600;">'+r.name+'</td>';
+      html += '<td style="padding:5px 7px;text-align:center;">'+r.days+'일</td>';
+      html += '<td style="padding:5px 7px;">'+r.useDate+'</td>';
+      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.reason+'</td>';
+      html += '<td style="padding:5px 7px;text-align:center;'+statusColor+'font-weight:600;">'+r.status+'</td>';
+      if (r.status === '대기') {
+        html += '<td style="padding:5px 7px;text-align:center;"><button onclick="processCompLeave('+r.row+',\'승인\')" style="background:#10b981;color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:0.78rem;margin-right:3px;">승인</button><button onclick="processCompLeave('+r.row+',\'반려\')" style="background:#ef4444;color:#fff;border:none;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:0.78rem;">반려</button></td>';
+      } else {
+        html += '<td style="padding:5px 7px;text-align:center;font-size:0.78rem;color:var(--text-muted);">처리완료</td>';
+      }
+      html += '</tr>';
+    });
+    tbody.innerHTML = html;
+  }, function(m) {
+    document.getElementById('comp-req-body').innerHTML = '<tr><td colspan="7" style="text-align:center;color:red;">오류: '+m+'</td></tr>';
+  });
+
+  // 부여 내역
+  gasRunLeave('getAdminCompLeaveGrants', null, function(rows) {
+    var tbody = document.getElementById('comp-grant-body');
+    if (!tbody) return;
+    if (!rows || !rows.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:1.2rem;color:var(--text-muted)">부여 내역이 없습니다.</td></tr>';
+      return;
+    }
+    var html = '';
+    rows.forEach(function(r) {
+      html += '<tr style="border-bottom:1px solid var(--border);">';
+      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.date+'</td>';
+      html += '<td style="padding:5px 7px;font-weight:600;">'+r.name+'</td>';
+      html += '<td style="padding:5px 7px;text-align:center;">'+r.days+'일</td>';
+      html += '<td style="padding:5px 7px;font-size:0.8rem;">'+r.reason+'</td>';
+      html += '<td style="padding:5px 7px;text-align:center;color:#10b981;font-weight:600;">'+r.status+'</td>';
+      html += '</tr>';
+    });
+    tbody.innerHTML = html;
+  }, function(){});
+}
+
+function doGrantCompLeave() {
+  var name = document.getElementById('comp-grant-name').value;
+  var days = document.getElementById('comp-grant-days').value;
+  var reason = document.getElementById('comp-grant-reason').value;
+  var alertEl = document.getElementById('comp-grant-alert');
+  if (!name) { alertEl.innerHTML = '<div class="alert alert-warn">직원을 선택하세요.</div>'; return; }
+  if (!days || Number(days) <= 0) { alertEl.innerHTML = '<div class="alert alert-warn">일수를 입력하세요.</div>'; return; }
+  alertEl.innerHTML = '<div class="alert alert-info">처리 중...</div>';
+  gasRunLeave('grantCompLeave', JSON.stringify({name, days: Number(days), reason}), function(res) {
+    if (res.ok) {
+      alertEl.innerHTML = '<div class="alert alert-success">✅ '+name+'에게 대체휴무 '+days+'일을 부여했습니다.</div>';
+      document.getElementById('comp-grant-reason').value = '';
+      loadCompMgr();
+    } else {
+      alertEl.innerHTML = '<div class="alert alert-warn">오류: '+(res.msg||'')+'</div>';
+    }
+  }, function(m) {
+    alertEl.innerHTML = '<div class="alert alert-warn">오류: '+m+'</div>';
+  });
+}
+
+function processCompLeave(row, status) {
+  gasRunLeave('updateCompLeaveStatus', JSON.stringify({row, status}), function(res) {
+    if (res.ok) loadCompMgr();
+  }, function(){});
+}
+
+// ===== 직원: 대체휴무 로드 =====
+function loadMyCompLeave() {
+  if (!leaveUser) return;
+  var card = document.getElementById('comp-leave-card');
+  var applyBtn = document.getElementById('comp-apply-btn');
+  gasRunLeave('getMyCompLeave', JSON.stringify({name: leaveUser.name}), function(res) {
+    if (!res || res.granted === 0) {
+      if (card) card.style.display = 'none';
+      if (applyBtn) applyBtn.style.display = 'none';
+      return;
+    }
+    if (card) card.style.display = '';
+    if (applyBtn) applyBtn.style.display = '';
+    var el = document.getElementById('comp-bal-granted');
+    if (el) el.textContent = res.granted;
+    el = document.getElementById('comp-bal-used');
+    if (el) el.textContent = res.used;
+    el = document.getElementById('comp-bal-remaining');
+    if (el) el.textContent = res.remaining;
+    // 목록
+    var list = document.getElementById('comp-leave-list');
+    if (list && res.list && res.list.length) {
+      var html = '<div style="margin-top:0.5rem;">';
+      res.list.slice(0,5).forEach(function(item) {
+        html += '<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">';
+        html += '<span>'+item.date+' '+item.reason+'</span>';
+        html += '<span style="font-weight:600;color:'+(item.status==='부여'?'#10b981':item.status==='사용'?'#ef4444':'#f59e0b')+'">'+item.status+' '+item.days+'일</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+      list.innerHTML = html;
+    }
+  }, function(){});
+}
+
+// ===== 직원: 대체휴무 신청 =====
+function submitCompLeaveApply() {
+  if (!leaveUser) return;
+  var days = document.getElementById('comp-apply-days').value;
+  var date = document.getElementById('comp-apply-date').value;
+  var reason = document.getElementById('comp-apply-reason').value;
+  var alertEl = document.getElementById('alert-area-comp-apply');
+  if (!date) { showLeaveAlert('사용 날짜를 선택하세요.','warn','alert-area-comp-apply'); return; }
+  showLeaveAlert('신청 중...','info','alert-area-comp-apply');
+  gasRunLeave('submitCompLeave', JSON.stringify({name: leaveUser.name, days: Number(days), useDate: date, reason}), function(res) {
+    if (res.ok) {
+      showLeaveAlert('✅ 대체휴무 신청이 완료되었습니다.','success','alert-area-comp-apply');
+      document.getElementById('comp-apply-date').value = '';
+      document.getElementById('comp-apply-reason').value = '';
+    } else {
+      showLeaveAlert('오류: '+(res.msg||''),'warn','alert-area-comp-apply');
+    }
+  }, function(m) {
+    showLeaveAlert('오류: '+m,'warn','alert-area-comp-apply');
+  });
 }
 
 // ===== 연도별 연차 관리 =====
