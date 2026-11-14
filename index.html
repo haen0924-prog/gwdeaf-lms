@@ -336,10 +336,6 @@
   <button class="tab tab-alt" onclick="switchTab('altwrite')">📅 대체 시수 발생일</button>
   <button class="tab tab-alt" onclick="switchTab('altuse')">✍️ 대체 시수 입력</button>
   <button class="tab tab-alt" onclick="switchTab('altrecord')">📋 내 대체 시수 확인</button>
-  <div id="nav-promo-notify" style="display:none">
-    <hr class="sidebar-divider">
-    <button class="tab tab-leave" onclick="switchTabSenior('promonotify')">📣 연가 일수 통지</button>
-  </div>
   <div id="nav-senior-group" style="display:none">
     <hr class="sidebar-divider">
     <div class="sidebar-group">✅ 선임 확인</div>
@@ -1308,22 +1304,10 @@
   <div class="page-head">
     <div>
       <h2>🗓 연가 사용 계획서</h2>
-      <div class="sub">선임에게 연가 일수를 통지받으면, 남은 연가를 언제 쓸지 기간과 일수를 적어 제출합니다. 다시 제출하면 이전 내용이 바뀝니다.</div>
+      <div class="sub">관리자에게 연가 일수를 통지받으면, 남은 연가를 언제 쓸지 기간과 일수를 적어 제출합니다. 다시 제출하면 이전 내용이 바뀝니다.</div>
     </div>
   </div>
   <div id="promo-my-body"><div class="card"><div class="hint">불러오는 중...</div></div></div>
-</div>
-
-<!-- ========== 선임(통지 담당): 연가 일수 통지 ========== -->
-<div class="view" id="view-promonotify">
-  <div id="alert-area-promonotify"></div>
-  <div class="page-head">
-    <div>
-      <h2>📣 연가 일수 통지</h2>
-      <div class="sub">관리자가 정한 통지 시작일부터 직원에게 연가 부여·사용·잔여 일수를 통지할 수 있습니다. 통지하면 직원 대시보드 상단에 안내가 뜨고(슬랙 연결 시 DM도 발송) 연가 사용 계획서를 제출할 수 있게 됩니다.</div>
-    </div>
-  </div>
-  <div id="promo-notify-body"><div class="card"><div class="hint">불러오는 중...</div></div></div>
 </div>
 
 <!-- ========== 관리자: 공지사항 ========== -->
@@ -1357,35 +1341,30 @@
   </div>
 </div>
 
-<!-- ========== 관리자: 연가 촉진 (연 3회 통지 설정 · 현황) ========== -->
+<!-- ========== 관리자: 연가 촉진 (연 3회 통지 · 제출된 계획서) ========== -->
 <div class="view view-wide" id="view-adm-promo">
   <div class="page-head">
     <div>
       <h2>🗓 연가 사용 촉진</h2>
-      <div class="sub">연 3회 통지 시작일과 통지 담당 선임을 정하세요. 시작일이 되면 담당 선임 화면에 [연가 일수 통지] 메뉴가 열리고, 통지를 받은 직원은 연가 사용 계획서를 제출합니다. 회차를 쓰지 않으려면 비워 두세요.</div>
+      <div class="sub">회차별로 직원을 선택해 연가 일수(부여·사용·잔여)를 통지하세요. 통지받은 직원은 대시보드 상단 안내를 보고 연가 사용 계획서를 제출하며, 제출 내용은 여기에서 확인하고 인쇄할 수 있습니다.</div>
     </div>
     <div class="page-tools no-print">
       <select id="promo-year-select" onchange="loadAdminPromo()"></select>
+      <button class="btn btn-outline btn-sm" onclick="loadAdminPromo()">🔄 새로고침</button>
     </div>
   </div>
   <div id="alert-area-adm-promo"></div>
   <div class="card">
-    <div class="card-title">통지 일정 · 담당 선임</div>
-    <table class="adm-table" style="width:100%;max-width:640px;">
-      <thead><tr><th style="width:70px">회차</th><th>통지 시작일</th><th>통지 담당 선임</th></tr></thead>
-      <tbody id="promo-cfg-body"></tbody>
-    </table>
-    <div style="margin-top:0.8rem;"><button class="btn btn-primary" onclick="savePromoCfgForm()">💾 저장</button></div>
-  </div>
-  <div class="card" style="padding:0;overflow:hidden;">
-    <div style="padding:0.8rem 1rem;font-weight:700;">통지 · 계획서 제출 현황</div>
-    <div style="overflow-x:auto;">
-      <table class="adm-table" style="width:100%">
-        <thead><tr><th>회차</th><th>직원</th><th>통지</th><th>통지일(통지자)</th><th>부여</th><th>사용</th><th>잔여</th><th>계획서</th></tr></thead>
-        <tbody id="promo-status-body"><tr><td colspan="8" class="empty">불러오는 중...</td></tr></tbody>
-      </table>
+    <div class="card-title">통지 예정일 (참고용 · 선택)</div>
+    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:flex-end;">
+      <div class="form-group"><label>1회차</label><input type="date" id="pc-start-1"></div>
+      <div class="form-group"><label>2회차</label><input type="date" id="pc-start-2"></div>
+      <div class="form-group"><label>3회차</label><input type="date" id="pc-start-3"></div>
+      <button class="btn btn-outline" onclick="savePromoCfgForm()">💾 예정일 저장</button>
     </div>
+    <div class="hint" style="margin-top:0.4rem;">예정일은 아래 회차 제목에 표시되는 안내용입니다. 통지는 언제든 할 수 있습니다.</div>
   </div>
+  <div id="promo-rounds-body"><div class="card"><div class="hint">불러오는 중...</div></div></div>
 </div>
 
 <!-- ========== 관리자: 직원 관리 ========== -->
@@ -1831,7 +1810,6 @@ function switchTabSenior(tab) {
   if (tab==='dashboard') loadDashboard();
   if (tab==='altdashboard') loadAltDashboard();
   if (tab==='leavemgr') loadLeaveMgr();
-  if (tab==='promonotify') loadPromoNotifier();
 }
 
 // ===== 관리자 메뉴 =====
@@ -2184,7 +2162,7 @@ function setGas(u) {
 
 // 브라우저 → /api/proxy (Vercel) → GAS
 // 관리자 전용 함수: 호출할 때 관리자 비밀번호를 함께 보냄 (서버가 확인)
-var ADMIN_FN_LIST = ['getAdminNotices','saveNotice','deleteNotice','getPromoConfig','savePromoConfig','getAdminPromo','initSheets','getAdminStaff','saveStaff','getAdminConfig','saveAdminConfig','getLeaveBalance','saveLeaveBalance','getAdminLeaves','getAdminOvertimes','getAdminOvertimeRequests','getAdminCompLeaveRequests','getAdminCompLeaveGrants','grantCompLeave','cancelCompGrant','getAdminDashboard','adminSaveApproval'];
+var ADMIN_FN_LIST = ['adminPromoNotify','getAdminNotices','saveNotice','deleteNotice','getPromoConfig','savePromoConfig','getAdminPromo','initSheets','getAdminStaff','saveStaff','getAdminConfig','saveAdminConfig','getLeaveBalance','saveLeaveBalance','getAdminLeaves','getAdminOvertimes','getAdminOvertimeRequests','getAdminCompLeaveRequests','getAdminCompLeaveGrants','grantCompLeave','cancelCompGrant','getAdminDashboard','adminSaveApproval'];
 function gasRun(fnName, arg, onSuccess, onFail) {
   onFail = onFail || function(){};
   if (!GAS_URL) { onFail('연결 주소가 없습니다. ⚙️ 연결 설정에서 GAS 주소를 입력해 주세요.'); return; }
@@ -3304,7 +3282,6 @@ function enterUser(res) {
   showView('leave');
   loadLeaveDashboard();
   if (isSenior) refreshSeniorBadge();
-  checkNotifierNav();
   // 시수 화면용 정보는 뒤에서 조용히 준비
   init(function(){ if (isSenior) startAutoRefresh(); });
 }
@@ -4661,22 +4638,16 @@ function loadNoticeBanner() {
   }, draw);
 }
 
-// 통지 담당으로 지정된 사람에게만 [연가 일수 통지] 메뉴를 보여줌
-function checkNotifierNav() {
-  var nav = document.getElementById('nav-promo-notify'); if (!nav || !leaveUser) return;
-  nav.style.display = 'none';
-  gasRun('getPromoForNotifier', JSON.stringify({auth: myAuth(), year: new Date().getFullYear()}), function(res) {
-    if (res && res.ok && res.rounds && res.rounds.length) nav.style.display = '';
-  }, function(){});
-}
-
-// ----- 직원: 연가 사용 계획서 -----
+// ----- 직원: 연가 사용 계획서 (제출 내역 보관 · 복사해서 새로 작성) -----
 var promoMy = null, promoRows = {};
 function promoWeekdays(s, e) {
   if (!s || !e) return 0;
   var a = new Date(s), b = new Date(e); if (isNaN(a) || isNaN(b) || b < a) return 0;
   var n = 0; while (a <= b) { var d = a.getDay(); if (d !== 0 && d !== 6) n++; a.setDate(a.getDate()+1); }
   return n;
+}
+function promoPeriods(plans) {
+  return (plans||[]).map(function(p){ return esc(p.start)+(p.end&&p.end!==p.start?' ~ '+esc(p.end):'')+' ('+fmtNum(p.days)+'일)'; }).join('<br>');
 }
 function loadPromoMy() {
   var body = document.getElementById('promo-my-body'); if (!body) return;
@@ -4692,8 +4663,9 @@ function loadPromoMy() {
 }
 function renderPromoMy() {
   var body = document.getElementById('promo-my-body'); if (!body || !promoMy) return;
-  if (!promoMy.notices.length) { body.innerHTML = '<div class="card"><div class="hint">아직 통지받은 연가 안내가 없습니다. 선임이 연가 일수를 통지하면 여기서 계획서를 작성할 수 있습니다.</div></div>'; return; }
-  body.innerHTML = promoMy.notices.map(function(n) {
+  var html = '';
+  if (!promoMy.notices.length) html += '<div class="card"><div class="hint">이번 해에 통지받은 연가 안내가 없습니다. 관리자가 연가 일수를 통지하면 여기서 계획서를 작성할 수 있습니다.</div></div>';
+  html += promoMy.notices.map(function(n) {
     var rows = promoRows[n.round] || [];
     var total = rows.reduce(function(a, r){ return a + (Number(r.days)||0); }, 0);
     var trs = rows.map(function(r, i) {
@@ -4703,21 +4675,35 @@ function renderPromoMy() {
         + '<td><input type="number" step="0.5" min="0" style="width:80px" id="pd-'+n.round+'-'+i+'" value="'+esc(r.days)+'" oninput="promoEdit('+n.round+','+i+',\'days\',this.value,true)"> 일</td>'
         + '<td><button class="row-btn no" onclick="promoDelRow('+n.round+','+i+')">삭제</button></td></tr>';
     }).join('');
+    var copyOpts = promoMy.history.filter(function(h){ return !(h.year===n.year && h.round===n.round); }).map(function(h){
+      return '<option value="'+h.year+'-'+h.round+'">'+h.year+'년 '+h.round+'회차 (합계 '+fmtNum(h.planDays)+'일 · 제출 '+esc(h.submitted)+')</option>'; }).join('');
     return '<div class="card">'
       + '<div class="card-title">'+n.year+'년 '+n.round+'회차 통지 <span style="font-weight:400;color:var(--text-muted)">· '+esc(n.date)+' · 통지자 '+esc(n.by)+'</span></div>'
       + '<div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.8rem;">'
       + '<div class="stat-box"><div class="stat-num">'+fmtNum(n.granted)+'</div><div class="stat-label">부여 일수</div></div>'
       + '<div class="stat-box stat-warn"><div class="stat-num">'+fmtNum(n.used)+'</div><div class="stat-label">사용 일수</div></div>'
       + '<div class="stat-box stat-success"><div class="stat-num">'+fmtNum(n.remain)+'</div><div class="stat-label">잔여 일수(통지 시점)</div></div></div>'
+      + (copyOpts ? '<div style="margin-bottom:0.6rem;display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;"><select id="pcopy-'+n.round+'" style="max-width:100%">'+copyOpts+'</select>'
+        + '<button class="btn btn-outline btn-sm" onclick="promoCopy('+n.round+')">📋 이 계획서를 복사해서 수정</button></div>' : '')
       + '<table class="adm-table" style="width:100%;max-width:560px"><thead><tr><th>시작일</th><th>종료일</th><th>일수</th><th></th></tr></thead><tbody>'+trs+'</tbody></table>'
       + '<div style="margin:0.6rem 0;display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">'
       + '<button class="btn btn-outline btn-sm" onclick="promoAddRow('+n.round+')">+ 기간 추가</button>'
       + '<span id="pt-'+n.round+'" style="font-size:0.88rem;">계획 합계 <b>'+fmtNum(total)+'</b>일 / 잔여 '+fmtNum(n.remain)+'일</span></div>'
       + '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">'
       + '<button class="btn btn-primary" onclick="submitPromo('+n.round+')">'+(n.submitted?'수정해서 다시 제출':'📨 계획서 제출')+'</button>'
-      + (n.submitted ? '<button class="btn btn-accent" onclick="printPromo('+n.round+')">🖨️ 인쇄</button><span style="align-self:center;color:var(--success);font-size:0.85rem;">✅ 제출됨 ('+esc(n.plans[0].submitted)+')</span>' : '')
+      + (n.submitted ? '<span style="align-self:center;color:var(--success);font-size:0.85rem;">✅ 제출됨 ('+esc(n.plans[0].submitted)+')</span>' : '')
       + '</div></div>';
   }).join('');
+  // 내가 지금까지 제출한 계획서 (보관 내역)
+  html += '<div class="card"><div class="card-title">📁 내 제출 내역 (보관)</div>'
+    + (promoMy.history.length ? '<div style="overflow-x:auto"><table class="adm-table" style="width:100%"><thead><tr><th>회차</th><th>제출일</th><th>사용 기간</th><th>합계</th><th></th></tr></thead><tbody>'
+      + promoMy.history.map(function(h, i) {
+        return '<tr><td>'+h.year+'년 '+h.round+'회차</td><td>'+esc(h.submitted)+'</td><td class="l">'+promoPeriods(h.plans)+'</td><td><b>'+fmtNum(h.planDays)+'일</b></td>'
+          + '<td><button class="row-btn" onclick="printMyPromo('+i+')">🖨️ 인쇄</button></td></tr>';
+      }).join('') + '</tbody></table></div>'
+      : '<div class="hint">아직 제출한 계획서가 없습니다.</div>')
+    + '</div>';
+  body.innerHTML = html;
 }
 function promoEdit(round, i, field, val, noRerender) {
   var r = promoRows[round][i]; r[field] = val;
@@ -4733,6 +4719,14 @@ function promoEdit(round, i, field, val, noRerender) {
 }
 function promoAddRow(round) { promoRows[round].push({start:'', end:'', days:''}); renderPromoMy(); }
 function promoDelRow(round, i) { promoRows[round].splice(i, 1); if (!promoRows[round].length) promoRows[round].push({start:'', end:'', days:''}); renderPromoMy(); }
+// 이전에 제출한 계획서를 이번 회차 입력칸으로 복사 (날짜·일수를 고쳐서 제출)
+function promoCopy(round) {
+  var sel = document.getElementById('pcopy-'+round); if (!sel || !sel.value) return;
+  var h = promoMy.history.filter(function(x){ return (x.year+'-'+x.round) === sel.value; })[0]; if (!h) return;
+  promoRows[round] = h.plans.map(function(p){ return {start:p.start, end:p.end, days:p.days}; });
+  renderPromoMy();
+  showLeaveAlert('📋 '+h.year+'년 '+h.round+'회차 계획서를 복사했습니다. 날짜·일수를 고친 뒤 제출하세요.', 'info', 'alert-area-promo');
+}
 function submitPromo(round) {
   var rows = (promoRows[round] || []).filter(function(r){ return r.start || r.end; });
   showLeaveAlert('제출 중...', 'info', 'alert-area-promo');
@@ -4741,59 +4735,27 @@ function submitPromo(round) {
     else showLeaveAlert('제출 실패: '+esc(res && res.msg || ''), 'warn', 'alert-area-promo');
   }, function(m) { showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-promo'); });
 }
-function printPromo(round) {
-  var n = promoMy && promoMy.notices.filter(function(x){ return x.round === round; })[0]; if (!n || !n.plans.length) return;
-  var u = leaveUser, w = window.open('', '_blank', 'width=800,height=600');
+function printMyPromo(i) {
+  var h = promoMy.history[i]; if (!h) return;
+  printPromoEntries([{ name:leaveUser.name, dept:leaveUser.dept||'', position:leaveUser.position||'', year:h.year, round:h.round,
+    noticeDate:h.date, granted:h.granted, used:h.used, remain:h.remain, plans:h.plans, planDays:h.planDays, submitted:h.submitted }]);
+}
+// 연가 사용 계획서 인쇄 (여러 명이면 한 명당 한 장) — 직원 본인·관리자 공용
+function printPromoEntries(entries) {
+  if (!entries.length) { alert('인쇄할 계획서가 없습니다.'); return; }
+  var w = window.open('', '_blank', 'width=800,height=600');
   if (!w) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
-  var rows = n.plans.map(function(p, i){ return '<tr><td>'+(i+1)+'</td><td>'+esc(p.start)+' ~ '+esc(p.end)+'</td><td>'+fmtNum(p.days)+'일</td></tr>'; }).join('');
-  w.document.write('<html><head><title>연가사용계획서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td,th{border:1px solid black;padding:4px 8px;text-align:center;}td.lb{background:#f0f0f0;font-weight:700;width:22mm;}th{background:#f0f0f0;}</style></head><body>');
-  w.document.write('<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8mm;"><h2>연 가 사 용 계 획 서</h2>'+approvalBoxHTML(u.dept)+'</div>');
-  w.document.write('<table><tr><td class="lb">성명</td><td>'+esc(u.name)+'</td><td class="lb">부서</td><td>'+esc(u.dept||'')+'</td></tr><tr><td class="lb">직위</td><td>'+esc(u.position||'')+'</td><td class="lb">통지 회차</td><td>'+n.year+'년 '+n.round+'회차 ('+esc(n.date)+')</td></tr>'
-    + '<tr><td class="lb">연가 부여</td><td>'+fmtNum(n.granted)+'일</td><td class="lb">사용 / 잔여</td><td>'+fmtNum(n.used)+'일 / '+fmtNum(n.remain)+'일</td></tr></table>');
-  w.document.write('<table><thead><tr><th style="width:15mm">번호</th><th>사용 기간</th><th style="width:30mm">일수</th></tr></thead><tbody>'+rows+'<tr><td colspan="2"><b>합계</b></td><td><b>'+fmtNum(n.planDays)+'일</b></td></tr></tbody></table>');
-  w.document.write('<p style="text-align:center;margin:8mm 0;">위와 같이 연가 사용 계획을 제출합니다.</p><p style="text-align:center;">'+esc(n.plans[0].submitted)+'</p><p style="text-align:center;">제출자: '+esc(u.name)+' (서명 또는 인)</p>');
-  w.document.write(addresseeHTML(u.dept)+'</body></html>');
-  w.document.close(); w.focus(); setTimeout(function(){ w.print(); }, 500);
-}
-
-// ----- 통지 담당 선임: 연가 일수 통지 -----
-var promoNotifyData = null;
-function loadPromoNotifier() {
-  var body = document.getElementById('promo-notify-body'); if (!body) return;
-  body.innerHTML = '<div class="card"><div class="hint">불러오는 중...</div></div>';
-  gasRun('getPromoForNotifier', JSON.stringify({auth: myAuth(), year: new Date().getFullYear()}), function(res) {
-    if (!res || !res.ok) { body.innerHTML = '<div class="card"><div class="alert alert-warn">'+esc(res && res.msg || '불러오기 실패')+'</div></div>'; return; }
-    promoNotifyData = res;
-    if (!res.rounds.length) { body.innerHTML = '<div class="card"><div class="hint">통지 담당으로 지정된 회차가 없습니다.</div></div>'; return; }
-    body.innerHTML = res.rounds.map(function(rd) {
-      var trs = rd.staff.map(function(s) {
-        return '<tr><td style="text-align:center"><input type="checkbox" class="pn-chk-'+rd.round+'" value="'+esc(s.name)+'"'+(rd.open&&!s.notified?' checked':'')+(rd.open?'':' disabled')+'></td>'
-          + '<td>'+esc(s.name)+'</td><td>'+fmtNum(s.granted)+'</td><td>'+fmtNum(s.used)+'</td><td><b>'+fmtNum(s.remain)+'</b></td>'
-          + '<td>'+(s.notified?'<span class="leave-badge lb-ok">통지됨</span> '+esc(s.noticeDate):'<span class="leave-badge lb-wait">미통지</span>')+'</td>'
-          + '<td>'+(s.planCount?fmtNum(s.planDays)+'일 제출':'<span style="color:var(--text-muted)">미제출</span>')+'</td></tr>';
-      }).join('');
-      return '<div class="card"><div class="card-title">'+res.year+'년 '+rd.round+'회차 · 통지 시작일 '+esc(rd.start)+' '
-        + (rd.open?'<span class="leave-badge lb-ok">통지 가능</span>':'<span class="leave-badge lb-wait">시작일 전</span>')+'</div>'
-        + '<div style="overflow-x:auto"><table class="adm-table" style="width:100%"><thead><tr><th style="width:40px">선택</th><th>직원</th><th>부여</th><th>사용</th><th>잔여</th><th>통지</th><th>계획서</th></tr></thead><tbody>'+trs+'</tbody></table></div>'
-        + '<div style="margin-top:0.7rem;display:flex;gap:0.5rem;flex-wrap:wrap;">'
-        + '<button class="btn btn-outline btn-sm" onclick="promoCheckAll('+rd.round+')">전체 선택/해제</button>'
-        + '<button class="btn btn-primary" '+(rd.open?'':'disabled ')+'onclick="doPromoNotify('+rd.round+')">📣 선택한 직원에게 통지</button></div></div>';
-    }).join('');
-  }, function(m) { body.innerHTML = '<div class="card"><div class="alert alert-warn">오류: '+esc(m)+'</div></div>'; });
-}
-function promoCheckAll(round) {
-  var cs = document.querySelectorAll('.pn-chk-'+round+':not([disabled])');
-  var all = Array.prototype.every.call(cs, function(c){ return c.checked; });
-  cs.forEach(function(c){ c.checked = !all; });
-}
-function doPromoNotify(round) {
-  var names = Array.prototype.map.call(document.querySelectorAll('.pn-chk-'+round+':checked'), function(c){ return c.value; });
-  if (!names.length) { showLeaveAlert('통지할 직원을 선택하세요.', 'warn', 'alert-area-promonotify'); return; }
-  if (!confirm(names.length+'명에게 '+round+'회차 연가 일수를 통지합니다.\n이미 통지한 직원은 현재 일수로 다시 통지됩니다. 계속할까요?')) return;
-  gasRun('promoNotify', JSON.stringify({auth: myAuth(), year: promoNotifyData.year, round: round, names: names}), function(res) {
-    if (res && res.ok) { showLeaveAlert('✅ '+res.count+'명에게 통지했습니다.', 'success', 'alert-area-promonotify'); loadPromoNotifier(); }
-    else showLeaveAlert('통지 실패: '+esc(res && res.msg || ''), 'warn', 'alert-area-promonotify');
-  }, function(m) { showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-promonotify'); });
+  w.document.write('<html><head><title>연가사용계획서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;margin:0;}.pg{padding:20mm 15mm;page-break-after:always;}.pg:last-child{page-break-after:auto;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td,th{border:1px solid black;padding:4px 8px;text-align:center;}td.lb{background:#f0f0f0;font-weight:700;width:22mm;}th{background:#f0f0f0;}</style></head><body>');
+  entries.forEach(function(e) {
+    var rows = e.plans.map(function(p, i){ return '<tr><td>'+(i+1)+'</td><td>'+esc(p.start)+' ~ '+esc(p.end)+'</td><td>'+fmtNum(p.days)+'일</td></tr>'; }).join('');
+    w.document.write('<div class="pg"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8mm;"><h2>연 가 사 용 계 획 서</h2>'+approvalBoxHTML(e.dept)+'</div>'
+      + '<table><tr><td class="lb">성명</td><td>'+esc(e.name)+'</td><td class="lb">부서</td><td>'+esc(e.dept||'')+'</td></tr><tr><td class="lb">직위</td><td>'+esc(e.position||'')+'</td><td class="lb">통지 회차</td><td>'+e.year+'년 '+e.round+'회차'+(e.noticeDate?' ('+esc(e.noticeDate)+')':'')+'</td></tr>'
+      + '<tr><td class="lb">연가 부여</td><td>'+fmtNum(e.granted)+'일</td><td class="lb">사용 / 잔여</td><td>'+fmtNum(e.used)+'일 / '+fmtNum(e.remain)+'일</td></tr></table>'
+      + '<table><thead><tr><th style="width:15mm">번호</th><th>사용 기간</th><th style="width:30mm">일수</th></tr></thead><tbody>'+rows+'<tr><td colspan="2"><b>합계</b></td><td><b>'+fmtNum(e.planDays)+'일</b></td></tr></tbody></table>'
+      + '<p style="text-align:center;margin:8mm 0;">위와 같이 연가 사용 계획을 제출합니다.</p><p style="text-align:center;">'+esc(e.submitted||'')+'</p><p style="text-align:center;">제출자: '+esc(e.name)+' (서명 또는 인)</p>'
+      + addresseeHTML(e.dept)+'</div>');
+  });
+  w.document.write('</body></html>'); w.document.close(); w.focus(); setTimeout(function(){ w.print(); }, 500);
 }
 
 // ----- 관리자: 공지사항 -----
@@ -4845,47 +4807,85 @@ function delNotice(i) {
   gasRun('deleteNotice', JSON.stringify({id:n.id}), function(){ loadAdminNotices(); }, function(m){ showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-adm-notice'); });
 }
 
-// ----- 관리자: 연가 촉진 설정·현황 -----
-var promoCfgStaff = [];
+// ----- 관리자: 연가 촉진 (통지 · 제출된 계획서 확인/인쇄) -----
+var admPromo = null;
 function loadAdminPromo() {
   _initYearSelect('promo-year-select');
   var y = Number(document.getElementById('promo-year-select').value) || new Date().getFullYear();
-  gasRun('getAdminStaff', null, function(rows) {
-    promoCfgStaff = (Array.isArray(rows) ? rows : []).map(function(r){ return {name:r.name, role:r.role}; });
-    gasRun('getPromoConfig', JSON.stringify({year: y}), function(cfg) {
-      var tb = document.getElementById('promo-cfg-body'); if (!tb) return;
-      var rounds = (cfg && cfg.rounds) || [{round:1},{round:2},{round:3}];
-      var seniors = promoCfgStaff.filter(function(s){ return s.role === '선임'; }), others = promoCfgStaff.filter(function(s){ return s.role !== '선임'; });
-      tb.innerHTML = rounds.map(function(r) {
-        var opt = function(list){ return list.map(function(s){ return '<option value="'+esc(s.name)+'"'+(r.notifier===s.name?' selected':'')+'>'+esc(s.name)+'</option>'; }).join(''); };
-        return '<tr><td style="text-align:center"><b>'+r.round+'회차</b></td>'
-          + '<td><input type="date" id="pc-start-'+r.round+'" value="'+esc(r.start||'')+'"></td>'
-          + '<td><select id="pc-who-'+r.round+'"><option value="">(사용 안 함)</option>'+(seniors.length?'<optgroup label="선임">'+opt(seniors)+'</optgroup>':'')+(others.length?'<optgroup label="그 외 직원">'+opt(others)+'</optgroup>':'')+'</select></td></tr>';
-      }).join('');
-    }, function(m){ showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-adm-promo'); });
-  }, function(m){ showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-adm-promo'); });
-  loadPromoStatus(y);
+  gasRun('getPromoConfig', JSON.stringify({year: y}), function(cfg) {
+    (cfg && cfg.rounds || []).forEach(function(r){ var e = document.getElementById('pc-start-'+r.round); if (e) e.value = r.start || ''; });
+  }, function(){});
+  var box = document.getElementById('promo-rounds-body');
+  box.innerHTML = '<div class="card"><div class="hint">불러오는 중...</div></div>';
+  gasRun('getAdminPromo', JSON.stringify({year: y}), function(res) {
+    if (!res || !res.ok) { box.innerHTML = '<div class="card"><div class="alert alert-warn">'+esc(res && res.msg || '불러오기 실패')+'</div></div>'; return; }
+    admPromo = res; renderAdminPromo();
+  }, function(m) { box.innerHTML = '<div class="card"><div class="alert alert-warn">오류: '+esc(m)+'</div></div>'; });
+}
+function renderAdminPromo() {
+  var res = admPromo, box = document.getElementById('promo-rounds-body'); if (!res || !box) return;
+  var starts = {}; res.rounds.forEach(function(r){ starts[r.round] = r.start; });
+  box.innerHTML = [1,2,3].map(function(n) {
+    var rows = res.list.filter(function(x){ return x.round === n; });
+    var nNoti = rows.filter(function(x){ return x.notified; }).length, nSub = rows.filter(function(x){ return x.planCount; }).length;
+    var trs = rows.map(function(x) {
+      return '<tr><td style="text-align:center"><input type="checkbox" class="pn-chk-'+n+'" value="'+esc(x.name)+'"'+(x.notified?'':' checked')+'></td>'
+        + '<td class="l"><b>'+esc(x.name)+'</b><div class="hint">'+esc(x.dept)+(x.position?' · '+esc(x.position):'')+'</div></td>'
+        + '<td>'+fmtNum(x.granted)+'</td><td>'+fmtNum(x.used)+'</td><td><b>'+fmtNum(x.remain)+'</b></td>'
+        + '<td>'+(x.notified?'<span class="leave-badge lb-ok">통지됨</span><div class="hint">'+esc(x.noticeDate)+'</div>':'<span class="leave-badge lb-wait">미통지</span>')+'</td>'
+        + '<td class="l">'+(x.planCount?'<b>'+fmtNum(x.planDays)+'일</b> <span class="hint">('+esc(x.submitted)+' 제출)</span><div style="font-size:0.82rem">'+promoPeriods(x.plans)+'</div>':(x.notified?'<span style="color:var(--text-muted)">미제출</span>':'-'))+'</td>'
+        + '<td>'+(x.planCount?'<button class="row-btn" onclick="printAdminPromoOne('+n+',\''+esc(x.name)+'\')">🖨️ 인쇄</button>':'')+'</td></tr>';
+    }).join('');
+    return '<div class="card" style="padding:0;overflow:hidden;">'
+      + '<div style="padding:0.8rem 1rem;display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;justify-content:space-between;">'
+      + '<div><b>'+res.year+'년 '+n+'회차</b>'+(starts[n]?' <span class="hint">· 통지 예정일 '+esc(starts[n])+'</span>':'')+' <span class="hint">· 통지 '+nNoti+'/'+rows.length+'명 · 계획서 제출 '+nSub+'명</span></div>'
+      + '<div style="display:flex;gap:0.4rem;flex-wrap:wrap;"><button class="btn btn-outline btn-sm" onclick="admPromoCheckAll('+n+')">전체 선택/해제</button>'
+      + '<button class="btn btn-primary btn-sm" onclick="admPromoNotify('+n+')">📣 선택한 직원에게 통지</button>'
+      + '<button class="btn btn-accent btn-sm" onclick="printAdminPromoRound('+n+',true)">🖨️ 선택한 직원 계획서 인쇄</button>'
+      + '<button class="btn btn-outline btn-sm" onclick="printAdminPromoRound('+n+')">제출된 계획서 전체 인쇄</button></div></div>'
+      + '<div style="overflow-x:auto"><table class="adm-table" style="width:100%"><thead><tr><th style="width:40px">선택</th><th>직원</th><th>부여</th><th>사용</th><th>잔여</th><th>통지</th><th>제출한 계획서</th><th></th></tr></thead><tbody>'
+      + (trs || '<tr><td colspan="8" class="empty">직원이 없습니다.</td></tr>') + '</tbody></table></div></div>';
+  }).join('');
+}
+function admPromoCheckAll(n) {
+  var cs = document.querySelectorAll('.pn-chk-'+n); var all = Array.prototype.every.call(cs, function(c){ return c.checked; });
+  cs.forEach(function(c){ c.checked = !all; });
+}
+function admPromoNotify(n) {
+  var names = Array.prototype.map.call(document.querySelectorAll('.pn-chk-'+n+':checked'), function(c){ return c.value; });
+  if (!names.length) { showLeaveAlert('통지할 직원을 선택하세요.', 'warn', 'alert-area-adm-promo'); return; }
+  if (!confirm(names.length+'명에게 '+n+'회차 연가 일수를 통지합니다.\n이미 통지한 직원은 현재 일수로 다시 통지되며, 제출한 계획서는 그대로 유지됩니다. 계속할까요?')) return;
+  gasRun('adminPromoNotify', JSON.stringify({year: admPromo.year, round: n, names: names}), function(res) {
+    if (res && res.ok) { showLeaveAlert('✅ '+res.count+'명에게 통지했습니다.', 'success', 'alert-area-adm-promo'); loadAdminPromo(); }
+    else showLeaveAlert('통지 실패: '+esc(res && res.msg || ''), 'warn', 'alert-area-adm-promo');
+  }, function(m) { showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-adm-promo'); });
 }
 function savePromoCfgForm() {
   var y = Number(document.getElementById('promo-year-select').value);
-  var rounds = [1,2,3].map(function(n){ return {round:n, start:document.getElementById('pc-start-'+n).value, notifier:document.getElementById('pc-who-'+n).value}; });
+  var rounds = [1,2,3].map(function(n){ return {round:n, start:document.getElementById('pc-start-'+n).value}; });
   gasRun('savePromoConfig', JSON.stringify({year:y, rounds:rounds}), function(res) {
-    if (res && res.ok) { showLeaveAlert('✅ 저장되었습니다. 시작일이 되면 담당 선임에게 [연가 일수 통지] 메뉴가 열립니다.', 'success', 'alert-area-adm-promo'); loadPromoStatus(y); }
+    if (res && res.ok) { showLeaveAlert('✅ 예정일을 저장했습니다.', 'success', 'alert-area-adm-promo'); loadAdminPromo(); }
     else showLeaveAlert('저장 실패: '+esc(res && res.msg || ''), 'warn', 'alert-area-adm-promo');
   }, function(m){ showLeaveAlert('오류: '+esc(m), 'warn', 'alert-area-adm-promo'); });
 }
-function loadPromoStatus(y) {
-  var tb = document.getElementById('promo-status-body'); if (!tb) return;
-  gasRun('getAdminPromo', JSON.stringify({year:y}), function(res) {
-    if (!res || !res.ok) { tb.innerHTML = '<tr><td colspan="8" class="empty danger-text">'+esc(res && res.msg || '불러오기 실패')+'</td></tr>'; return; }
-    tb.innerHTML = res.list.length ? res.list.map(function(x) {
-      return '<tr><td>'+x.round+'회차</td><td class="l"><b>'+esc(x.name)+'</b></td>'
-        + '<td>'+(x.notified?'<span class="leave-badge lb-ok">통지됨</span>':'<span class="leave-badge lb-wait">미통지</span>')+'</td>'
-        + '<td>'+(x.notified?esc(x.noticeDate)+' ('+esc(x.by)+')':'-')+'</td>'
-        + '<td>'+(x.notified?fmtNum(x.granted):'-')+'</td><td>'+(x.notified?fmtNum(x.used):'-')+'</td><td>'+(x.notified?'<b>'+fmtNum(x.remain)+'</b>':'-')+'</td>'
-        + '<td>'+(x.planCount?fmtNum(x.planDays)+'일 ('+x.planCount+'건)':(x.notified?'<span style="color:var(--text-muted)">미제출</span>':'-'))+'</td></tr>';
-    }).join('') : '<tr><td colspan="8" class="empty">통지 일정을 저장하면 현황이 표시됩니다.</td></tr>';
-  }, function(m){ tb.innerHTML = '<tr><td colspan="8" class="empty danger-text">오류: '+esc(m)+'</td></tr>'; });
+function _promoEntry(x) {
+  return { name:x.name, dept:x.dept, position:x.position, year:admPromo.year, round:x.round, noticeDate:x.noticeDate, granted:x.granted, used:x.used, remain:x.remain,
+    plans:x.plans, planDays:x.planDays, submitted:x.submitted };
+}
+// 결재라인(부서별)을 불러온 뒤 인쇄 — 관리자 모드에서는 아직 안 불러왔을 수 있음
+function _withApproval(cb) {
+  if (APPROVAL_CONFIG && APPROVAL_CONFIG.length) { cb(); return; }
+  gasRun('loadApprovalConfig', undefined, function(r){ if (Array.isArray(r) && r.length) APPROVAL_CONFIG = r; cb(); }, function(){ cb(); });
+}
+function printAdminPromoOne(n, name) {
+  var x = admPromo.list.filter(function(e){ return e.round === n && e.name === name; })[0]; if (!x) return;
+  _withApproval(function(){ printPromoEntries([_promoEntry(x)]); });
+}
+function printAdminPromoRound(n, onlyChecked) {
+  var picked = onlyChecked ? Array.prototype.map.call(document.querySelectorAll('.pn-chk-'+n+':checked'), function(c){ return c.value; }) : null;
+  var list = admPromo.list.filter(function(e){ return e.round === n && e.planCount && (!picked || picked.indexOf(e.name) >= 0); }).map(_promoEntry);
+  if (!list.length) { showLeaveAlert(onlyChecked ? '선택한 직원 중 제출된 계획서가 없습니다. (체크한 직원 중 계획서를 낸 사람만 인쇄됩니다)' : '이 회차에 제출된 계획서가 없습니다.', 'warn', 'alert-area-adm-promo'); return; }
+  _withApproval(function(){ printPromoEntries(list); });
 }
 
 // ============================================================
@@ -4914,15 +4914,16 @@ function buildAdminReportSheets(dash, promo) {
   var comp = [['이름','부서','구분','날짜','일수','사유','상태']];
   D.forEach(function(d){ d.comp.list.forEach(function(x){ comp.push([d.name, d.dept, x.kind, x.date, x.days, x.reason, x.status]); }); });
   S.push({name:'대체휴무 상세', rows:comp, widths:[10,12,8,12,8,30,8]});
-  if (promo && promo.ok && promo.list.length) {
-    var ps = [['회차','이름','통지 여부','통지일','통지자','부여','사용','잔여','계획서 건수','계획 일수']];
-    var pp = [['회차','이름','사용 시작일','사용 종료일','일수','제출일']];
-    promo.list.forEach(function(x) {
-      ps.push([x.round, x.name, x.notified?'통지':'미통지', x.noticeDate, x.by, x.notified?x.granted:'', x.notified?x.used:'', x.notified?x.remain:'', x.planCount, x.planDays]);
-      x.plans.forEach(function(p){ pp.push([x.round, x.name, p.start, p.end, p.days, p.submitted]); });
+  var pl = promo && promo.ok ? promo.list.filter(function(x){ return x.notified || x.planCount; }) : [];
+  if (pl.length) {
+    var ps = [['회차','이름','부서','통지 여부','통지일','부여','사용','잔여','계획서 건수','계획 일수','제출일']];
+    var pp = [['회차','이름','부서','사용 시작일','사용 종료일','일수','제출일']];
+    pl.forEach(function(x) {
+      ps.push([x.round, x.name, x.dept, x.notified?'통지':'미통지', x.noticeDate, x.granted, x.used, x.remain, x.planCount, x.planDays, x.submitted]);
+      x.plans.forEach(function(p){ pp.push([x.round, x.name, x.dept, p.start, p.end, p.days, p.submitted]); });
     });
-    S.push({name:'연가촉진 현황', rows:ps, widths:[8,10,10,12,10,8,8,8,12,10]});
-    S.push({name:'연가 사용 계획', rows:pp, widths:[8,10,12,12,8,12]});
+    S.push({name:'연가촉진 현황', rows:ps, widths:[8,10,12,10,12,8,8,8,12,10,12]});
+    S.push({name:'연가 사용 계획', rows:pp, widths:[8,10,12,12,12,8,12]});
   }
   return S;
 }
