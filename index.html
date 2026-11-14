@@ -235,7 +235,8 @@
 <!-- 직원 사이드바 -->
 <nav class="sidebar" id="tabs-staff" style="display:none">
   <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTab('leave')">🗓️ 휴가 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('leave')">📊 근태 대시보드</button>
+  <button class="tab tab-leave" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
   <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
   <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
   <hr class="sidebar-divider">
@@ -252,7 +253,8 @@
 <!-- 직원+선임 사이드바 -->
 <nav class="sidebar" id="tabs-both" style="display:none">
   <div class="sidebar-group">🏖 근태관리</div>
-  <button class="tab tab-leave" onclick="switchTab('leave')">🗓️ 휴가 신청</button>
+  <button class="tab tab-leave" onclick="switchTab('leave')">📊 근태 대시보드</button>
+  <button class="tab tab-leave" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
   <button class="tab tab-leave" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
   <button class="tab tab-leave" onclick="switchTab('leavehist')">📋 내 신청 내역</button>
   <button class="tab tab-leave" onclick="switchTabSenior('leavemgr')">📊 근태 현황 (선임)</button>
@@ -787,7 +789,9 @@
     </div>
   </div>
   <div class="btn-group no-print">
-    <button class="btn btn-primary" onclick="switchTab('leave')">🔄 새로고침</button>
+    <button class="btn btn-primary" onclick="loadLeaveDashboard()">🔄 새로고침</button>
+    <button class="btn btn-accent" onclick="switchTab('leave-apply')">🗓️ 휴가 신청</button>
+    <button class="btn btn-outline" onclick="switchTab('overtime')">⏰ 시간외 신청</button>
   </div>
 </div>
 
@@ -848,18 +852,23 @@
 
   <!-- STEP 1: 타이머 -->
   <div class="card" id="ot-step-timer">
-    <div class="card-title">⏰ 시간외근무 타이머</div>
-    <div style="text-align:center;padding:1rem 0;">
-      <div id="ot-timer-display" style="font-size:2.5rem;font-weight:700;color:var(--primary);letter-spacing:0.08em;font-variant-numeric:tabular-nums;">00:00:00</div>
-      <div id="ot-timer-status" style="font-size:0.85rem;color:var(--text-muted);margin-top:0.3rem;">대기 중</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+      <div class="card-title" style="margin:0;">⏰ 시간외근무 타이머</div>
+      <div id="ot-user-badge" style="font-size:0.8rem;color:var(--text-muted);"></div>
     </div>
-    <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
-      <button class="btn btn-primary" id="ot-btn-start" onclick="otTimerStart()" style="min-width:120px;">▶ 시작</button>
-      <button class="btn btn-accent"  id="ot-btn-end"   onclick="otTimerEnd()"   style="min-width:120px;display:none;">⏹ 종료</button>
+    <div style="text-align:center;padding:1rem 0 0.5rem;">
+      <div id="ot-timer-display" style="font-size:2.8rem;font-weight:700;color:var(--primary);letter-spacing:0.08em;font-variant-numeric:tabular-nums;font-family:monospace;">00:00:00</div>
+      <div id="ot-timer-status" style="font-size:0.9rem;color:var(--text-muted);margin-top:0.4rem;">대기 중</div>
     </div>
-    <div id="ot-timer-times" style="display:none;margin-top:1rem;font-size:0.85rem;color:var(--text-muted);text-align:center;">
-      <span id="ot-timer-start-label"></span> → <span id="ot-timer-end-label"></span>
+    <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:0.8rem;">
+      <button class="btn btn-primary" id="ot-btn-start" onclick="otTimerStart()" style="min-width:140px;font-size:1rem;">▶ 시작</button>
+      <button class="btn btn-accent"  id="ot-btn-end"   onclick="otTimerEnd()"   style="min-width:140px;font-size:1rem;display:none;">⏹ 종료</button>
     </div>
+    <div id="ot-timer-times" style="display:none;margin-top:0.5rem;font-size:0.82rem;color:var(--text-muted);background:#f5f3ee;border-radius:6px;padding:0.6rem 0.8rem;line-height:1.8;">
+      <div id="ot-timer-start-label" style="color:#1a3a5c;"></div>
+      <div id="ot-timer-end-label" style="color:#c0392b;"></div>
+    </div>
+    <div style="font-size:0.75rem;color:#888;text-align:center;margin-top:0.5rem;">📍 시작/종료 버튼을 누르면 GPS 위치가 자동 기록됩니다</div>
   </div>
 
   <!-- STEP 2: 보고서 작성 (종료 후 표시) -->
@@ -3142,8 +3151,12 @@ var otGpsEnd   = null;
 function initOtForm() {
   // 타이머만 보이고 보고서는 숨김
   otTimerStartTime = null; otTimerEndTime = null;
+  otGpsStart = null; otGpsEnd = null;
   otPhotoBase64 = null; otPhotoFilename = null;
   if (otTimerInterval) { clearInterval(otTimerInterval); otTimerInterval = null; }
+  // 로그인 사용자 배지
+  var badge = document.getElementById('ot-user-badge');
+  if (badge && leaveUser) badge.textContent = leaveUser.name + (leaveUser.position ? ' ' + leaveUser.position : '');
   var el = function(id){ return document.getElementById(id); };
   if (el('ot-step-timer'))   el('ot-step-timer').style.display = '';
   if (el('ot-step-report'))  el('ot-step-report').style.display = 'none';
@@ -3196,13 +3209,14 @@ function otTimerStart() {
     document.getElementById('ot-btn-start').style.display = 'none';
     document.getElementById('ot-btn-start').disabled = false;
     document.getElementById('ot-btn-end').style.display = '';
-    document.getElementById('ot-timer-status').textContent = '근무 중' + (gps ? ' 📍' : '');
+    document.getElementById('ot-timer-status').textContent = '근무 중' + (gps ? ' 📍' : ' (위치 미수집)');
     document.getElementById('ot-timer-status').style.color = '#10b981';
-    if (gps) {
-      document.getElementById('ot-timer-start-label').textContent =
-        '시작 ' + otTimerStartTime.toTimeString().slice(0,5) + ' · ' + otGpsLabel(gps);
-      document.getElementById('ot-timer-times').style.display = '';
-    }
+    var startTimeStr = otTimerStartTime.toTimeString().slice(0,5);
+    var gpsHtml = gps
+      ? ' · <a href="' + otGpsMapUrl(gps) + '" target="_blank" style="color:#1a3a5c;text-decoration:underline;">' + otGpsLabel(gps) + '</a>'
+      : ' · <span style="color:#c0392b;">위치 미수집</span>';
+    document.getElementById('ot-timer-start-label').innerHTML = '🟢 시작 ' + startTimeStr + gpsHtml;
+    document.getElementById('ot-timer-times').style.display = '';
     otTimerInterval = setInterval(function(){
       var diff = Math.floor((Date.now() - otTimerStartTime.getTime()) / 1000);
       var h = Math.floor(diff/3600), m = Math.floor((diff%3600)/60), s = diff%60;
@@ -3229,10 +3243,14 @@ function otTimerEnd() {
     document.getElementById('ot-timer-status').style.color = '#c0392b';
     document.getElementById('ot-btn-end').style.display = 'none';
     document.getElementById('ot-timer-times').style.display = '';
-    document.getElementById('ot-timer-start-label').textContent =
-      '시작 ' + startStr + (otGpsStart ? ' · ' + otGpsLabel(otGpsStart) : '');
-    document.getElementById('ot-timer-end-label').textContent =
-      '종료 ' + endStr + (gps ? ' · ' + otGpsLabel(gps) : '');
+    var gpsStartHtml = otGpsStart
+      ? ' · <a href="' + otGpsMapUrl(otGpsStart) + '" target="_blank" style="color:#1a3a5c;text-decoration:underline;">' + otGpsLabel(otGpsStart) + '</a>'
+      : ' · <span style="color:#c0392b;">위치 미수집</span>';
+    var gpsEndHtml = gps
+      ? ' · <a href="' + otGpsMapUrl(gps) + '" target="_blank" style="color:#c0392b;text-decoration:underline;">' + otGpsLabel(gps) + '</a>'
+      : ' · <span style="color:#c0392b;">위치 미수집</span>';
+    document.getElementById('ot-timer-start-label').innerHTML = '🟢 시작 ' + startStr + gpsStartHtml;
+    document.getElementById('ot-timer-end-label').innerHTML   = '🔴 종료 ' + endStr   + gpsEndHtml;
 
     // 보고서 폼 열기
     var today = otTimerStartTime.toISOString().split('T')[0];
