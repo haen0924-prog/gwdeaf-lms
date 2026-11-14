@@ -1880,7 +1880,6 @@ function gasRun(fnName, arg, onSuccess, onFail) {
   if (!GAS_URL) { onFail('GAS 주소가 설정되지 않았습니다. 기관 연결을 먼저 해주세요.'); return; }
   fetch(GAS_URL, {
     method: 'POST',
-    headers: {'Content-Type': 'text/plain'},
     body: JSON.stringify({ fn: fnName, arg: arg !== undefined ? arg : null }),
     redirect: 'follow'
   })
@@ -2944,14 +2943,16 @@ function setLeaveGas(u) {
 }
 
 // 근태 GAS 호출
+// GAS는 CORS 헤더를 직접 못 보내므로 Content-Type: text/plain으로 보내면
+// 브라우저가 simple request로 처리해 프리플라이트 없이 통과됨
 function gasRunLeave(fnName, arg, onSuccess, onFail) {
   var url = LEAVE_GAS_URL || GAS_URL;
-  if (!url) { onFail('GAS 주소가 없습니다. 기관 연결을 먼저 해주세요.'); return; }
+  if (!url) { onFail('GAS 주소가 없습니다. ⚙️ 설정에서 GAS 주소를 입력해주세요.'); return; }
   fetch(url, {
     method: 'POST',
-    headers: {'Content-Type': 'text/plain'},
     body: JSON.stringify({ fn: fnName, arg: arg !== undefined ? arg : null }),
     redirect: 'follow'
+    // Content-Type 헤더 없음 → text/plain simple request → CORS OK
   })
   .then(function(r){ return r.text(); })
   .then(function(t){
