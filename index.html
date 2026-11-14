@@ -717,7 +717,7 @@
 </div>
 
 <!-- ========== 근태관리: 로그인 ========== -->
-<div class="view" id="view-leave-login" style="display:none">
+<div class="view" id="view-leave-login">
   <div style="max-width:420px;margin:30px auto;">
     <!-- GAS URL 설정 (없을 때만 표시) -->
     <div id="leave-gas-setup" class="card" style="display:none;margin-bottom:1rem;background:#fffbeb;border-color:#f59e0b;">
@@ -1398,6 +1398,10 @@ function switchTab(tab) {
   for (var i=0;i<tabs.length;i++) {
     var fn=tabs[i].getAttribute('onclick')||'';
     if (fn.indexOf("'"+tab+"'")>=0 || fn.indexOf('"'+tab+'"')>=0) { tabs[i].classList.add('active'); break; }
+  }
+  // 시수 탭 접근 시 직원 목록 미로드 상태면 init
+  if (['write','print','myrecord','altwrite','altuse','altrecord'].indexOf(tab) >= 0) {
+    if (!STAFF || !STAFF.length) { if (GAS_URL) init(); }
   }
   if (tab==='print') renderPreview();
   if (tab==='myrecord') loadMyLatestRecord();
@@ -2821,10 +2825,14 @@ function adminSaveApproval() {
   }
 }
 
-if (!GAS_URL) {
-  document.addEventListener('DOMContentLoaded', connectView);
-} else {
-  init();
+// 시수 init은 근태 세션 복원 후 필요할 때만 실행
+// (아래 DOMContentLoaded 블록에서 조율)
+function initSisujeIfNeeded() {
+  if (!GAS_URL) {
+    connectView();
+  } else {
+    init();
+  }
 }
 
 // ============================================================
@@ -2889,6 +2897,14 @@ function saveLeaveGasFromInput() {
 // ===== 근태 로그인 뷰 표시 =====
 function showLeaveLoginView() {
   clearAllViews();
+  // app-layout과 사이드바 표시
+  var layout = document.getElementById('app-layout');
+  if (layout) layout.style.display = 'flex';
+  // 사이드바는 로그인 전이면 숨김
+  ['tabs-staff','tabs-both','tabs-senior'].forEach(function(id){
+    var s = document.getElementById(id);
+    if (s) s.style.display = 'none';
+  });
   var el = document.getElementById('view-leave-login');
   if (el) el.classList.add('active');
 
@@ -2927,6 +2943,12 @@ function doLeaveLogin() {
     showLeaveAlert('', 'info', 'leave-login-alert');
     // 대시보드로 이동
     clearAllViews();
+    document.getElementById('app-layout').style.display = 'flex';
+    // 역할에 따라 사이드바 선택
+    var sidebarId = (res.role === '선임') ? 'tabs-both' : 'tabs-staff';
+    ['tabs-staff','tabs-both','tabs-senior'].forEach(function(id){
+      document.getElementById(id).style.display = (id === sidebarId) ? 'flex' : 'none';
+    });
     document.getElementById('view-leave').classList.add('active');
     setLeaveUserBadge(res.name + (res.role==='선임' ? ' (선임)' : ''));
     loadLeaveDashboard();
@@ -3506,48 +3528,53 @@ function updateLeaveMgrStatus(row, status, type) {
   }, function(m){ showLeaveAlert('오류: '+m,'warn','alert-area-leavemgr'); });
 }
 
-// 세션 복원 + 첫 화면 결정
-(function(){
-  document.addEventListener('DOMContentLoaded', function(){
-    var saved = ls.get('leave_session', '');
-    if (!saved) { showLeaveLoginView(); return; }
-    try {
-      var sess = JSON.parse(saved);
-      if (!sess || !sess.name || !sess.pin) { showLeaveLoginView(); return; }
-      // LEAVE_GAS_URL이 아직 없으면 로그인 화면만 표시
-      if (!LEAVE_GAS_URL && !GAS_URL) { showLeaveLoginView(); return; }
-      // 조용히 재로그인 시도
-      gasRunLeave('login', JSON.stringify({name:sess.name, pin:sess.pin}), function(res){
-        if (res && res.ok) {
-          leaveUser = res;
-          leaveIsAdmin = false;
-          // 대시보드로 바로 이동
-          clearAllViews();
-          document.getElementById('view-leave').classList.add('active');
-          setLeaveUserBadge(res.name + (res.role==='선임' ? ' (선임)' : ''));
-          loadLeaveDashboard();
-        } else {
-          ls.set('leave_session', '');
-          showLeaveLoginView();
-        }
-      }, function(){
-        // GAS 오류 시 로그인 화면
-        showLeaveLoginView();
-      });
-    } catch(e) { showLeaveLoginView(); }
+// ===== 앱 시작: 근태 세션 복원 → 없으면 로그인 화면 =====
+// (시수 init은 사이드바에서 시수 탭 클릭 시 필요)
+document.addEventListener('DOMContentLoaded', function(){
+  // 오늘 날짜 초기화
+  var today = new Date().toISOString().split('T')[0];
+  ['leave-start','leave-end','ot-date'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el && !el.value) el.value = today;
   });
-})();
+  calcLeaveDaysLeave();
+  onOtDateChangeLeave();
 
-// 오늘 날짜 초기화
-(function(){
-  document.addEventListener('DOMContentLoaded', function(){
-    var today = new Date().toISOString().split('T')[0];
-    ['leave-start','leave-end','ot-date'].forEach(function(id){
-      var el = document.getElementById(id);
-      if (el && !el.value) el.value = today;
+  var saved = ls.get('leave_session', '');
+  if (!saved) {
+    // 세션 없으면 로그인 화면
+    showLeaveLoginView();
+    return;
+  }
+  try {
+    var sess = JSON.parse(saved);
+    if (!sess || !sess.name || !sess.pin) { showLeaveLoginView(); return; }
+    if (!LEAVE_GAS_URL && !GAS_URL) { showLeaveLoginView(); return; }
+    // 조용히 재로그인
+    gasRunLeave('login', JSON.stringify({name:sess.name, pin:sess.pin}), function(res){
+      if (res && res.ok) {
+        leaveUser = res;
+        leaveIsAdmin = false;
+        clearAllViews();
+        document.getElementById('app-layout').style.display = 'flex';
+        var sidebarId = (res.role === '선임') ? 'tabs-both' : 'tabs-staff';
+        ['tabs-staff','tabs-both','tabs-senior'].forEach(function(id){
+          document.getElementById(id).style.display = (id === sidebarId) ? 'flex' : 'none';
+        });
+        document.getElementById('view-leave').classList.add('active');
+        setLeaveUserBadge(res.name + (res.role==='선임' ? ' (선임)' : ''));
+        loadLeaveDashboard();
+        // 시수 데이터도 백그라운드 로드
+        if (GAS_URL) init();
+      } else {
+        ls.set('leave_session', '');
+        showLeaveLoginView();
+      }
+    }, function(){
+      showLeaveLoginView();
     });
-    calcLeaveDaysLeave();
-    onOtDateChangeLeave();
-  });
-})();
+  } catch(e) { showLeaveLoginView(); }
+});
+
+// (날짜 초기화는 위 DOMContentLoaded 블록에서 처리됨)
 </script>
