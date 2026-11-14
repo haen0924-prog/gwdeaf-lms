@@ -655,7 +655,7 @@
 
 <!-- ========== [5] 시수 인쇄 ========== -->
 <div class="view" id="view-print">
-  <div class="alert alert-warn no-print" id="print-readiness-alert">⚠️ 8차시 완료 + 선임 확인이 끝나면 인쇄 버튼이 활성화됩니다.</div>
+  <div class="alert alert-warn no-print" id="print-readiness-alert">⚠️ 8차시를 모두 작성하면 인쇄 버튼이 활성화됩니다.</div>
   <div class="card no-print">
     <div class="card-title">인쇄 미리보기</div>
     <div id="preview-area" style="border:1px solid var(--border);border-radius:6px;padding:1rem;background:#fff;font-size:0.82rem;">저장 후 불러오기를 누르면 미리보기가 표시됩니다.</div>
@@ -2505,11 +2505,15 @@ function renderPreview() {
   const confirmed=reportData.rows.filter(r=>r.confirmed).length;
   const alertEl=document.getElementById('print-readiness-alert');
   const printBtn=document.getElementById('print-btn');
-  if (filled>0) {
-    const msg=confirmed<filled?`⚠️ ${filled}차시 입력, ${confirmed}차시 선임확인 — 미확인 차시가 있습니다.`:`✅ ${filled}차시 입력, ${confirmed}차시 선임확인 완료 — 인쇄하실 수 있습니다.`;
-    alertEl.className=confirmed<filled?'alert alert-warn no-print':'alert alert-success no-print';
-    alertEl.innerHTML=msg; printBtn.disabled=false;
-  } else { alertEl.innerHTML='⚠️ 입력된 차시가 없습니다. 먼저 데이터를 불러오세요.'; printBtn.disabled=true; }
+  if (filled>=8) {
+    alertEl.className='alert alert-success no-print';
+    alertEl.innerHTML='✅ 8차시 작성이 끝났습니다. 인쇄할 수 있습니다.'+(confirmed<filled?' (선임 확인 '+confirmed+'/'+filled+'차시 — 확인란은 인쇄물에 확인된 차시만 표시됩니다)':'');
+    printBtn.disabled=false;
+  } else if (filled>0) {
+    alertEl.className='alert alert-warn no-print';
+    alertEl.innerHTML='⚠️ '+filled+'차시 작성됨 — 8차시를 모두 작성하면 인쇄할 수 있습니다. ('+(8-filled)+'차시 남음)';
+    printBtn.disabled=true;
+  } else { alertEl.className='alert alert-warn no-print'; alertEl.innerHTML='⚠️ 입력된 차시가 없습니다. 먼저 데이터를 불러오세요.'; printBtn.disabled=true; }
   const cfg=getDeptConfig(reportData.dept);
   const dateStr=getWriteDateStr();
   document.getElementById('preview-area').innerHTML=buildDocHTML(cfg,dateStr,false);
@@ -2573,6 +2577,8 @@ function doPrint(){ window.print(); }
 function printAltOcc() {
   var rows = altData.rows.filter(function(r){ return r.occMonth||r.occDay||r.occStart; });
   if (!rows.length) { alert('인쇄할 발생 내역이 없습니다.'); return; }
+  var incOcc = rows.filter(function(r){ return !(r.occMonth && r.occDay && r.occStart && r.occEnd); });
+  if (incOcc.length) { alert('작성이 끝나지 않은 줄이 있습니다. 월·일·시작·종료 시간을 모두 입력한 뒤 인쇄해 주세요.'); return; }
   var name = altData.name||'', pos = altData.position||'', dept = altData.dept||'', docNo = altData.docNo||'';
   var ROWS_PER_PAGE = 8;
   var pages = [];
@@ -2646,6 +2652,9 @@ function printAltOcc() {
 function printAltUse() {
   var rows = altUseData.rows || [];
   if (!rows.length) { alert('인쇄할 사용 내역이 없습니다.'); return; }
+  var anyUse = function(r){ return r.useMonth || r.useDay || r.useStart || r.useEnd; };
+  if (!rows.some(anyUse)) { alert('사용 일시를 먼저 입력해 주세요.'); return; }
+  if (rows.filter(anyUse).some(function(r){ return !(r.useMonth && r.useDay && r.useStart && r.useEnd); })) { alert('작성이 끝나지 않은 사용 줄이 있습니다. 월·일·시작·종료 시간을 모두 입력한 뒤 인쇄해 주세요.'); return; }
   var name = altUseData.name || document.getElementById('altuse-name').value || '';
   var docNo = altUseData.docNo || document.getElementById('altuse-doc-no').value || '';
   var dept = (leaveUser && leaveUser.name === name) ? (leaveUser.dept||'') : '';
@@ -3321,8 +3330,8 @@ function loadLeaveDashboard() {
     var el = function(id){ return document.getElementById(id); };
     if (el('leave-bal-granted')) el('leave-bal-granted').textContent = bal.granted || 0;
     var totalUsed = (bal.sisuUsedDays||0) + (bal.leavedDays||0);
-    if (el('leave-bal-used')) el('leave-bal-used').textContent = totalUsed;
-    if (el('leave-bal-remaining')) el('leave-bal-remaining').textContent = bal.remaining || 0;
+    if (el('leave-bal-used')) el('leave-bal-used').textContent = fmtNum(totalUsed);
+    if (el('leave-bal-remaining')) el('leave-bal-remaining').textContent = fmtNum(bal.remaining || 0);
     var pct = bal.granted > 0 ? Math.round(totalUsed/bal.granted*100) : 0;
     if (el('leave-bal-pct')) el('leave-bal-pct').textContent = '사용률 '+pct+'%';
     if (el('leave-bal-bar')) {
@@ -3365,10 +3374,31 @@ function renderLeaveHistTable(list, tbodyId, isDash) {
     html += '<td style="text-align:center;padding:6px 8px;white-space:nowrap;font-size:0.82rem;">'+h.date+'</td>';
     html += '<td style="padding:6px 8px;font-size:0.82rem;">'+h.detail+'</td>';
     html += '<td style="text-align:center;padding:6px 8px;"><span class="leave-badge '+statusClass+'">'+h.status+'</span></td>';
-    html += '<td style="text-align:center;padding:6px 8px;">'+deleteBtn+'</td>';
+    var printBtn = '';
+    if ((h.status==='승인'||h.status==='확인') && h.pd && h.type!=='시수') {
+      histPrintItems[h.type+'_'+h.row] = h;
+      printBtn = '<button onclick="printHistItem(\''+h.type+'\','+h.row+')" style="font-size:0.75rem;padding:3px 8px;background:#e0f2fe;color:#075985;border:none;border-radius:4px;cursor:pointer;">🖨️ 인쇄</button>';
+    }
+    html += '<td style="text-align:center;padding:6px 8px;white-space:nowrap;">'+printBtn+' '+deleteBtn+'</td>';
     html += '</tr>';
   });
   tbody.innerHTML = html;
+}
+
+// 승인된 신청서를 내역에서 다시 인쇄
+var histPrintItems = {};
+function printHistItem(type, row) {
+  var h = histPrintItems[type+'_'+row]; if (!h || !h.pd || !leaveUser) return;
+  var u = leaveUser, p = h.pd;
+  var base = { name:u.name, position:u.position||'', dept:u.dept||'', contact:u.contact||'' };
+  if (type==='휴가') {
+    printLeaveReq(Object.assign(base, { type:p.leaveType, start:p.start, end:p.end, days:p.days, reason:p.reason||'', delegate:'', date:h.date }));
+  } else if (type==='시간외') {
+    printOvertimeReq(Object.assign(base, { workDate:p.workDate, startT:p.startT, endT:p.endT, paidH:p.paidH, pay:Number(p.pay||0).toLocaleString(),
+      content:p.content||'', date:h.date, photoUrl:p.photoUrl||'', gpsStart:p.gpsStart||'', gpsEnd:p.gpsEnd||'', gpsStartMap:p.gpsStartMap||'', gpsEndMap:p.gpsEndMap||'' }));
+  } else if (type==='대체휴무') {
+    printCompReq(Object.assign(base, { days:p.days, date:p.useDate, reason:p.reason||'', submitDate:h.date }));
+  }
 }
 
 // ===== 내 신청 내역 로드 =====
@@ -3468,9 +3498,9 @@ function resetLeaveForm() {
   showLeaveAlert('', 'info', 'alert-area-leave-apply');
 }
 
-function printLeaveReq() {
-  if (!lastLeaveReqData) return;
-  var d = lastLeaveReqData;
+function printLeaveReq(dArg) {
+  var d = dArg || lastLeaveReqData;
+  if (!d) return;
   var printWin = window.open('','_blank','width=800,height=600');
   if (!printWin) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
   printWin.document.write('<html><head><title>휴가신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:20mm;}.val{min-height:10mm;}</style></head><body>');
@@ -3839,9 +3869,9 @@ function resetOtFormLeave() {
   initOtForm();
 }
 
-function printOvertimeReq() {
-  if (!lastOtReqData) return;
-  var d = lastOtReqData;
+function printOvertimeReq(dArg) {
+  var d = dArg || lastOtReqData;
+  if (!d) return;
   var printWin = window.open('','_blank','width=800,height=600');
   if (!printWin) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
   printWin.document.write('<html><head><title>시간외근무신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:25mm;}.val{min-height:12mm;}</style></head><body>');
@@ -3883,7 +3913,7 @@ function _initYearSelect(id) {
     sel.appendChild(o);
   }
 }
-function fmtNum(n) { return (Math.round((Number(n)||0)*10)/10).toLocaleString(); }
+function fmtNum(n) { return (Math.round((Number(n)||0)*1000)/1000).toLocaleString(undefined,{maximumFractionDigits:3}); }
 function statusBadge(s) {
   s = s || '대기';
   var cls = (s==='승인'||s==='확인'||s==='부여'||s==='수락'||s==='완료') ? 'lb-ok' : (s==='반려'||s==='거절'||s==='취소') ? 'lb-rej' : 'lb-wait';
@@ -4266,9 +4296,9 @@ function resetCompForm() {
   showLeaveAlert('', 'info', 'alert-area-comp-apply');
 }
 
-function printCompReq() {
-  if (!lastCompReqData) return;
-  var d = lastCompReqData;
+function printCompReq(dArg) {
+  var d = dArg || lastCompReqData;
+  if (!d) return;
   var printWin = window.open('','_blank','width=800,height=600');
   if (!printWin) { alert('팝업이 차단되었습니다. 팝업을 허용해 주세요.'); return; }
   printWin.document.write('<html><head><title>대체휴무신청서</title><style>body{font-family:"맑은 고딕","Noto Sans KR",sans-serif;font-size:11pt;padding:20mm 15mm;}h2{text-align:center;font-size:18pt;letter-spacing:.2em;margin:0;}table{width:100%;border-collapse:collapse;margin-bottom:5mm;}td{border:1px solid black;padding:4px 8px;}td.lb{background:#f0f0f0;font-weight:700;text-align:center;width:20mm;}.val{min-height:10mm;}</style></head><body>');
