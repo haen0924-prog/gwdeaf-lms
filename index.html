@@ -1032,18 +1032,17 @@
         <div id="settings-admin-alert" style="margin-bottom:0.5rem;"></div>
         <div id="settings-admin-login" style="">
           <div style="display:flex;gap:0.4rem;">
-            <input id="settings-admin-pin" type="password" placeholder="관리자 PIN" maxlength="20"
+            <input id="settings-admin-pin" type="password" placeholder="관리자 비밀번호" maxlength="20"
               style="flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:0.9rem;font-family:inherit;"
               onkeydown="if(event.key==='Enter') doSettingsAdminLogin()">
             <button onclick="doSettingsAdminLogin()" class="btn btn-primary" style="white-space:nowrap;padding:7px 14px;">확인</button>
           </div>
-          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;">처음 입력하는 PIN이 관리자 PIN으로 설정됩니다.</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem;">Code_new.gs의 ADMIN_PASSWORD 값을 입력하세요.</div>
         </div>
         <div id="settings-admin-logged" style="display:none;">
           <span style="font-size:0.85rem;color:var(--success);font-weight:600;">✅ 관리자 로그인됨</span>
           <div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap;">
-            <button onclick="openAdminBody();closeSettings();" class="btn btn-primary" style="flex:1;justify-content:center;">👥 직원·결재 관리</button>
-            <button onclick="openLeaveAdminView();closeSettings();" class="btn btn-accent" style="flex:1;justify-content:center;">📊 근태현황 관리</button>
+            <button onclick="openLeaveAdminView();closeSettings();" class="btn btn-primary" style="flex:1;justify-content:center;">📊 근태현황 관리 →</button>
           </div>
         </div>
       </div>
@@ -3058,48 +3057,24 @@ function applySettingsGas() {
 }
 
 function doSettingsAdminLogin() {
-  var pin = (document.getElementById('settings-admin-pin').value || '').trim();
+  var pw = (document.getElementById('settings-admin-pin').value || '').trim();
   var alertEl = document.getElementById('settings-admin-alert');
-  if (!pin) { alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">PIN을 입력하세요.</div>'; return; }
-  alertEl.innerHTML='<div class="alert alert-info" style="margin:0">확인 중...</div>';
-
-  // 먼저 시수 관리자(PIN) 로그인 시도
-  var gasUrl = GAS_URL || LEAVE_GAS_URL;
-  if (!gasUrl) {
-    // GAS 미연결 — 근태 관리자 비밀번호로 시도
-    _tryLeaveAdmin(pin, alertEl);
-    return;
-  }
-  gasRun('adminCheckPin', JSON.stringify({pin:pin}), function(r) {
-    if (r && r.success) {
-      window._settingsAdminLoggedIn = true;
-      adminLoggedIn = true;
-      alertEl.innerHTML='<div class="alert alert-success" style="margin:0">✅ 시수 관리자 로그인 성공'+(r.isFirst?' (PIN 최초 설정)':'')+'</div>';
-      document.getElementById('settings-admin-login').style.display = 'none';
-      document.getElementById('settings-admin-logged').style.display = '';
-    } else {
-      // 근태 관리자 비밀번호로도 시도
-      _tryLeaveAdmin(pin, alertEl);
-    }
-  }, function() {
-    _tryLeaveAdmin(pin, alertEl);
-  });
-}
-
-function _tryLeaveAdmin(pw, alertEl) {
+  if (!pw) { alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">비밀번호를 입력하세요.</div>'; return; }
   if (!LEAVE_GAS_URL && !GAS_URL) {
     alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">GAS 주소를 먼저 입력하세요.</div>';
     return;
   }
+  alertEl.innerHTML='<div class="alert alert-info" style="margin:0">확인 중...</div>';
+  // 근태 관리자 비밀번호로 로그인
   gasRunLeave('adminLogin', JSON.stringify({pw:pw}), function(res) {
     if (res && res.ok) {
       window._settingsAdminLoggedIn = true;
       leaveIsAdmin = true;
-      alertEl.innerHTML='<div class="alert alert-success" style="margin:0">✅ 근태 관리자 로그인 성공</div>';
+      alertEl.innerHTML='<div class="alert alert-success" style="margin:0">✅ 관리자 로그인 성공</div>';
       document.getElementById('settings-admin-login').style.display = 'none';
       document.getElementById('settings-admin-logged').style.display = '';
     } else {
-      alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">PIN 또는 비밀번호가 맞지 않습니다.</div>';
+      alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">비밀번호가 맞지 않습니다.</div>';
     }
   }, function(m) {
     alertEl.innerHTML='<div class="alert alert-warn" style="margin:0">오류: '+m+'</div>';
